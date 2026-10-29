@@ -46,7 +46,7 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
 
       <Navbar />
 
-      <div className="md:pl-[80px] pb-24 md:pb-12 flex-1 flex flex-col bg-[#05070B]">
+      <div className="pt-[74px] md:pl-[80px] pb-24 md:pb-12 flex-1 flex flex-col bg-[#05070B]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1">
         <Link 
           href="/" 

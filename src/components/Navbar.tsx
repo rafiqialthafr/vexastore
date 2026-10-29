@@ -121,7 +121,7 @@ export default function Navbar() {
           - Full width bar spanning across the top
           - Solid deep obsidian background with clear bottom dividing line & shadow
       ========================================================================= */}
-      <header className="sticky top-0 z-50 w-full bg-[#0C101A] border-b border-white/[0.14] shadow-[0_4px_30px_rgba(0,0,0,0.85)] backdrop-blur-2xl transition-all">
+      <header className="fixed top-0 left-0 right-0 z-50 w-full bg-[#0C101A]/95 border-b border-white/[0.14] shadow-[0_4px_30px_rgba(0,0,0,0.85)] backdrop-blur-2xl transition-all">
         <div className="w-full px-4 sm:px-6 lg:px-8 h-[74px] flex items-center justify-between gap-4">
           
           {/* Logo Brand VexaStore (Kiri) */}

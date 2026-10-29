@@ -6,134 +6,138 @@ import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import { ALL_GAMES } from '@/data/games';
 import { 
-  Flame, 
-  Sparkles, 
-  Smartphone, 
-  Monitor, 
-  Ticket, 
-  Search, 
-  Zap, 
+  ChevronRight, 
+  ChevronLeft, 
   ShieldCheck, 
-  Activity, 
-  ArrowRight, 
   CheckCircle2, 
-  Lock,
-  ChevronRight,
-  TrendingUp,
-  X
+  X,
+  Zap 
 } from 'lucide-react';
 
-// 5 Hero Promotional Banner Slides
 interface HeroBanner {
   id: number;
   image: string;
-  badge: string;
-  badgeType: 'promo' | 'riot' | 'krafton' | 'ea' | 'valve';
-  titlePrimary: string;
-  titleSecondary: string;
-  subtitle: string;
-  hasBakedText?: boolean;
-  voucherCode?: string;
-  primaryCtaText: string;
-  primaryCtaLink: string;
-  secondaryCtaText: string;
-  secondaryCtaLink: string;
-  tagline: string;
+  gameTitle: string;
+  publisher: string;
+  headlinePrefix: string;
+  headline: string;
+  highlightLabel: string;
+  highlightBadge: string;
+  highlightPrice: string;
+  highlightOriginal: string;
+  ctaText: string;
+  ctaLink: string;
 }
 
 const HERO_BANNERS: HeroBanner[] = [
   {
     id: 1,
-    image: '/banners/promo_banner.jpg',
-    badge: 'PROMO BULAN INI // EXCLUSIVE DISKON',
-    badgeType: 'promo',
-    hasBakedText: true,
-    titlePrimary: 'PROMO SPESIAL',
-    titleSecondary: 'DISKON UP TO 20K',
-    subtitle: 'Klaim kupon voucher VEXATOPUP dan nikmati potongan instan tanpa syarat minimum pembelian untuk seluruh judul game.',
-    voucherCode: 'VEXATOPUP',
-    primaryCtaText: 'Gunakan Kupon Sekarang →',
-    primaryCtaLink: '#catalog',
-    secondaryCtaText: 'Buka Katalog Vault',
-    secondaryCtaLink: '#catalog',
-    tagline: 'ALL GAMES • INSTANT DELIVERY',
+    image: '/banners/banner_mlbb.jpg',
+    gameTitle: 'Mobile Legends: Bang Bang',
+    publisher: 'MOONTON',
+    headlinePrefix: 'Event Resmi Moonton',
+    headline: 'Promo Spesial Aspirants & Starlight!',
+    highlightLabel: 'Weekly Diamond Pass (WDP)',
+    highlightBadge: 'PALING HEMAT!',
+    highlightPrice: 'Rp 27.500',
+    highlightOriginal: 'Rp 35.000',
+    ctaText: 'Beli Sekarang!',
+    ctaLink: '/order/mobile-legends',
   },
   {
     id: 2,
-    image: '/banners/banner_valorant.jpg',
-    badge: 'RIOT GAMES OFFICIAL PARTNER',
-    badgeType: 'riot',
-    hasBakedText: true,
-    titlePrimary: 'VALORANT RADIANT',
-    titleSecondary: 'POINTS INSTANT PACK',
-    subtitle: 'Injeksi VP resmi Riot Games dengan kecepatan kilat sub-5 detik. Buka skin Kuronami, Champions, dan Battle Pass sekarang.',
-    primaryCtaText: 'Top-Up Valorant Points →',
-    primaryCtaLink: '/order/valorant',
-    secondaryCtaText: 'Lihat Denominasi',
-    secondaryCtaLink: '/order/valorant',
-    tagline: 'OFFICIAL RIOT API • ZERO LATENCY',
+    image: '/banners/banner_valorant_gold.jpg',
+    gameTitle: 'Valorant Riot Games',
+    publisher: 'RIOT GAMES',
+    headlinePrefix: 'Tactical Vault 2026',
+    headline: 'Radiant Protocol Exclusive Bonus VP!',
+    highlightLabel: '1.125 + 150 Bonus VP',
+    highlightBadge: 'PALING MURAH!',
+    highlightPrice: 'Rp 135.000',
+    highlightOriginal: 'Rp 150.000',
+    ctaText: 'Beli Sekarang!',
+    ctaLink: '/order/valorant',
   },
   {
     id: 3,
-    image: '/banners/banner_pubg.jpg',
-    badge: 'KRAFTON AUTHORIZED PROTOCOL',
-    badgeType: 'krafton',
-    hasBakedText: false,
-    titlePrimary: 'PUBG MOBILE',
-    titleSecondary: 'UNKNOWN CASH (UC)',
-    subtitle: 'Top-up UC tercepat dan termurah se-Indonesia. 100% legal, aman, dan langsung masuk ke akun PUBG kamu otomatis.',
-    primaryCtaText: 'Beli PUBG UC Sekarang →',
-    primaryCtaLink: '/order/pubg-mobile',
-    secondaryCtaText: 'Cek Paket UC',
-    secondaryCtaLink: '/order/pubg-mobile',
-    tagline: 'INSTANT DELIVERY • 100% OFFICIAL',
+    image: '/banners/banner_freefire.jpg',
+    gameTitle: 'Free Fire Max Garena',
+    publisher: 'GARENA',
+    headlinePrefix: 'Booyah Pass Season',
+    headline: 'Flash Diamond Vault & Booyah Pass!',
+    highlightLabel: '720 + 72 Bonus Diamonds',
+    highlightBadge: 'KILAT & LEGAL!',
+    highlightPrice: 'Rp 93.000',
+    highlightOriginal: 'Rp 115.000',
+    ctaText: 'Beli Sekarang!',
+    ctaLink: '/order/free-fire',
   },
   {
     id: 4,
-    image: '/banners/banner_apex.jpg',
-    badge: 'ELECTRONIC ARTS GLOBAL RESELLER',
-    badgeType: 'ea',
-    hasBakedText: false,
-    titlePrimary: 'APEX LEGENDS',
-    titleSecondary: 'COINS & SEASON PASS',
-    subtitle: 'Dapatkan Apex Coins instan untuk membuka Battle Pass & Heirloom pack tanpa antre. Pengiriman 24 jam nonstop.',
-    primaryCtaText: 'Top-Up Apex Coins →',
-    primaryCtaLink: '/order/apex-legends-pc',
-    secondaryCtaText: 'Katalog Game PC',
-    secondaryCtaLink: '#catalog',
-    tagline: 'EA APP & STEAM VERIFIED • 24/7',
+    image: '/banners/banner_pubg.jpg',
+    gameTitle: 'PUBG Mobile',
+    publisher: 'KRAFTON',
+    headlinePrefix: 'Battle Royale Special',
+    headline: 'Royale Pass & Unknown Cash Pack!',
+    highlightLabel: '660 UC (Full Royale Pass)',
+    highlightBadge: 'DISKON 20%!',
+    highlightPrice: 'Rp 130.000',
+    highlightOriginal: 'Rp 150.000',
+    ctaText: 'Beli Sekarang!',
+    ctaLink: '/order/pubg-mobile',
   },
   {
     id: 5,
+    image: '/banners/banner_apex.jpg',
+    gameTitle: 'Genshin Impact & Honkai',
+    publisher: 'HOYOVERSE',
+    headlinePrefix: 'Teyvat Blessing',
+    headline: 'Blessing of the Welkin Moon & Crystals!',
+    highlightLabel: 'Welkin Moon 30 Hari + 300 GC',
+    highlightBadge: 'RESMI DIRECT!',
+    highlightPrice: 'Rp 74.000',
+    highlightOriginal: 'Rp 85.000',
+    ctaText: 'Beli Sekarang!',
+    ctaLink: '/order/genshin-impact',
+  },
+  {
+    id: 6,
     image: '/banners/banner_cs2.jpg',
-    badge: 'VALVE STEAM WALLET IDR',
-    badgeType: 'valve',
-    hasBakedText: false,
-    titlePrimary: 'STEAM WALLET CODE',
-    titleSecondary: 'IDR INSTANT VOUCHER',
-    subtitle: 'Voucher Steam Wallet resmi Rupiah otomatis masuk detik ini juga. Beli game terbaru, buka case CS2, dan upgrade item.',
-    primaryCtaText: 'Beli Steam Wallet IDR →',
-    primaryCtaLink: '/order/steam-wallet-code-idr',
-    secondaryCtaText: 'Lihat Semua Voucher',
-    secondaryCtaLink: '#catalog',
-    tagline: 'AUTOMATED CODE DISPATCH • 24/7',
+    gameTitle: 'Steam Wallet Code IDR',
+    publisher: 'VALVE',
+    headlinePrefix: 'Steam Global Discount',
+    headline: 'Steam Wallet Code IDR Musim Spesial!',
+    highlightLabel: 'Voucher IDR 250.000',
+    highlightBadge: 'INSTAN REDEEM!',
+    highlightPrice: 'Rp 255.000',
+    highlightOriginal: 'Rp 275.000',
+    ctaText: 'Beli Sekarang!',
+    ctaLink: '/order/steam-wallet-code-idr',
   },
 ];
 
+const CATEGORIES = [
+  { id: 'all', label: '🔥 Lagi Populer' },
+  { id: 'rbl', label: 'RBL Games' },
+  { id: 'direct', label: 'Top Up Langsung' },
+  { id: 'entertainment', label: 'Entertainment' },
+  { id: 'new', label: '🌟 Baru Rilis' },
+  { id: 'voucher', label: 'Voucher' },
+  { id: 'login', label: 'Top Up Login' },
+  { id: 'pulsa', label: 'Pulsa' },
+];
+
 export default function HomePage() {
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'popular' | 'mobile' | 'pc' | 'voucher'>('all');
-  const [search, setSearch] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [showGuaranteeModal, setShowGuaranteeModal] = useState(false);
-  const [copiedVoucher, setCopiedVoucher] = useState(false);
 
-  // Auto-slide effect every 5.5s unless hovered
+  // Auto-slide effect every 5 seconds unless hovered
   useEffect(() => {
     if (isPaused) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % HERO_BANNERS.length);
-    }, 5500);
+    }, 5000);
     return () => clearInterval(timer);
   }, [isPaused]);
 
@@ -145,483 +149,343 @@ export default function HomePage() {
     setCurrentSlide((prev) => (prev - 1 + HERO_BANNERS.length) % HERO_BANNERS.length);
   };
 
-  const handleCopyVoucher = (code: string) => {
-    if (typeof navigator !== 'undefined') {
-      navigator.clipboard.writeText(code);
-      setCopiedVoucher(true);
-      setTimeout(() => setCopiedVoucher(false), 2500);
-    }
-  };
-
   const filteredGames = useMemo(() => {
-    return ALL_GAMES.filter((game) => {
-      const matchSearch = game.name.toLowerCase().includes(search.toLowerCase()) || 
-                          game.publisher.toLowerCase().includes(search.toLowerCase());
-      if (!matchSearch) return false;
-
-      if (selectedCategory === 'popular') return game.isPopular;
-      if (selectedCategory === 'mobile') return game.category === 'mobile';
-      if (selectedCategory === 'pc') return game.category === 'pc';
-      if (selectedCategory === 'voucher') return game.category === 'voucher';
-      return true;
-    });
-  }, [selectedCategory, search]);
-
-  const activeBanner = HERO_BANNERS[currentSlide];
+    if (selectedCategory === 'all' || selectedCategory === 'direct') {
+      return ALL_GAMES;
+    }
+    if (selectedCategory === 'rbl') {
+      const rbl = ALL_GAMES.filter(g => g.name.toLowerCase().includes('roblox') || g.publisher.toLowerCase().includes('roblox'));
+      return rbl.length > 0 ? rbl : ALL_GAMES.slice(0, 8);
+    }
+    if (selectedCategory === 'entertainment') {
+      const ent = ALL_GAMES.filter(g => g.category === 'voucher' || g.name.toLowerCase().includes('steam') || g.name.toLowerCase().includes('play'));
+      return ent.length > 0 ? ent : ALL_GAMES.slice(0, 8);
+    }
+    if (selectedCategory === 'new') {
+      return ALL_GAMES.slice(-8);
+    }
+    if (selectedCategory === 'voucher' || selectedCategory === 'pulsa') {
+      const vouchers = ALL_GAMES.filter(g => g.category === 'voucher');
+      return vouchers.length > 0 ? vouchers : ALL_GAMES.slice(0, 8);
+    }
+    if (selectedCategory === 'login') {
+      return ALL_GAMES.filter(g => g.idRequirements.needsUserId);
+    }
+    return ALL_GAMES;
+  }, [selectedCategory]);
 
   return (
-    <div className="min-h-screen bg-[#06080D] text-slate-100 flex flex-col font-sans relative overflow-x-hidden selection:bg-[#DFC28A]/25 selection:text-[#FFF5DE]">
-      {/* Ambient Lighting Elements (Void Obsidian + Pale Gold & Platinum Silver Reflections) */}
-      <div className="absolute top-0 left-1/4 -translate-x-1/2 w-[750px] h-[550px] bg-[radial-gradient(ellipse_at_center,rgba(223,194,138,0.08),transparent_70%)] pointer-events-none blur-3xl -z-10" />
-      <div className="absolute top-12 right-0 w-[650px] h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(226,232,240,0.05),transparent_70%)] pointer-events-none blur-3xl -z-10" />
-      <div className="absolute top-[800px] left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-[radial-gradient(ellipse_at_center,rgba(197,168,128,0.04),transparent_70%)] pointer-events-none blur-3xl -z-10" />
-      <div className="absolute inset-0 cyber-grid opacity-[0.035] pointer-events-none -z-10" />
+    <div className="min-h-screen bg-[#06090E] text-slate-100 flex flex-col font-sans relative overflow-x-hidden selection:bg-[#DFC28A]/25 selection:text-[#FFF5DE]">
+      
+      {/* =========================================================================
+          WARNA EMAS SAMAR: LUMINOUS GOLD DIAGONAL WINGS & AMBIENT AURA
+          (Persis sayap diagonal biru samar yang membingkai hero slider Lapakgaming)
+      ========================================================================= */}
+      <div className="absolute top-[74px] left-0 md:left-[80px] right-0 h-[520px] pointer-events-none overflow-hidden -z-10 select-none">
+        {/* Luminous Center Gold Ambient Halo */}
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-[950px] h-[360px] bg-[radial-gradient(ellipse_at_center,rgba(223,194,138,0.28),rgba(223,194,138,0.10)_48%,transparent_75%)] blur-3xl" />
 
+        {/* SVG Geometric Facets (Persis Sayap Diagonal Lapakgaming) */}
+        <svg 
+          className="absolute inset-0 w-full h-full" 
+          preserveAspectRatio="none" 
+          viewBox="0 0 1440 520" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            {/* Primary Left Gold Wing Gradient */}
+            <linearGradient id="goldWingLeft" x1="0%" y1="0%" x2="70%" y2="100%">
+              <stop offset="0%" stopColor="#DFC28A" stopOpacity="0.25" />
+              <stop offset="45%" stopColor="#DFC28A" stopOpacity="0.10" />
+              <stop offset="100%" stopColor="#DFC28A" stopOpacity="0" />
+            </linearGradient>
+
+            {/* Secondary Left Gold Accent Facet */}
+            <linearGradient id="goldFacetLeft2" x1="15%" y1="0%" x2="80%" y2="100%">
+              <stop offset="0%" stopColor="#F5E5C9" stopOpacity="0.22" />
+              <stop offset="55%" stopColor="#DFC28A" stopOpacity="0.06" />
+              <stop offset="100%" stopColor="#DFC28A" stopOpacity="0" />
+            </linearGradient>
+
+            {/* Primary Right Gold Wing Gradient */}
+            <linearGradient id="goldWingRight" x1="100%" y1="0%" x2="30%" y2="100%">
+              <stop offset="0%" stopColor="#DFC28A" stopOpacity="0.25" />
+              <stop offset="45%" stopColor="#DFC28A" stopOpacity="0.10" />
+              <stop offset="100%" stopColor="#DFC28A" stopOpacity="0" />
+            </linearGradient>
+
+            {/* Secondary Right Gold Accent Facet */}
+            <linearGradient id="goldFacetRight2" x1="85%" y1="0%" x2="20%" y2="100%">
+              <stop offset="0%" stopColor="#F5E5C9" stopOpacity="0.22" />
+              <stop offset="55%" stopColor="#DFC28A" stopOpacity="0.06" />
+              <stop offset="100%" stopColor="#DFC28A" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+
+          {/* Left Outer Wing Polygon */}
+          <polygon points="0,0 520,0 280,520 0,520" fill="url(#goldWingLeft)" />
+          {/* Left Inner Slanted Stripe */}
+          <polygon points="260,0 480,0 320,520 200,520" fill="url(#goldFacetLeft2)" opacity="0.85" />
+
+          {/* Right Outer Wing Polygon */}
+          <polygon points="1440,0 920,0 1160,520 1440,520" fill="url(#goldWingRight)" />
+          {/* Right Inner Slanted Stripe */}
+          <polygon points="1180,0 960,0 1120,520 1240,520" fill="url(#goldFacetRight2)" opacity="0.85" />
+
+          {/* Sleek Dashed Lines Accents */}
+          <line x1="520" y1="0" x2="280" y2="520" stroke="#DFC28A" strokeOpacity="0.4" strokeWidth="1.5" strokeDasharray="6 4" />
+          <line x1="920" y1="0" x2="1160" y2="520" stroke="#DFC28A" strokeOpacity="0.4" strokeWidth="1.5" strokeDasharray="6 4" />
+        </svg>
+
+        {/* Soft Bottom Ambient Blend */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#06090E] via-[#06090E]/80 to-transparent" />
+      </div>
+
+      {/* Fixed Header Navbar */}
       <Navbar />
 
-      <div className="md:pl-[80px] pb-20 md:pb-0 flex-1 flex flex-col bg-[#05070B] min-h-screen">
-        {/* 5-Slide Interactive Hero Banner Slider Section */}
+      {/* Main Content Area (Offset for Fixed Header 74px and Sidebar 80px) */}
+      <div className="pt-[74px] md:pl-[80px] pb-16 flex-1 flex flex-col bg-transparent min-h-screen">
+        
+        {/* =========================================================================
+            HERO SLIDER (3D COVERFLOW FLUID - TIDAK KAKU - PERSIS PROPORSI LAPAKGAMING)
+        ========================================================================= */}
         <section 
-          className="relative px-4 sm:px-6 lg:px-8 pt-4 sm:pt-5 pb-3 max-w-7xl mx-auto w-full"
+          className="relative w-full max-w-7xl mx-auto px-1 sm:px-3 pt-3 sm:pt-4 pb-1 overflow-hidden"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          <div className="relative rounded-3xl overflow-hidden border border-white/[0.08] bg-[#070A12] shadow-[0_20px_50px_rgba(0,0,0,0.8)] group">
-          
-          {/* Main Visual Carousel Area */}
-          <div className="relative w-full aspect-[16/10] sm:aspect-[21/9] lg:aspect-[21/8] overflow-hidden">
+          {/* Coverflow Stage Container */}
+          <div className="relative w-full flex items-center justify-center h-[185px] sm:h-[215px] md:h-[235px] overflow-hidden select-none">
             {HERO_BANNERS.map((banner, index) => {
-              const isActive = index === currentSlide;
+              const count = HERO_BANNERS.length;
+              const diff = (index - currentSlide + count) % count;
+              const isCenter = diff === 0;
+              const isPrev = diff === count - 1;
+              const isNext = diff === 1;
+
+              // Only render center, prev, and next slides for optimal performance and crisp coverflow
+              if (!isCenter && !isPrev && !isNext) return null;
+
               return (
                 <div
                   key={banner.id}
-                  className={`absolute inset-0 transition-[opacity,visibility] duration-500 ease-in-out ${
-                    isActive 
-                      ? 'opacity-100 z-10 visible' 
-                      : 'opacity-0 z-0 pointer-events-none invisible'
+                  onClick={() => {
+                    if (isPrev) handlePrevSlide();
+                    if (isNext) handleNextSlide();
+                  }}
+                  className={`absolute top-0 bottom-0 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] flex items-center justify-center w-[90%] sm:w-[560px] md:w-[640px] lg:w-[680px] ${
+                    isCenter
+                      ? 'left-1/2 -translate-x-1/2 z-20 scale-100 opacity-100 shadow-[0_22px_55px_rgba(0,0,0,0.95),0_0_40px_rgba(223,194,138,0.22)] cursor-default'
+                      : isPrev
+                      ? 'left-1/2 -translate-x-[calc(50%+76%)] sm:-translate-x-[calc(50%+450px)] md:-translate-x-[calc(50%+510px)] lg:-translate-x-[calc(50%+550px)] z-10 scale-[0.93] opacity-80 hover:opacity-100 cursor-pointer blur-[0.2px]'
+                      : 'left-1/2 translate-x-[calc(-50%+76%)] sm:translate-x-[calc(-50%+450px)] md:translate-x-[calc(-50%+510px)] lg:translate-x-[calc(-50%+550px)] z-10 scale-[0.93] opacity-80 hover:opacity-100 cursor-pointer blur-[0.2px]'
                   }`}
                 >
-                  {/* Background Artwork */}
-                  <img
-                    src={banner.image}
-                    alt={`${banner.titlePrimary} ${banner.titleSecondary}`}
-                    className="w-full h-full object-cover object-center transform scale-100 transition-transform duration-1000 group-hover:scale-[1.01]"
-                  />
+                  <div className={`relative w-full h-full rounded-[24px] sm:rounded-[28px] overflow-hidden border transition-all duration-300 ${
+                    isCenter 
+                      ? 'border-[#DFC28A]/45 ring-1 ring-[#DFC28A]/25 bg-[#0B0E17]' 
+                      : 'border-white/[0.14] bg-[#0A0D15]'
+                  }`}>
+                    {/* Background Banner Artwork */}
+                    <img
+                      src={banner.image}
+                      alt={banner.headline}
+                      className="w-full h-full object-cover object-center transform transition-transform duration-700"
+                    />
 
-                  {/* If the banner has baked text, keep artwork clean with subtle bottom action dock */}
-                  {banner.hasBakedText ? (
-                    <>
-                      {/* Subtle Vignette & Gradient for integration */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#06080D]/90 via-transparent to-[#06080D]/40 pointer-events-none" />
+                    {/* Gradient Overlay for Text Legibility on Left */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/92 via-black/55 to-transparent pointer-events-none" />
 
-                      {/* Floating Bottom Action Dock */}
-                      <div className="absolute bottom-6 sm:bottom-8 left-6 sm:left-12 right-6 sm:right-12 flex flex-wrap items-center justify-between gap-4 z-20">
-                        <div className="flex items-center gap-3">
-                          {banner.voucherCode && (
-                            <button
-                              type="button"
-                              onClick={() => handleCopyVoucher(banner.voucherCode!)}
-                              className="px-4 py-2.5 rounded-xl bg-slate-950/85 hover:bg-slate-900 border border-[#DFC28A]/50 backdrop-blur-xl text-white text-xs font-mono font-bold flex items-center gap-2.5 shadow-[0_0_20px_rgba(223,194,138,0.2)] transition-all active:scale-95"
-                            >
-                              <Ticket size={15} className="text-[#DFC28A]" />
-                              <span>KODE: <strong className="text-[#DFC28A]">{banner.voucherCode}</strong></span>
-                              <span className={`text-[10px] font-sans px-2 py-0.5 rounded-md ${copiedVoucher ? 'bg-emerald-500 text-slate-950 font-bold' : 'bg-[#DFC28A]/20 text-[#DFC28A]'}`}>
-                                {copiedVoucher ? '✓ TERSALIN' : 'SALIN'}
-                              </span>
-                            </button>
-                          )}
-                          <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-950/70 border border-white/[0.08] backdrop-blur-md text-[11px] font-mono text-slate-300">
-                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                            {banner.tagline}
+                    {/* POJOK ATAS KIRI: Logo VexaStore (HANYA LOGO Crest Saja, Tulisannya Gausah) */}
+                    <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-30 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-xl shadow-md flex items-center justify-center">
+                      <Image
+                        src="/logo-crest.png"
+                        alt="VexaStore"
+                        width={20}
+                        height={20}
+                        className="w-4 h-4 sm:w-5 sm:h-5 object-contain"
+                      />
+                    </div>
+
+                    {/* POJOK ATAS KANAN: Publisher / Partner Badge */}
+                    <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3.5 z-30 flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/60 border border-white/15 backdrop-blur-md">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#DFC28A] animate-pulse" />
+                      <span className="text-[9px] sm:text-[10px] font-black tracking-widest text-slate-200 uppercase font-mono">
+                        {banner.publisher}
+                      </span>
+                    </div>
+
+                    {/* Left Overlay Content (Framed Box & Minimalist Composition Persis Lapakgaming) */}
+                    <div className="absolute inset-0 z-20 flex flex-col justify-center pl-3.5 sm:pl-6 md:pl-7 pr-3 max-w-[65%] sm:max-w-[58%]">
+                      {/* Tagline / Event Prefix */}
+                      <span className="text-[9px] sm:text-[10px] font-mono font-bold text-[#DFC28A] tracking-wider uppercase mb-0.5">
+                        // {banner.headlinePrefix}
+                      </span>
+
+                      {/* Headline Title */}
+                      <h3 className="text-xs sm:text-base md:text-lg font-black text-white leading-tight drop-shadow tracking-tight">
+                        {banner.headline}
+                      </h3>
+
+                      {/* Framed Price Card (Gaya Frame Glowing Neon Lapakgaming) */}
+                      <div className="mt-1.5 sm:mt-2 bg-slate-950/85 border border-[#DFC28A]/45 rounded-xl p-1.5 sm:px-2.5 sm:py-1.5 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.6)] w-fit max-w-full">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[9px] sm:text-[11px] font-bold text-slate-200 truncate">
+                            {banner.highlightLabel}
+                          </span>
+                          <span className="bg-[#DFC28A]/20 text-[#DFC28A] border border-[#DFC28A]/40 text-[7px] sm:text-[8px] font-black px-1.5 py-0.2 rounded-full uppercase tracking-tight shrink-0">
+                            {banner.highlightBadge}
                           </span>
                         </div>
+                        <div className="flex items-baseline gap-1.5 mt-0.5">
+                          <span className="text-xs sm:text-base md:text-lg font-black text-[#DFC28A] font-mono drop-shadow">
+                            {banner.highlightPrice}
+                          </span>
+                          <span className="text-[8px] sm:text-[10px] text-red-400 line-through font-mono">
+                            {banner.highlightOriginal}
+                          </span>
+                        </div>
+                      </div>
 
+                      {/* CTA Action Pill Button */}
+                      <div className="mt-2 sm:mt-2.5">
                         <Link
-                          href={banner.primaryCtaLink}
-                          className="px-6 sm:px-7 py-3 rounded-xl bg-gradient-to-r from-[#DFC28A] via-[#EBD5A7] to-[#DFC28A] hover:brightness-110 text-slate-950 font-black text-xs uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(223,194,138,0.3)] hover:shadow-[0_0_35px_rgba(223,194,138,0.5)] active:scale-95 flex items-center gap-2"
+                          href={banner.ctaLink}
+                          className="inline-flex items-center gap-1.5 px-3.5 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-[#DFC28A] via-[#EED9B3] to-[#DFC28A] hover:brightness-110 text-slate-950 font-black text-[9px] sm:text-[11px] shadow-md transition-all active:scale-95"
                         >
-                          <Zap size={15} className="fill-slate-950" />
-                          <span>{banner.primaryCtaText}</span>
+                          <span>{banner.ctaText}</span>
+                          <span className="bg-[#E11D48] text-white text-[8px] sm:text-[9px] font-black px-1.5 py-0.2 rounded-full uppercase tracking-tight shadow-sm">
+                            HARGA FINAL
+                          </span>
                         </Link>
                       </div>
-                    </>
-                  ) : (
-                    <>
-                      {/* Dual Dark Luxury Gradient Overlays for High-Contrast Readability */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#06080D]/95 via-[#06080D]/75 to-transparent/20" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#06080D] via-[#06080D]/30 to-transparent/60" />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
 
-                      {/* Asymmetric Typography & Content Overlay (Left Aligned) */}
-                      <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-12 md:px-16 max-w-2xl lg:max-w-3xl z-20">
-                        {/* Status Chip */}
-                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.1] backdrop-blur-md w-fit mb-3 sm:mb-4 shadow-sm">
-                          <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#DFC28A] opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#DFC28A]"></span>
-                          </span>
-                          <span className="text-[10px] sm:text-[11px] font-mono tracking-widest text-slate-300 uppercase font-bold">
-                            {banner.badge}
-                          </span>
-                        </div>
+          {/* 6 Minimalist Pill Indicators (Persis Screenshot Lapakgaming) */}
+          <div className="flex items-center justify-center gap-1.5 sm:gap-2 mt-3 sm:mt-3.5 mb-4 sm:mb-5">
+            {HERO_BANNERS.map((_, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => setCurrentSlide(index)}
+                aria-label={`Slide ${index + 1}`}
+                className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 ${
+                  index === currentSlide 
+                    ? 'w-8 sm:w-10 bg-[#DFC28A] shadow-[0_0_12px_rgba(223,194,138,0.7)]' 
+                    : 'w-4 sm:w-5 bg-slate-600/40 hover:bg-slate-400'
+                }`}
+              />
+            ))}
+          </div>
 
-                        {/* Display Title */}
-                        <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-black tracking-tight leading-[1.06]">
-                          <span className="text-white block">{banner.titlePrimary}</span>
-                          <span className="text-champagne-metallic block">{banner.titleSecondary}</span>
-                        </h1>
+          {/* Category Filter Tabs (Pill Buttons Persis Lapakgaming) */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none justify-start sm:justify-center px-2">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id)}
+                className={`px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition border ${
+                  selectedCategory === cat.id
+                    ? 'bg-[#DFC28A]/15 text-[#FFF5DE] border-[#DFC28A] shadow-[0_0_15px_rgba(223,194,138,0.2)]'
+                    : 'bg-white/[0.04] text-slate-300 border-white/10 hover:border-[#DFC28A]/40 hover:text-white'
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+        </section>
 
-                        {/* Subtitle */}
-                        <p className="text-xs sm:text-sm md:text-base text-slate-300 mt-2.5 sm:mt-3 leading-relaxed max-w-lg line-clamp-2 sm:line-clamp-3">
-                          {banner.subtitle}
-                        </p>
+        {/* Section Heading "🔥 Lagi Populer" (Persis Screenshot Lapakgaming) */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-5 mb-3 w-full">
+          <div className="flex items-center gap-2">
+            <span className="text-xl sm:text-2xl">🔥</span>
+            <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+              Lagi Populer
+            </h2>
+          </div>
+        </div>
 
-                        {/* Action Group */}
-                        <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-5 sm:mt-6">
-                          <Link
-                            href={banner.primaryCtaLink}
-                            className="px-6 sm:px-7 py-3 sm:py-3.5 rounded-2xl bg-gradient-to-r from-[#DFC28A] via-[#EBD5A7] to-[#DFC28A] hover:brightness-110 text-slate-950 font-black text-xs sm:text-sm tracking-wide uppercase transition-all shadow-[0_0_25px_rgba(223,194,138,0.3)] hover:shadow-[0_0_35px_rgba(223,194,138,0.5)] active:scale-95 flex items-center gap-2"
-                          >
-                            <Zap size={15} className="fill-slate-950" />
-                            <span>{banner.primaryCtaText}</span>
-                          </Link>
-
-                          <button
-                            type="button"
-                            onClick={() => setShowGuaranteeModal(true)}
-                            className="hidden md:inline-flex items-center gap-1.5 px-5 py-3 rounded-2xl bg-white/[0.025] hover:bg-white/[0.05] border border-white/[0.08] text-slate-300 hover:text-white text-xs font-bold transition"
-                          >
-                            <ShieldCheck size={14} className="text-[#DFC28A]" />
-                            <span>Garansi Resmi</span>
-                          </button>
-                        </div>
-                      </div>
-                    </>
+        {/* Game Cards Grid (Clean & Modern dengan Red Discount Badges) */}
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 w-full flex-1">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
+            {filteredGames.map((game, idx) => (
+              <Link
+                key={game.id}
+                href={`/order/${game.slug}`}
+                className="group relative rounded-2xl bg-white/[0.02] hover:bg-white/[0.045] border border-white/[0.08] hover:border-[#DFC28A]/50 p-2.5 sm:p-3 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_12px_25px_-5px_rgba(223,194,138,0.2)]"
+              >
+                {/* Poster Image Container */}
+                <div className="relative aspect-[3/4] w-full rounded-xl overflow-hidden bg-slate-900 mb-2 shadow-sm">
+                  <img
+                    src={game.image}
+                    alt={game.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  {/* Clean Red Discount Badge (Lapakgaming style) */}
+                  {game.isPopular && (
+                    <span className="absolute top-0 right-0 bg-[#E11D48] text-white text-[10px] sm:text-xs font-bold px-1.5 sm:px-2 py-0.5 rounded-bl-xl rounded-tr-xl shadow-sm">
+                      {idx % 3 === 0 ? '-10%' : idx % 3 === 1 ? '-15%' : '-20%'}
+                    </span>
                   )}
                 </div>
-              );
-            })}
-          </div>
 
-          {/* Floating Navigation Controls (Left & Right Arrows) */}
-          <button
-            type="button"
-            onClick={handlePrevSlide}
-            aria-label="Previous Slide"
-            className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-[#06080D]/75 hover:bg-slate-900 border border-white/[0.1] hover:border-[#DFC28A]/60 text-white hover:text-[#DFC28A] backdrop-blur-xl flex items-center justify-center transition-all shadow-2xl active:scale-95"
-          >
-            <ChevronRight size={20} className="rotate-180" />
-          </button>
-
-          <button
-            type="button"
-            onClick={handleNextSlide}
-            aria-label="Next Slide"
-            className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-[#06080D]/75 hover:bg-slate-900 border border-white/[0.1] hover:border-[#DFC28A]/60 text-white hover:text-[#DFC28A] backdrop-blur-xl flex items-center justify-center transition-all shadow-2xl active:scale-95"
-          >
-            <ChevronRight size={20} />
-          </button>
-
-          {/* 5 Interactive Progress Pills / Tabs Bar Underneath */}
-          <div className="px-4 sm:px-8 py-3.5 bg-white/[0.02] border-t border-white/[0.06] backdrop-blur-xl flex items-center justify-between gap-2 overflow-x-auto scrollbar-none">
-            {HERO_BANNERS.map((banner, index) => {
-              const isActive = index === currentSlide;
-              return (
-                <button
-                  key={banner.id}
-                  type="button"
-                  onClick={() => setCurrentSlide(index)}
-                  className={`flex-1 min-w-[120px] sm:min-w-[140px] text-left p-2.5 rounded-xl border transition-all ${
-                    isActive 
-                      ? 'bg-white/[0.06] border-[#DFC28A]/60 shadow-[0_0_15px_rgba(223,194,138,0.2)]' 
-                      : 'bg-transparent border-transparent hover:bg-white/[0.02] hover:border-white/[0.05]'
-                  }`}
-                >
-                  <div className="flex items-center justify-between text-[10px] font-mono mb-1">
-                    <span className={isActive ? 'text-[#DFC28A] font-bold' : 'text-slate-500'}>
-                      0{index + 1}. PROMO
-                    </span>
-                    {isActive && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#DFC28A] animate-ping" />
-                    )}
-                  </div>
-                  <p className={`text-xs font-bold truncate ${isActive ? 'text-white' : 'text-slate-400'}`}>
-                    {banner.titlePrimary}
+                {/* Game Metadata */}
+                <div className="flex-1 flex flex-col justify-center">
+                  <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">
+                    {game.publisher}
                   </p>
-                  
-                  {/* Animated Progress Bar on Active Tab */}
-                  <div className="w-full h-1 bg-white/[0.06] rounded-full mt-2 overflow-hidden">
-                    <div 
-                      className={`h-full bg-gradient-to-r from-[#C5A880] via-[#DFC28A] to-[#F3E5C8] transition-all duration-300 ${
-                        isActive ? 'w-full' : 'w-0'
-                      }`}
-                    />
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-        </div>
-
-        {/* Telemetry Trust Strip Directly Below Hero Slider */}
-        <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-2.5 w-full">
-          <div className="p-3 rounded-2xl bg-white/[0.02] border border-white/[0.06] backdrop-blur-md flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-[#DFC28A]/10 border border-[#DFC28A]/30 flex items-center justify-center text-[#DFC28A] shrink-0">
-              <Zap size={14} />
-            </div>
-            <div>
-              <p className="text-xs font-black text-white font-mono">&lt; 15 Detik</p>
-              <p className="text-[10px] text-slate-400">Injeksi Otomatis</p>
-            </div>
-          </div>
-
-          <div className="p-3 rounded-2xl bg-white/[0.02] border border-white/[0.06] backdrop-blur-md flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-[#DFC28A]/10 border border-[#DFC28A]/30 flex items-center justify-center text-[#DFC28A] shrink-0">
-              <ShieldCheck size={14} />
-            </div>
-            <div>
-              <p className="text-xs font-black text-white font-mono">100% Legal</p>
-              <p className="text-[10px] text-slate-400">Distributor Resmi</p>
-            </div>
-          </div>
-
-          <div className="p-3 rounded-2xl bg-white/[0.02] border border-white/[0.06] backdrop-blur-md flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
-              <Activity size={14} />
-            </div>
-            <div>
-              <p className="text-xs font-black text-white font-mono">99.98%</p>
-              <p className="text-[10px] text-slate-400">Gateway 24/7</p>
-            </div>
-          </div>
-
-          <div className="p-3 rounded-2xl bg-white/[0.02] border border-white/[0.06] backdrop-blur-md flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-slate-200/10 border border-slate-200/30 flex items-center justify-center text-slate-200 shrink-0">
-              <CheckCircle2 size={14} />
-            </div>
-            <div>
-              <p className="text-xs font-black text-white font-mono">{ALL_GAMES.length}+ Game</p>
-              <p className="text-[10px] text-slate-400">Pilihan Terlengkap</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Main Dashboard & Catalog Section */}
-      <main id="catalog" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1">
-        
-        {/* Section Header with Asymmetric Composition */}
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-6 pb-4 border-b border-white/[0.06]">
-          <div className="space-y-1.5">
-            <p className="text-[11px] font-mono tracking-[0.25em] text-[#DFC28A] uppercase font-bold">
-              // VERIFIED GAME VAULT
-            </p>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-              Katalog Game Resmi
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-400 max-w-xl">
-              Pilih game favoritmu dan top-up langsung ke server resmi dengan mata uang 100% legal dan garansi instan.
-            </p>
-          </div>
-
-          {/* Quick Search Input */}
-          <div className="relative w-full md:w-80">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-            <input
-              type="text"
-              placeholder="Cari judul game di vault..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 rounded-2xl bg-white/[0.025] border border-white/[0.08] text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#DFC28A] transition-all shadow-inner"
-            />
-          </div>
-        </div>
-
-        {/* Luxury Category Filter Tabs with Micro-Interactions */}
-        <div className="flex items-center gap-2.5 overflow-x-auto pb-3 mb-6 scrollbar-none">
-          <button
-            onClick={() => setSelectedCategory('all')}
-            className={`px-4.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all border ${
-              selectedCategory === 'all'
-                ? 'bg-white/[0.08] text-[#FFF5DE] border-[#DFC28A]/60 shadow-[0_0_20px_rgba(223,194,138,0.25)]'
-                : 'bg-white/[0.02] text-slate-400 border-white/[0.06] hover:bg-white/[0.05] hover:text-white'
-            }`}
-          >
-            Semua Game ({ALL_GAMES.length})
-          </button>
-          
-          <button
-            onClick={() => setSelectedCategory('popular')}
-            className={`flex items-center gap-2 px-4.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all border ${
-              selectedCategory === 'popular'
-                ? 'bg-white/[0.08] text-[#FFF5DE] border-[#DFC28A]/60 shadow-[0_0_20px_rgba(223,194,138,0.25)]'
-                : 'bg-white/[0.02] text-slate-400 border-white/[0.06] hover:bg-white/[0.05] hover:text-white'
-            }`}
-          >
-            <Flame size={15} className="text-orange-400" /> Populer Esports
-          </button>
-
-          <button
-            onClick={() => setSelectedCategory('mobile')}
-            className={`flex items-center gap-2 px-4.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all border ${
-              selectedCategory === 'mobile'
-                ? 'bg-white/[0.08] text-[#FFF5DE] border-[#DFC28A]/60 shadow-[0_0_20px_rgba(223,194,138,0.25)]'
-                : 'bg-white/[0.02] text-slate-400 border-white/[0.06] hover:bg-white/[0.05] hover:text-white'
-            }`}
-          >
-            <Smartphone size={15} /> Mobile Arena
-          </button>
-
-          <button
-            onClick={() => setSelectedCategory('pc')}
-            className={`flex items-center gap-2 px-4.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all border ${
-              selectedCategory === 'pc'
-                ? 'bg-white/[0.08] text-[#FFF5DE] border-[#DFC28A]/60 shadow-[0_0_20px_rgba(223,194,138,0.25)]'
-                : 'bg-white/[0.02] text-slate-400 border-white/[0.06] hover:bg-white/[0.05] hover:text-white'
-            }`}
-          >
-            <Monitor size={15} /> PC Masterpieces
-          </button>
-
-          <button
-            onClick={() => setSelectedCategory('voucher')}
-            className={`flex items-center gap-2 px-4.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all border ${
-              selectedCategory === 'voucher'
-                ? 'bg-white/[0.08] text-[#FFF5DE] border-[#DFC28A]/60 shadow-[0_0_20px_rgba(223,194,138,0.25)]'
-                : 'bg-white/[0.02] text-slate-400 border-white/[0.06] hover:bg-white/[0.05] hover:text-white'
-            }`}
-          >
-            <Ticket size={15} /> Gift Card & Voucher
-          </button>
-        </div>
-
-        {/* Clean AAA Game Grid with Zero Clutter Badges (Strictly Poster + Publisher + Title) */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 sm:gap-4">
-          {filteredGames.map((game) => (
-            <Link
-              key={game.id}
-              href={`/order/${game.slug}`}
-              className="group relative rounded-2xl bg-white/[0.02] hover:bg-white/[0.045] border border-white/[0.06] hover:border-[#DFC28A]/50 p-3 sm:p-3.5 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-[0_15px_30px_-5px_rgba(223,194,138,0.18)]"
-            >
-              {/* Aspect 3:4 Poster Image Container */}
-              <div className="relative aspect-[3/4] w-full rounded-xl overflow-hidden bg-slate-900 mb-2.5 shadow-sm">
-                <img
-                  src={game.image}
-                  alt={game.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-
-              {/* Game Metadata (Clean Typography Hierarchy, Zero Badge Clutter) */}
-              <div className="flex-1 flex flex-col justify-center">
-                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">
-                  {game.publisher}
-                </p>
-                <h3 className="text-xs sm:text-sm font-bold text-white group-hover:text-[#DFC28A] transition-colors line-clamp-1 leading-snug mt-0.5">
-                  {game.name}
-                </h3>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        {filteredGames.length === 0 && (
-          <div className="text-center py-16 bg-white/[0.015] rounded-3xl border border-white/[0.06]">
-            <p className="text-slate-400 text-sm">Tidak ada game yang cocok dengan pencarianmu.</p>
-          </div>
-        )}
-      </main>
-
-      {/* Official Guarantee Modal (Brushed Gold & Obsidian Glass) */}
-      {showGuaranteeModal && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl flex items-center justify-center p-6">
-          <div className="w-full max-w-lg bg-[#0B0F17] border border-white/[0.1] rounded-3xl p-6 sm:p-8 shadow-[0_25px_60px_rgba(0,0,0,0.9)] relative animate-in fade-in zoom-in-95 duration-150">
-            <button 
-              onClick={() => setShowGuaranteeModal(false)}
-              className="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/[0.06] transition"
-            >
-              <X size={18} />
-            </button>
-
-            <div className="w-12 h-12 rounded-2xl bg-[#DFC28A]/10 border border-[#DFC28A]/30 flex items-center justify-center text-[#DFC28A] mb-5">
-              <ShieldCheck size={24} />
-            </div>
-
-            <h3 className="text-xl font-black text-white mb-2">Garansi Resmi & Keamanan Akun</h3>
-            <p className="text-xs text-slate-400 leading-relaxed mb-6">
-              VexaStore bekerja sama secara resmi dengan distributor dan publisher game resmi. 
-              Semua mata uang game yang kamu beli diproses langsung melalui jalur API terverifikasi.
-            </p>
-
-            <div className="space-y-3.5 text-xs">
-              <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex items-start gap-3">
-                <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-bold text-white">100% Legal & Anti-Banned</p>
-                  <p className="text-slate-400 mt-0.5">Saldo game bersumber dari invoice resmi tanpa risiko penalti akun.</p>
+                  <h3 className="text-xs sm:text-sm font-bold text-white group-hover:text-[#DFC28A] transition-colors truncate mt-0.5">
+                    {game.name}
+                  </h3>
                 </div>
-              </div>
-
-              <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex items-start gap-3">
-                <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-bold text-white">Garansi Uang Kembali 100%</p>
-                  <p className="text-slate-400 mt-0.5">Jika pesanan gagal terkirim oleh sistem otomatis kami dalam 10 menit, saldo akan kami kembalikan penuh.</p>
-                </div>
-              </div>
-
-              <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex items-start gap-3">
-                <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-bold text-white">Layanan Pelanggan 24 Jam Nonstop</p>
-                  <p className="text-slate-400 mt-0.5">Tim support siap membantu setiap kendala transaksi kamu kapan pun.</p>
-                </div>
-              </div>
-            </div>
-
-            <button
-              onClick={() => setShowGuaranteeModal(false)}
-              className="w-full mt-6 py-3 rounded-xl bg-gradient-to-r from-[#DFC28A] via-[#EBD5A7] to-[#DFC28A] text-slate-950 font-bold text-xs hover:brightness-110 transition shadow-[0_0_20px_rgba(223,194,138,0.25)]"
-            >
-              Saya Mengerti
-            </button>
+              </Link>
+            ))}
           </div>
-        </div>
-      )}
 
-      {/* Luxury Obsidian Esports Footer */}
-      <footer className="border-t border-white/[0.06] bg-[#040609] py-14 px-6 sm:px-10 lg:px-12 text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto space-y-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-white/[0.06]">
-            <div className="flex items-center gap-3">
+          {filteredGames.length === 0 && (
+            <div className="text-center py-16 bg-white/[0.015] rounded-3xl border border-white/[0.06] mt-4">
+              <p className="text-slate-400 text-sm">Tidak ada game yang cocok dengan kategori ini.</p>
+            </div>
+          )}
+        </main>
+
+        {/* Minimalist Esports Footer */}
+        <footer className="border-t border-white/[0.06] bg-[#040609] py-10 px-6 mt-12 text-xs text-slate-500">
+          <div className="max-w-6xl mx-auto space-y-5">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-5 pb-6 border-b border-white/[0.06]">
               <Image
                 src="/logo.png"
                 alt="VexaStore"
                 width={592}
                 height={158}
-                className="h-8 sm:h-9 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
+                className="h-7 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
               />
+              <div className="flex items-center gap-5 text-slate-400 text-xs flex-wrap justify-center">
+                <span>QRIS Official</span>
+                <span>BCA Virtual Account</span>
+                <span>Mandiri VA</span>
+                <span>GoPay & OVO</span>
+                <span>ShopeePay</span>
+              </div>
             </div>
-            <div className="flex items-center gap-6 text-slate-400 text-xs">
-              <span>QRIS Official</span>
-              <span>BCA Virtual Account</span>
-              <span>Mandiri VA</span>
-              <span>GoPay & OVO</span>
-              <span>ShopeePay</span>
-            </div>
-          </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-            <p className="text-slate-400 font-medium">
-              © 2026 VexaStore Esports Protocol. All rights reserved.
-            </p>
-            <p className="text-slate-500 font-mono text-[11px]">
-              ENGINEERED FOR COMPETITIVE GAMERS • HIGH-THROUGHPUT API GATEWAY
-            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left text-slate-400">
+              <p>© 2026 VexaStore Esports Protocol. All rights reserved.</p>
+              <p className="font-mono text-[11px] text-slate-500">
+                HIGH-THROUGHPUT API GATEWAY • 100% LEGAL CURRENCY
+              </p>
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
-  </div>
   );
 }
