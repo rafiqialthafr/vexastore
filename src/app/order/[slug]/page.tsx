@@ -38,19 +38,11 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
   const totalPrice = (selectedNominal?.price || 0) + (selectedPayment?.fee || 0);
 
   return (
-    <div className="min-h-screen bg-[#06080D] text-slate-100 flex flex-col font-sans relative overflow-x-hidden selection:bg-[#DFC28A]/25 selection:text-[#FFF5DE]">
-      {/* Ambient Lighting Reflections */}
-      <div className="absolute top-0 left-1/4 -translate-x-1/2 w-[700px] h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(223,194,138,0.08),transparent_70%)] pointer-events-none blur-3xl -z-10" />
-      <div className="absolute top-20 right-0 w-[600px] h-[450px] bg-[radial-gradient(ellipse_at_center,rgba(226,232,240,0.05),transparent_70%)] pointer-events-none blur-3xl -z-10" />
-      <div className="absolute inset-0 cyber-grid opacity-[0.03] pointer-events-none -z-10" />
-
-      <Navbar />
-
-      <div className="pt-[74px] md:pl-[80px] pb-24 md:pb-12 flex-1 flex flex-col bg-[#05070B]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1">
+    <Navbar>
+      <main className="max-w-6xl mx-auto w-full px-6 sm:px-8 py-6 flex flex-col gap-6 flex-1">
         <Link 
           href="/" 
-          className="inline-flex items-center gap-2 text-xs font-mono tracking-wider text-slate-400 hover:text-white mb-8 transition group"
+          className="inline-flex items-center gap-2 text-xs font-mono tracking-wider text-zinc-400 hover:text-white transition group w-fit"
         >
           <ArrowLeft size={15} className="group-hover:-translate-x-1 transition duration-200 text-[#DFC28A]" /> 
           KEMBALI KE KATALOG VAULT
@@ -239,8 +231,7 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+      </main>
+    </Navbar>
   );
 }

@@ -175,89 +175,34 @@ export default function HomePage() {
   }, [selectedCategory]);
 
   return (
-    <div className="min-h-screen bg-[#06090E] text-slate-100 flex flex-col font-sans relative overflow-x-hidden selection:bg-[#DFC28A]/25 selection:text-[#FFF5DE]">
-      
-      {/* =========================================================================
-          WARNA EMAS SAMAR: LUMINOUS GOLD DIAGONAL WINGS & AMBIENT AURA
-          (Persis sayap diagonal biru samar yang membingkai hero slider Lapakgaming)
-      ========================================================================= */}
-      <div className="absolute top-[74px] left-0 md:left-[80px] right-0 h-[520px] pointer-events-none overflow-hidden -z-10 select-none">
-        {/* Luminous Center Gold Ambient Halo */}
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 w-[950px] h-[360px] bg-[radial-gradient(ellipse_at_center,rgba(223,194,138,0.28),rgba(223,194,138,0.10)_48%,transparent_75%)] blur-3xl" />
-
-        {/* SVG Geometric Facets (Persis Sayap Diagonal Lapakgaming) */}
-        <svg 
-          className="absolute inset-0 w-full h-full" 
-          preserveAspectRatio="none" 
-          viewBox="0 0 1440 520" 
-          fill="none" 
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            {/* Primary Left Gold Wing Gradient */}
-            <linearGradient id="goldWingLeft" x1="0%" y1="0%" x2="70%" y2="100%">
-              <stop offset="0%" stopColor="#DFC28A" stopOpacity="0.25" />
-              <stop offset="45%" stopColor="#DFC28A" stopOpacity="0.10" />
-              <stop offset="100%" stopColor="#DFC28A" stopOpacity="0" />
-            </linearGradient>
-
-            {/* Secondary Left Gold Accent Facet */}
-            <linearGradient id="goldFacetLeft2" x1="15%" y1="0%" x2="80%" y2="100%">
-              <stop offset="0%" stopColor="#F5E5C9" stopOpacity="0.22" />
-              <stop offset="55%" stopColor="#DFC28A" stopOpacity="0.06" />
-              <stop offset="100%" stopColor="#DFC28A" stopOpacity="0" />
-            </linearGradient>
-
-            {/* Primary Right Gold Wing Gradient */}
-            <linearGradient id="goldWingRight" x1="100%" y1="0%" x2="30%" y2="100%">
-              <stop offset="0%" stopColor="#DFC28A" stopOpacity="0.25" />
-              <stop offset="45%" stopColor="#DFC28A" stopOpacity="0.10" />
-              <stop offset="100%" stopColor="#DFC28A" stopOpacity="0" />
-            </linearGradient>
-
-            {/* Secondary Right Gold Accent Facet */}
-            <linearGradient id="goldFacetRight2" x1="85%" y1="0%" x2="20%" y2="100%">
-              <stop offset="0%" stopColor="#F5E5C9" stopOpacity="0.22" />
-              <stop offset="55%" stopColor="#DFC28A" stopOpacity="0.06" />
-              <stop offset="100%" stopColor="#DFC28A" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-
-          {/* Left Outer Wing Polygon */}
-          <polygon points="0,0 520,0 280,520 0,520" fill="url(#goldWingLeft)" />
-          {/* Left Inner Slanted Stripe */}
-          <polygon points="260,0 480,0 320,520 200,520" fill="url(#goldFacetLeft2)" opacity="0.85" />
-
-          {/* Right Outer Wing Polygon */}
-          <polygon points="1440,0 920,0 1160,520 1440,520" fill="url(#goldWingRight)" />
-          {/* Right Inner Slanted Stripe */}
-          <polygon points="1180,0 960,0 1120,520 1240,520" fill="url(#goldFacetRight2)" opacity="0.85" />
-
-          {/* Sleek Dashed Lines Accents */}
-          <line x1="520" y1="0" x2="280" y2="520" stroke="#DFC28A" strokeOpacity="0.4" strokeWidth="1.5" strokeDasharray="6 4" />
-          <line x1="920" y1="0" x2="1160" y2="520" stroke="#DFC28A" strokeOpacity="0.4" strokeWidth="1.5" strokeDasharray="6 4" />
-        </svg>
-
-        {/* Soft Bottom Ambient Blend */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#06090E] via-[#06090E]/80 to-transparent" />
-      </div>
-
-      {/* Fixed Header Navbar */}
-      <Navbar />
-
-      {/* Main Content Area (Offset for Fixed Header 74px and Sidebar 80px) */}
-      <div className="pt-[74px] md:pl-[80px] pb-16 flex-1 flex flex-col bg-transparent min-h-screen">
+    <Navbar>
+      <main className="max-w-6xl mx-auto w-full px-6 sm:px-8 py-6 flex flex-col gap-8 flex-1">
         
         {/* =========================================================================
-            HERO SLIDER (3D COVERFLOW FLUID - TIDAK KAKU - PERSIS PROPORSI LAPAKGAMING)
+            HERO BANNER CAROUSEL DENGAN BOUNDARY (overflow-hidden rounded-2xl w-full)
+            - Tidak full-bleed, tidak menabrak sidebar ataupun tepi kanan layar
+            - Sejajar rapi dengan filter pills dan grid kartu game di bawahnya
+            - Background emas samar (luminous gold wing & ambient halo)
+            - 6 Banner tematis dengan logo VexaStore di pojok kiri atas
+        ========================================================================= */}
+        {/* =========================================================================
+            HERO COVERFLOW CAROUSEL (Lapakgaming Modern Style)
+            1. Wrapper max-w-6xl mx-auto px-6 dengan overflow-hidden
+            2. Slide kiri & kanan: scale-90, opacity-50, brightness-75
+            3. Slide tengah (aktif): scale-100, opacity-100, border amber-400 tipis
         ========================================================================= */}
         <section 
-          className="relative w-full max-w-7xl mx-auto px-1 sm:px-3 pt-3 sm:pt-4 pb-1 overflow-hidden"
+          className="relative w-full overflow-hidden select-none py-1"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          {/* Coverflow Stage Container */}
-          <div className="relative w-full flex items-center justify-center h-[185px] sm:h-[215px] md:h-[235px] overflow-hidden select-none">
+          {/* Subtle Ambient Gold Wing Halo in Background */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden select-none -z-10">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(223,194,138,0.22),rgba(223,194,138,0.06)_50%,transparent_75%)] blur-3xl" />
+          </div>
+
+          {/* Coverflow Stage */}
+          <div className="relative w-full h-[200px] sm:h-[235px] md:h-[260px] flex items-center justify-center overflow-hidden">
             {HERO_BANNERS.map((banner, index) => {
               const count = HERO_BANNERS.length;
               const diff = (index - currentSlide + count) % count;
@@ -275,31 +220,31 @@ export default function HomePage() {
                     if (isPrev) handlePrevSlide();
                     if (isNext) handleNextSlide();
                   }}
-                  className={`absolute top-0 bottom-0 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] flex items-center justify-center w-[90%] sm:w-[560px] md:w-[640px] lg:w-[680px] ${
+                  className={`absolute top-0 bottom-0 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] w-[82%] sm:w-[72%] md:w-[680px] lg:w-[740px] ${
                     isCenter
-                      ? 'left-1/2 -translate-x-1/2 z-20 scale-100 opacity-100 shadow-[0_22px_55px_rgba(0,0,0,0.95),0_0_40px_rgba(223,194,138,0.22)] cursor-default'
+                      ? 'left-1/2 -translate-x-1/2 z-20 scale-100 opacity-100 cursor-default shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_25px_rgba(251,191,36,0.18)]'
                       : isPrev
-                      ? 'left-1/2 -translate-x-[calc(50%+76%)] sm:-translate-x-[calc(50%+450px)] md:-translate-x-[calc(50%+510px)] lg:-translate-x-[calc(50%+550px)] z-10 scale-[0.93] opacity-80 hover:opacity-100 cursor-pointer blur-[0.2px]'
-                      : 'left-1/2 translate-x-[calc(-50%+76%)] sm:translate-x-[calc(-50%+450px)] md:translate-x-[calc(-50%+510px)] lg:translate-x-[calc(-50%+550px)] z-10 scale-[0.93] opacity-80 hover:opacity-100 cursor-pointer blur-[0.2px]'
+                      ? 'left-1/2 -translate-x-[calc(50%+68%)] sm:-translate-x-[calc(50%+430px)] md:-translate-x-[calc(50%+490px)] lg:-translate-x-[calc(50%+530px)] z-10 scale-90 opacity-50 brightness-75 hover:opacity-75 cursor-pointer blur-[0.2px]'
+                      : 'left-1/2 translate-x-[calc(-50%+68%)] sm:translate-x-[calc(-50%+430px)] md:translate-x-[calc(-50%+490px)] lg:translate-x-[calc(-50%+530px)] z-10 scale-90 opacity-50 brightness-75 hover:opacity-75 cursor-pointer blur-[0.2px]'
                   }`}
                 >
-                  <div className={`relative w-full h-full rounded-[24px] sm:rounded-[28px] overflow-hidden border transition-all duration-300 ${
+                  <div className={`relative w-full h-full rounded-2xl overflow-hidden transition-all duration-300 ${
                     isCenter 
-                      ? 'border-[#DFC28A]/45 ring-1 ring-[#DFC28A]/25 bg-[#0B0E17]' 
-                      : 'border-white/[0.14] bg-[#0A0D15]'
+                      ? 'border border-amber-400 ring-1 ring-amber-400/20 bg-[#0c0d12]' 
+                      : 'border border-zinc-800 bg-[#090a0f]'
                   }`}>
                     {/* Background Banner Artwork */}
                     <img
                       src={banner.image}
                       alt={banner.headline}
-                      className="w-full h-full object-cover object-center transform transition-transform duration-700"
+                      className="w-full h-full object-cover object-center"
                     />
 
                     {/* Gradient Overlay for Text Legibility on Left */}
                     <div className="absolute inset-0 bg-gradient-to-r from-black/92 via-black/55 to-transparent pointer-events-none" />
 
-                    {/* POJOK ATAS KIRI: Logo VexaStore (HANYA LOGO Crest Saja, Tulisannya Gausah) */}
-                    <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-30 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-xl shadow-md flex items-center justify-center">
+                    {/* POJOK ATAS KIRI: Logo Crest Saja (Icon Crest Saja, Tulisannya Gausah) */}
+                    <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-30 bg-black/60 border border-white/15 backdrop-blur-md px-2 py-1 rounded-xl shadow-md flex items-center justify-center">
                       <Image
                         src="/logo-crest.png"
                         alt="VexaStore"
@@ -310,15 +255,15 @@ export default function HomePage() {
                     </div>
 
                     {/* POJOK ATAS KANAN: Publisher / Partner Badge */}
-                    <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3.5 z-30 flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/60 border border-white/15 backdrop-blur-md">
+                    <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3.5 z-30 flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/70 border border-white/15 backdrop-blur-md">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#DFC28A] animate-pulse" />
                       <span className="text-[9px] sm:text-[10px] font-black tracking-widest text-slate-200 uppercase font-mono">
                         {banner.publisher}
                       </span>
                     </div>
 
-                    {/* Left Overlay Content (Framed Box & Minimalist Composition Persis Lapakgaming) */}
-                    <div className="absolute inset-0 z-20 flex flex-col justify-center pl-3.5 sm:pl-6 md:pl-7 pr-3 max-w-[65%] sm:max-w-[58%]">
+                    {/* Left Overlay Content */}
+                    <div className="absolute inset-0 z-20 flex flex-col justify-center pl-3.5 sm:pl-6 md:pl-7 pr-3 max-w-[66%] sm:max-w-[58%]">
                       {/* Tagline / Event Prefix */}
                       <span className="text-[9px] sm:text-[10px] font-mono font-bold text-[#DFC28A] tracking-wider uppercase mb-0.5">
                         // {banner.headlinePrefix}
@@ -329,7 +274,7 @@ export default function HomePage() {
                         {banner.headline}
                       </h3>
 
-                      {/* Framed Price Card (Gaya Frame Glowing Neon Lapakgaming) */}
+                      {/* Framed Price Card */}
                       <div className="mt-1.5 sm:mt-2 bg-slate-950/85 border border-[#DFC28A]/45 rounded-xl p-1.5 sm:px-2.5 sm:py-1.5 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.6)] w-fit max-w-full">
                         <div className="flex items-center gap-1.5">
                           <span className="text-[9px] sm:text-[11px] font-bold text-slate-200 truncate">
@@ -366,70 +311,87 @@ export default function HomePage() {
                 </div>
               );
             })}
+
+            {/* Prev & Next Floating Navigation Arrows */}
+            <button
+              onClick={handlePrevSlide}
+              aria-label="Previous Slide"
+              className="absolute left-1 sm:left-3 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/70 hover:bg-[#DFC28A] text-white hover:text-black border border-white/20 transition flex items-center justify-center backdrop-blur-md shadow-lg"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <button
+              onClick={handleNextSlide}
+              aria-label="Next Slide"
+              className="absolute right-1 sm:right-3 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/70 hover:bg-[#DFC28A] text-white hover:text-black border border-white/20 transition flex items-center justify-center backdrop-blur-md shadow-lg"
+            >
+              <ChevronRight size={18} />
+            </button>
           </div>
 
           {/* 6 Minimalist Pill Indicators (Persis Screenshot Lapakgaming) */}
-          <div className="flex items-center justify-center gap-1.5 sm:gap-2 mt-3 sm:mt-3.5 mb-4 sm:mb-5">
+          <div className="flex items-center justify-center gap-1.5 sm:gap-2 mt-3 sm:mt-4">
             {HERO_BANNERS.map((_, index) => (
               <button
                 key={index}
                 type="button"
                 onClick={() => setCurrentSlide(index)}
                 aria-label={`Slide ${index + 1}`}
-                className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 ${
+                className={`h-1.5 rounded-full transition-all duration-300 ${
                   index === currentSlide 
-                    ? 'w-8 sm:w-10 bg-[#DFC28A] shadow-[0_0_12px_rgba(223,194,138,0.7)]' 
-                    : 'w-4 sm:w-5 bg-slate-600/40 hover:bg-slate-400'
+                    ? 'w-7 sm:w-9 bg-[#DFC28A] shadow-[0_0_10px_rgba(223,194,138,0.8)]' 
+                    : 'w-3 sm:w-4 bg-zinc-700/60 hover:bg-zinc-500'
                 }`}
               />
             ))}
           </div>
-
-          {/* Category Filter Tabs (Pill Buttons Persis Lapakgaming) */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none justify-start sm:justify-center px-2">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition border ${
-                  selectedCategory === cat.id
-                    ? 'bg-[#DFC28A]/15 text-[#FFF5DE] border-[#DFC28A] shadow-[0_0_15px_rgba(223,194,138,0.2)]'
-                    : 'bg-white/[0.04] text-slate-300 border-white/10 hover:border-[#DFC28A]/40 hover:text-white'
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
         </section>
 
-        {/* Section Heading "🔥 Lagi Populer" (Persis Screenshot Lapakgaming) */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-5 mb-3 w-full">
+        {/* =========================================================================
+            CATEGORY FILTER TABS (Sejajar Rapi dengan Banner & Grid)
+        ========================================================================= */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none justify-start sm:justify-center">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition border ${
+                selectedCategory === cat.id
+                  ? 'bg-[#DFC28A]/15 text-[#FFF5DE] border-[#DFC28A] shadow-[0_0_15px_rgba(223,194,138,0.2)]'
+                  : 'bg-zinc-900/80 text-zinc-300 border-zinc-800 hover:border-[#DFC28A]/40 hover:text-white'
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+
+        {/* =========================================================================
+            CATALOG SECTION: HEADING + GAME CARDS GRID
+        ========================================================================= */}
+        <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
             <span className="text-xl sm:text-2xl">🔥</span>
             <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">
               Lagi Populer
             </h2>
           </div>
-        </div>
 
-        {/* Game Cards Grid (Clean & Modern dengan Red Discount Badges) */}
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 w-full flex-1">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
             {filteredGames.map((game, idx) => (
               <Link
                 key={game.id}
                 href={`/order/${game.slug}`}
-                className="group relative rounded-2xl bg-white/[0.02] hover:bg-white/[0.045] border border-white/[0.08] hover:border-[#DFC28A]/50 p-2.5 sm:p-3 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_12px_25px_-5px_rgba(223,194,138,0.2)]"
+                className="group relative rounded-2xl bg-zinc-900/40 hover:bg-zinc-900/80 border border-zinc-800/80 hover:border-[#DFC28A]/50 p-2.5 sm:p-3 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_12px_25px_-5px_rgba(223,194,138,0.2)]"
               >
                 {/* Poster Image Container */}
-                <div className="relative aspect-[3/4] w-full rounded-xl overflow-hidden bg-slate-900 mb-2 shadow-sm">
+                <div className="relative aspect-[3/4] w-full rounded-xl overflow-hidden bg-zinc-950 mb-2 shadow-sm">
                   <img
                     src={game.image}
                     alt={game.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  {/* Clean Red Discount Badge (Lapakgaming style) */}
+                  {/* Clean Red Discount Badge */}
                   {game.isPopular && (
                     <span className="absolute top-0 right-0 bg-[#E11D48] text-white text-[10px] sm:text-xs font-bold px-1.5 sm:px-2 py-0.5 rounded-bl-xl rounded-tr-xl shadow-sm">
                       {idx % 3 === 0 ? '-10%' : idx % 3 === 1 ? '-15%' : '-20%'}
@@ -439,7 +401,7 @@ export default function HomePage() {
 
                 {/* Game Metadata */}
                 <div className="flex-1 flex flex-col justify-center">
-                  <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">
+                  <p className="text-[10px] sm:text-[11px] font-semibold text-zinc-400 uppercase tracking-wider truncate">
                     {game.publisher}
                   </p>
                   <h3 className="text-xs sm:text-sm font-bold text-white group-hover:text-[#DFC28A] transition-colors truncate mt-0.5">
@@ -451,41 +413,41 @@ export default function HomePage() {
           </div>
 
           {filteredGames.length === 0 && (
-            <div className="text-center py-16 bg-white/[0.015] rounded-3xl border border-white/[0.06] mt-4">
-              <p className="text-slate-400 text-sm">Tidak ada game yang cocok dengan kategori ini.</p>
+            <div className="text-center py-16 bg-zinc-900/30 rounded-3xl border border-zinc-800/80 mt-4">
+              <p className="text-zinc-400 text-sm">Tidak ada game yang cocok dengan kategori ini.</p>
             </div>
           )}
-        </main>
+        </div>
+      </main>
 
-        {/* Minimalist Esports Footer */}
-        <footer className="border-t border-white/[0.06] bg-[#040609] py-10 px-6 mt-12 text-xs text-slate-500">
-          <div className="max-w-6xl mx-auto space-y-5">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-5 pb-6 border-b border-white/[0.06]">
-              <Image
-                src="/logo.png"
-                alt="VexaStore"
-                width={592}
-                height={158}
-                className="h-7 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
-              />
-              <div className="flex items-center gap-5 text-slate-400 text-xs flex-wrap justify-center">
-                <span>QRIS Official</span>
-                <span>BCA Virtual Account</span>
-                <span>Mandiri VA</span>
-                <span>GoPay & OVO</span>
-                <span>ShopeePay</span>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left text-slate-400">
-              <p>© 2026 VexaStore Esports Protocol. All rights reserved.</p>
-              <p className="font-mono text-[11px] text-slate-500">
-                HIGH-THROUGHPUT API GATEWAY • 100% LEGAL CURRENCY
-              </p>
+      {/* Footer */}
+      <footer className="border-t border-zinc-800/80 bg-[#07080c] py-10 px-6 sm:px-8 text-xs text-zinc-500 mt-auto">
+        <div className="max-w-6xl mx-auto space-y-5">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-5 pb-6 border-b border-zinc-800/60">
+            <Image
+              src="/logo.png"
+              alt="VexaStore"
+              width={592}
+              height={158}
+              className="h-7 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
+            />
+            <div className="flex items-center gap-5 text-zinc-400 text-xs flex-wrap justify-center">
+              <span>QRIS Official</span>
+              <span>BCA Virtual Account</span>
+              <span>Mandiri VA</span>
+              <span>GoPay & OVO</span>
+              <span>ShopeePay</span>
             </div>
           </div>
-        </footer>
-      </div>
-    </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left text-zinc-400">
+            <p>© 2026 VexaStore Esports Protocol. All rights reserved.</p>
+            <p className="font-mono text-[11px] text-zinc-500">
+              HIGH-THROUGHPUT API GATEWAY • 100% LEGAL CURRENCY
+            </p>
+          </div>
+        </div>
+      </footer>
+    </Navbar>
   );
 }

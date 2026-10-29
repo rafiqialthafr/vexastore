@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { ALL_GAMES } from '@/data/games';
 
-export default function Navbar() {
+export default function Navbar({ children }: { children?: React.ReactNode }) {
   const pathname = usePathname();
 
   // Search State
@@ -112,196 +112,202 @@ export default function Navbar() {
   };
 
   return (
-    <>
+    <div className="flex min-h-screen bg-[#06090E] text-slate-100 font-sans selection:bg-[#DFC28A]/25 selection:text-[#FFF5DE]">
       {/* =========================================================================
-          1. TOP NAVBAR (HANYA: LOGO + SEARCH BAR PANJANG + 1 TOMBOL MASUK)
+          1. KOLOM KIRI: SIDEBAR FULL-HEIGHT DARI ATAS SAMPAI BAWAH LAYAR
+             - h-screen sticky top-0 w-20 md:w-24 shrink-0 flex flex-col items-center py-6 border-r border-zinc-800 bg-[#0c0d12]
+             - Logo VexaStore di paling atas
+             - Menu navigasi menyatu langsung di dalam sidebar (bukan kartu melayang terpisah)
       ========================================================================= */}
-      {/* =========================================================================
-          1. TOP NAVBAR (HANYA: LOGO + SEARCH BAR PANJANG + 1 TOMBOL MASUK)
-          - Full width bar spanning across the top
-          - Solid deep obsidian background with clear bottom dividing line & shadow
-      ========================================================================= */}
-      <header className="fixed top-0 left-0 right-0 z-50 w-full bg-[#0C101A]/95 border-b border-white/[0.14] shadow-[0_4px_30px_rgba(0,0,0,0.85)] backdrop-blur-2xl transition-all">
-        <div className="w-full px-4 sm:px-6 lg:px-8 h-[74px] flex items-center justify-between gap-4">
-          
-          {/* Logo Brand VexaStore (Kiri) */}
-          <Link href="/" className="shrink-0 flex items-center group py-1">
-            <Image
-              src="/logo.png"
-              alt="VexaStore"
-              width={592}
-              height={158}
-              priority
-              className="h-8 sm:h-9 w-auto object-contain transition-all duration-300 group-hover:drop-shadow-[0_0_16px_rgba(223,194,138,0.4)]"
-            />
-          </Link>
-
-          {/* Search Bar Panjang (Gaya Lapakgaming) dengan Live Dropdown */}
-          <div ref={searchContainerRef} className="flex-1 max-w-xl md:max-w-2xl lg:max-w-3xl relative mx-2 sm:mx-6">
-            <div className="relative w-full">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setIsSearchOpen(true);
-                }}
-                onFocus={() => setIsSearchOpen(true)}
-                placeholder="Cari Game favoritmu (MLBB, Free Fire, Valorant, Genshin)..."
-                className="w-full pl-5 pr-12 py-2.5 sm:py-3 rounded-full bg-white/[0.045] border border-white/[0.15] hover:border-[#DFC28A]/60 focus:border-[#DFC28A] text-white text-xs sm:text-sm placeholder-slate-400 focus:outline-none transition-all shadow-inner focus:shadow-[0_0_20px_rgba(223,194,138,0.2)]"
-              />
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 flex items-center gap-1.5">
-                <Search size={18} className="text-[#DFC28A]" />
-              </div>
-            </div>
-
-            {/* Live Instant Search Dropdown List */}
-            {isSearchOpen && searchQuery.trim() !== '' && (
-              <div className="absolute top-full left-0 right-0 mt-2 z-50 bg-[#0C101A] border border-white/[0.15] rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.95)] p-2 divide-y divide-white/[0.06] max-h-96 overflow-y-auto animate-in fade-in duration-150">
-                {filteredGames.length > 0 ? (
-                  filteredGames.map((game) => (
-                    <Link
-                      key={game.id}
-                      href={`/order/${game.slug}`}
-                      onClick={() => {
-                        setIsSearchOpen(false);
-                        setSearchQuery('');
-                      }}
-                      className="flex items-center justify-between p-3 rounded-xl hover:bg-white/[0.06] transition group"
-                    >
-                      <div className="flex items-center gap-3">
-                        <img 
-                          src={game.image} 
-                          alt={game.name} 
-                          className="w-11 h-13 object-cover rounded-xl border border-white/[0.1] shadow-sm group-hover:border-[#DFC28A]/50 transition" 
-                        />
-                        <div>
-                          <h4 className="text-xs sm:text-sm font-bold text-white group-hover:text-[#DFC28A] transition">
-                            {game.name}
-                          </h4>
-                          <p className="text-[11px] text-slate-400 mt-0.5">{game.publisher}</p>
-                        </div>
-                      </div>
-                      <span className="text-[11px] px-3 py-1 rounded-lg bg-white/[0.04] border border-white/[0.08] text-[#DFC28A] font-mono font-semibold group-hover:bg-[#DFC28A]/10 group-hover:border-[#DFC28A]/40 transition">
-                        Top-Up →
-                      </span>
-                    </Link>
-                  ))
-                ) : (
-                  <div className="p-6 text-center text-xs text-slate-400 font-mono">
-                    Game &quot;{searchQuery}&quot; tidak ditemukan dalam katalog resmi.
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Satu Tombol Masuk (Right Edge) */}
-          <div className="shrink-0">
-            {isLoggedIn ? (
-              <button
-                onClick={() => setShowLoginModal(true)}
-                className="px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold text-white bg-white/[0.06] border border-[#DFC28A]/50 hover:bg-white/[0.1] transition flex items-center gap-2 shadow-sm"
-              >
-                <div className="w-5 h-5 rounded-full bg-[#DFC28A] text-slate-950 font-black text-[10px] flex items-center justify-center">
-                  {userName.charAt(0)}
-                </div>
-                <span className="hidden sm:inline">{userName}</span>
-              </button>
-            ) : (
-              <button
-                onClick={() => setShowLoginModal(true)}
-                className="px-6 sm:px-7 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold text-slate-950 bg-gradient-to-r from-[#DFC28A] via-[#EBD5A7] to-[#DFC28A] hover:brightness-110 transition-all shadow-[0_0_20px_rgba(223,194,138,0.3)] hover:shadow-[0_0_30px_rgba(223,194,138,0.5)] active:scale-95 flex items-center gap-2"
-              >
-                <User size={15} className="fill-slate-950" />
-                <span>Masuk</span>
-              </button>
-            )}
-          </div>
-
-        </div>
-      </header>
-
-      {/* =========================================================================
-          2. SIDEBAR MENU (PERSIS SEPERTI WEB LAPAKGAMING)
-          Desktop: Fixed vertical sidebar di sebelah kiri dengan garis pemisah jelas
-          Mobile: Docked bottom navigation bar yang rapi
-      ========================================================================= */}
-      
-      {/* DESKTOP SIDEBAR (Kiri - Berdiri Sendiri dengan Border Kanan & Shadow) */}
-      <aside className="fixed left-0 top-[74px] bottom-0 w-[80px] z-40 bg-[#090D15] border-r border-white/[0.14] shadow-[4px_0_30px_rgba(0,0,0,0.7)] hidden md:flex flex-col items-center py-6 justify-between">
-        <div className="flex flex-col items-center space-y-3.5 w-full px-2.5">
-          
+      <aside className="h-screen sticky top-0 w-20 md:w-24 shrink-0 hidden md:flex flex-col items-center py-8 border-r border-zinc-800 bg-[#0c0d12] z-40 select-none justify-between">
+        {/* Menu Navigasi Menyatu Langsung di Sidebar */}
+        <nav className="flex flex-col items-center gap-7 w-full my-auto">
           {/* Menu 1: Home */}
           <Link
             href="/"
-            className={`w-full py-3 px-1 rounded-xl flex flex-col items-center justify-center transition-all group ${
+            className={`relative flex flex-col items-center gap-1.5 py-1 px-2 text-xs transition group ${
               pathname === '/' 
-                ? 'bg-[#DFC28A]/15 text-[#DFC28A] border border-[#DFC28A]/40 shadow-[0_0_15px_rgba(223,194,138,0.2)] font-bold' 
-                : 'text-slate-400 hover:text-white hover:bg-white/[0.06]'
+                ? 'text-[#DFC28A] font-semibold' 
+                : 'text-zinc-400 hover:text-white'
             }`}
           >
-            <Home size={20} className={pathname === '/' ? 'text-[#DFC28A]' : 'group-hover:scale-110 transition-transform'} />
-            <span className="text-[10px] font-semibold mt-1 tracking-tight">Home</span>
+            {pathname === '/' && (
+              <span className="absolute -left-3 md:-left-4 top-1/2 -translate-y-1/2 w-1 h-6 bg-[#DFC28A] rounded-r-full shadow-[0_0_10px_rgba(223,194,138,0.8)]" />
+            )}
+            <Home size={22} className={pathname === '/' ? 'text-[#DFC28A]' : 'group-hover:scale-110 transition-transform'} />
+            <span className="text-[11px] tracking-tight">Home</span>
           </Link>
 
           {/* Menu 2: Transaksi */}
           <button
             type="button"
             onClick={() => { setShowTrackModal(true); setTrackedOrder(null); }}
-            className="w-full py-3 px-1 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-white hover:bg-white/[0.06] transition-all group"
+            className="relative flex flex-col items-center gap-1.5 py-1 px-2 text-xs text-zinc-400 hover:text-white transition group"
           >
-            <FileText size={20} className="group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform" />
-            <span className="text-[10px] font-semibold mt-1 tracking-tight">Transaksi</span>
+            <FileText size={22} className="group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform" />
+            <span className="text-[11px] tracking-tight">Transaksi</span>
           </button>
 
           {/* Menu 3: Promo */}
           <button
             type="button"
             onClick={() => setShowPromoModal(true)}
-            className="w-full py-3 px-1 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-white hover:bg-white/[0.06] transition-all group"
+            className="relative flex flex-col items-center gap-1.5 py-1 px-2 text-xs text-zinc-400 hover:text-white transition group"
           >
-            <Tag size={20} className="group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform" />
-            <span className="text-[10px] font-semibold mt-1 tracking-tight">Promo</span>
+            <Tag size={22} className="group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform" />
+            <span className="text-[11px] tracking-tight">Promo</span>
           </button>
 
           {/* Menu 4: Hadiahku */}
           <button
             type="button"
             onClick={() => setShowRewardModal(true)}
-            className="w-full py-3 px-1 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-white hover:bg-white/[0.06] transition-all group relative"
+            className="relative flex flex-col items-center gap-1.5 py-1 px-2 text-xs text-zinc-400 hover:text-white transition group"
           >
-            <Gift size={20} className="group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform" />
-            <span className="text-[10px] font-semibold mt-1 tracking-tight">Hadiahku</span>
-            {!hasClaimedReward && (
-              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#DFC28A] animate-pulse shadow-[0_0_8px_rgba(223,194,138,0.8)]" />
-            )}
+            <div className="relative">
+              <Gift size={22} className="group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform" />
+              {!hasClaimedReward && (
+                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#DFC28A] animate-pulse shadow-[0_0_6px_rgba(223,194,138,0.8)]" />
+              )}
+            </div>
+            <span className="text-[11px] tracking-tight">Hadiahku</span>
           </button>
 
           {/* Menu 5: Affiliate */}
           <button
             type="button"
             onClick={() => setShowAffiliateModal(true)}
-            className="w-full py-3 px-1 rounded-xl flex flex-col items-center justify-center text-slate-400 hover:text-white hover:bg-white/[0.06] transition-all group"
+            className="relative flex flex-col items-center gap-1.5 py-1 px-2 text-xs text-zinc-400 hover:text-white transition group"
           >
-            <BadgeDollarSign size={20} className="group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform" />
-            <span className="text-[10px] font-semibold mt-1 tracking-tight">Affiliate</span>
+            <BadgeDollarSign size={22} className="group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform" />
+            <span className="text-[11px] tracking-tight">Affiliate</span>
           </button>
-
-        </div>
+        </nav>
 
         {/* Bottom subtle trust mark */}
-        <div className="w-8 h-8 rounded-xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center text-slate-500 text-[10px] font-mono" title="VexaStore Protocol">
+        <div className="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-[#DFC28A]/70 text-[10px] font-mono font-bold" title="VexaStore Protocol">
           VX
         </div>
       </aside>
 
+      {/* =========================================================================
+          2. KOLOM KANAN: MEMBUNGKUS HEADER DAN MAIN CONTENT
+             - flex-1 min-w-0 flex flex-col min-h-screen
+             - Header HANYA di kolom kanan (tidak menutupi sidebar kiri)
+             - Logo VexaStore (ada tulisannya) di header dengan padding sesuai konten card
+      ========================================================================= */}
+      <div className="flex-1 min-w-0 flex flex-col min-h-screen pb-16 md:pb-0">
+        <header className="sticky top-0 z-30 border-b border-zinc-800/60 bg-[#090a0f]/80 backdrop-blur-md py-3.5">
+          <div className="max-w-6xl mx-auto w-full px-6 sm:px-8 flex items-center justify-between gap-4 sm:gap-6">
+            
+            {/* Logo VexaStore dengan Tulisan (Sesuai Padding Card di Bawahnya) */}
+            <Link href="/" className="shrink-0 flex items-center group py-1">
+              <Image
+                src="/logo.png"
+                alt="VexaStore"
+                width={145}
+                height={36}
+                priority
+                className="h-7 sm:h-8 w-auto object-contain hover:brightness-110 transition"
+              />
+            </Link>
+
+            {/* Search Bar Terpusat (Panjang dengan Live Dropdown) */}
+            <div ref={searchContainerRef} className="flex-1 max-w-xl mx-auto relative">
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setIsSearchOpen(true);
+                  }}
+                  onFocus={() => setIsSearchOpen(true)}
+                  placeholder="Cari Game favoritmu (MLBB, Free Fire, Valorant, Genshin)..."
+                  className="w-full pl-5 pr-12 py-2.5 rounded-full bg-zinc-900/90 border border-zinc-700/60 hover:border-[#DFC28A]/60 focus:border-[#DFC28A] text-white text-xs sm:text-sm placeholder-zinc-400 focus:outline-none transition shadow-inner focus:shadow-[0_0_20px_rgba(223,194,138,0.2)]"
+                />
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-400 flex items-center gap-1.5">
+                  <Search size={18} className="text-[#DFC28A]" />
+                </div>
+              </div>
+
+              {/* Live Instant Search Dropdown List */}
+              {isSearchOpen && searchQuery.trim() !== '' && (
+                <div className="absolute top-full left-0 right-0 mt-2 z-50 bg-[#0C101A] border border-zinc-700/80 rounded-2xl shadow-[0_25px_60px_rgba(0,0,0,0.95)] p-2 divide-y divide-zinc-800 max-h-96 overflow-y-auto animate-in fade-in duration-150">
+                  {filteredGames.length > 0 ? (
+                    filteredGames.map((game) => (
+                      <Link
+                        key={game.id}
+                        href={`/order/${game.slug}`}
+                        onClick={() => {
+                          setIsSearchOpen(false);
+                          setSearchQuery('');
+                        }}
+                        className="flex items-center justify-between p-3 rounded-xl hover:bg-zinc-800/60 transition group"
+                      >
+                        <div className="flex items-center gap-3">
+                          <img 
+                            src={game.image} 
+                            alt={game.name} 
+                            className="w-11 h-13 object-cover rounded-xl border border-zinc-800 shadow-sm group-hover:border-[#DFC28A]/50 transition" 
+                          />
+                          <div>
+                            <h4 className="text-xs sm:text-sm font-bold text-white group-hover:text-[#DFC28A] transition">
+                              {game.name}
+                            </h4>
+                            <p className="text-[11px] text-zinc-400 mt-0.5">{game.publisher}</p>
+                          </div>
+                        </div>
+                        <span className="text-[11px] px-3 py-1 rounded-lg bg-zinc-800/80 border border-zinc-700/60 text-[#DFC28A] font-mono font-semibold group-hover:bg-[#DFC28A]/10 group-hover:border-[#DFC28A]/40 transition">
+                          Top-Up →
+                        </span>
+                      </Link>
+                    ))
+                  ) : (
+                    <div className="p-6 text-center text-xs text-zinc-400 font-mono">
+                      Game &quot;{searchQuery}&quot; tidak ditemukan dalam katalog resmi.
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* 1 Tombol Masuk di Kanan */}
+            <div className="shrink-0">
+              {isLoggedIn ? (
+                <button
+                  onClick={() => setShowLoginModal(true)}
+                  className="px-4 py-2 rounded-full text-xs font-bold text-white bg-zinc-800/80 border border-[#DFC28A]/40 hover:bg-zinc-700/80 transition flex items-center gap-2 shadow-sm"
+                >
+                  <div className="w-5 h-5 rounded-full bg-[#DFC28A] text-zinc-950 font-black text-[10px] flex items-center justify-center">
+                    {userName.charAt(0)}
+                  </div>
+                  <span className="hidden sm:inline">{userName}</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => setShowLoginModal(true)}
+                  className="px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold text-zinc-950 bg-gradient-to-r from-[#DFC28A] via-[#EBD5A7] to-[#DFC28A] hover:brightness-110 transition shadow-[0_0_20px_rgba(223,194,138,0.25)] hover:shadow-[0_0_25px_rgba(223,194,138,0.45)] active:scale-95 flex items-center gap-2"
+                >
+                  <User size={15} className="fill-zinc-950" />
+                  <span>Masuk</span>
+                </button>
+              )}
+            </div>
+
+          </div>
+        </header>
+
+        {/* Main Content Rendered in Right Column */}
+        {children}
+      </div>
+
       {/* MOBILE BOTTOM NAVIGATION BAR (Khusus Smartphone) */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-[#090D15] border-t border-white/[0.14] flex md:hidden items-center justify-around py-2 px-1 shadow-[0_-10px_30px_rgba(0,0,0,0.85)]">
+      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-[#0c0d12] border-t border-zinc-800 flex md:hidden items-center justify-around py-2 px-1 shadow-[0_-10px_30px_rgba(0,0,0,0.85)]">
         <Link
           href="/"
           className={`flex flex-col items-center py-1 px-3 rounded-xl transition ${
-            pathname === '/' ? 'text-[#DFC28A] font-bold' : 'text-slate-400'
+            pathname === '/' ? 'text-[#DFC28A] font-bold' : 'text-zinc-400'
           }`}
         >
           <Home size={19} />
@@ -310,7 +316,7 @@ export default function Navbar() {
 
         <button
           onClick={() => { setShowTrackModal(true); setTrackedOrder(null); }}
-          className="flex flex-col items-center py-1 px-3 rounded-xl text-slate-400 hover:text-white"
+          className="flex flex-col items-center py-1 px-3 rounded-xl text-zinc-400 hover:text-white"
         >
           <FileText size={19} />
           <span className="text-[10px] mt-0.5">Transaksi</span>
@@ -318,7 +324,7 @@ export default function Navbar() {
 
         <button
           onClick={() => setShowPromoModal(true)}
-          className="flex flex-col items-center py-1 px-3 rounded-xl text-slate-400 hover:text-white"
+          className="flex flex-col items-center py-1 px-3 rounded-xl text-zinc-400 hover:text-white"
         >
           <Tag size={19} />
           <span className="text-[10px] mt-0.5">Promo</span>
@@ -326,7 +332,7 @@ export default function Navbar() {
 
         <button
           onClick={() => setShowRewardModal(true)}
-          className="flex flex-col items-center py-1 px-3 rounded-xl text-slate-400 hover:text-white relative"
+          className="flex flex-col items-center py-1 px-3 rounded-xl text-zinc-400 hover:text-white relative"
         >
           <Gift size={19} />
           <span className="text-[10px] mt-0.5">Hadiahku</span>
@@ -337,7 +343,7 @@ export default function Navbar() {
 
         <button
           onClick={() => setShowAffiliateModal(true)}
-          className="flex flex-col items-center py-1 px-3 rounded-xl text-slate-400 hover:text-white"
+          className="flex flex-col items-center py-1 px-3 rounded-xl text-zinc-400 hover:text-white"
         >
           <BadgeDollarSign size={19} />
           <span className="text-[10px] mt-0.5">Affiliate</span>
@@ -704,6 +710,6 @@ export default function Navbar() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
