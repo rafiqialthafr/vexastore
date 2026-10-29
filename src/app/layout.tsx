@@ -1,0 +1,30 @@
+import type { Metadata } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
+import "./globals.css";
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-plus-jakarta",
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700", "800"],
+});
+
+export const metadata: Metadata = {
+  title: "VEXASTORE — Elite AAA Gaming Currency & Top-Up Protocol",
+  description: "Direct API automated game top-up platform. 100% official distribution, instant sub-15s delivery, and dark luxury esports experience.",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html
+      lang="id"
+      className={`${plusJakartaSans.variable} font-sans h-full antialiased selection:bg-[#00E5FF]/20 selection:text-[#00E5FF]`}
+    >
+      <body className="min-h-full flex flex-col bg-[#06080D] text-slate-100 font-sans">{children}</body>
+    </html>
+  );
+}

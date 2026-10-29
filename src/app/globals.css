@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: var(--font-plus-jakarta), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  body {
+    background-color: #06080D;
+    color: #E2E8F0;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+}
+
+/* Luxury AAA Glassmorphism & Micro-Lighting */
+.glass-panel {
+  background: rgba(11, 15, 23, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(0, 229, 255, 0.35);
+  box-shadow: 0 10px 30px -10px rgba(0, 229, 255, 0.12), 0 0 1px 1px rgba(0, 229, 255, 0.2);
+}
+
+/* Metallic Sheen Headers */
+.text-metallic {
+  background: linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 50%, #94A3B8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gold-metallic {
+  background: linear-gradient(135deg, #FFF3C4 0%, #D4AF37 50%, #997B1E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-cyan-metallic {
+  background: linear-gradient(135deg, #E0F7FA 0%, #00E5FF 55%, #0097A7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Ambient Radial Mesh Background */
+.bg-obsidian-mesh {
+  background-color: #06080D;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(0, 229, 255, 0.07) 0px, transparent 50%),
+    radial-gradient(at 100% 15%, rgba(212, 175, 55, 0.045) 0px, transparent 45%),
+    radial-gradient(at 50% 50%, rgba(0, 229, 255, 0.03) 0px, transparent 60%),
+    radial-gradient(at 80% 90%, rgba(15, 23, 42, 0.9) 0px, transparent 60%);
+  background-attachment: fixed;
+}
+
+/* Ambient subtle cyber grid */
+.cyber-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+/* Glow Utilities */
+.shadow-cyan-glow {
+  box-shadow: 0 0 30px -5px rgba(0, 229, 255, 0.25);
+}
+
+.shadow-gold-glow {
+  box-shadow: 0 0 25px -5px rgba(212, 175, 55, 0.2);
+}
+
+/* Custom Sleek Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #06080D;
+}
+::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
