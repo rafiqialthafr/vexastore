@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${plusJakartaSans.variable} font-sans h-full antialiased selection:bg-[#00E5FF]/20 selection:text-[#00E5FF]`}
+      className={`${plusJakartaSans.variable} font-sans h-full antialiased selection:bg-[#DFC28A]/25 selection:text-[#FFF5DE]`}
     >
       <body className="min-h-full flex flex-col bg-[#06080D] text-slate-100 font-sans">{children}</body>
     </html>

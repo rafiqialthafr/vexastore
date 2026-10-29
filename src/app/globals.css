@@ -31,8 +31,8 @@
 
 .glass-card:hover {
   background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(0, 229, 255, 0.35);
-  box-shadow: 0 10px 30px -10px rgba(0, 229, 255, 0.12), 0 0 1px 1px rgba(0, 229, 255, 0.2);
+  border-color: rgba(223, 194, 138, 0.45);
+  box-shadow: 0 10px 30px -10px rgba(223, 194, 138, 0.15), 0 0 1px 1px rgba(223, 194, 138, 0.25);
 }
 
 /* Metallic Sheen Headers */
@@ -42,14 +42,22 @@
   -webkit-text-fill-color: transparent;
 }
 
-.text-gold-metallic {
-  background: linear-gradient(135deg, #FFF3C4 0%, #D4AF37 50%, #997B1E 100%);
+.text-silver-metallic {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 40%, #CBD5E1 75%, #94A3B8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.text-cyan-metallic {
-  background: linear-gradient(135deg, #E0F7FA 0%, #00E5FF 55%, #0097A7 100%);
+.text-gold-metallic {
+  background: linear-gradient(135deg, #FFF8E7 0%, #DFC28A 45%, #C5A880 75%, #9E855A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Dual Pale Gold & Platinum Silver Metallic Transition */
+.text-cyan-metallic,
+.text-champagne-metallic {
+  background: linear-gradient(135deg, #FFF8E7 0%, #DFC28A 45%, #F1F5F9 75%, #CBD5E1 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -58,9 +66,9 @@
 .bg-obsidian-mesh {
   background-color: #06080D;
   background-image: 
-    radial-gradient(at 0% 0%, rgba(0, 229, 255, 0.07) 0px, transparent 50%),
-    radial-gradient(at 100% 15%, rgba(212, 175, 55, 0.045) 0px, transparent 45%),
-    radial-gradient(at 50% 50%, rgba(0, 229, 255, 0.03) 0px, transparent 60%),
+    radial-gradient(at 0% 0%, rgba(223, 194, 138, 0.075) 0px, transparent 50%),
+    radial-gradient(at 100% 15%, rgba(226, 232, 240, 0.05) 0px, transparent 45%),
+    radial-gradient(at 50% 50%, rgba(197, 168, 128, 0.04) 0px, transparent 60%),
     radial-gradient(at 80% 90%, rgba(15, 23, 42, 0.9) 0px, transparent 60%);
   background-attachment: fixed;
 }
@@ -74,12 +82,14 @@
 }
 
 /* Glow Utilities */
-.shadow-cyan-glow {
-  box-shadow: 0 0 30px -5px rgba(0, 229, 255, 0.25);
+.shadow-cyan-glow,
+.shadow-gold-glow,
+.shadow-champagne-glow {
+  box-shadow: 0 0 30px -5px rgba(223, 194, 138, 0.28);
 }
 
-.shadow-gold-glow {
-  box-shadow: 0 0 25px -5px rgba(212, 175, 55, 0.2);
+.shadow-silver-glow {
+  box-shadow: 0 0 25px -5px rgba(226, 232, 240, 0.2);
 }
 
 /* Custom Sleek Scrollbar */
