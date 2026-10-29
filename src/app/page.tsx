@@ -176,23 +176,18 @@ export default function HomePage() {
 
   return (
     <Navbar>
-      <main className="max-w-6xl mx-auto w-full px-6 sm:px-8 py-6 flex flex-col gap-8 flex-1">
+      <main className="max-w-6xl mx-auto w-full px-6 sm:px-8 pt-8 sm:pt-10 pb-16 flex flex-col gap-10 sm:gap-12 flex-1">
         
         {/* =========================================================================
-            HERO BANNER CAROUSEL DENGAN BOUNDARY (overflow-hidden rounded-2xl w-full)
-            - Tidak full-bleed, tidak menabrak sidebar ataupun tepi kanan layar
-            - Sejajar rapi dengan filter pills dan grid kartu game di bawahnya
-            - Background emas samar (luminous gold wing & ambient halo)
-            - 6 Banner tematis dengan logo VexaStore di pojok kiri atas
-        ========================================================================= */}
-        {/* =========================================================================
             HERO COVERFLOW CAROUSEL (Lapakgaming Modern Style)
-            1. Wrapper max-w-6xl mx-auto px-6 dengan overflow-hidden
-            2. Slide kiri & kanan: scale-90, opacity-50, brightness-75
-            3. Slide tengah (aktif): scale-100, opacity-100, border amber-400 tipis
+            - Jarak lega dengan header (pt-8 sm:pt-10) dan konten di bawahnya (gap-10 sm:gap-12)
+            - Indikator slider masuk ke dalam hero di bagian bawah
+            - Wrapper max-w-6xl mx-auto px-6 dengan overflow-hidden
+            - Slide kiri & kanan: scale-90, opacity-50, brightness-75
+            - Slide tengah (aktif): scale-100, opacity-100, border amber-400 tipis
         ========================================================================= */}
         <section 
-          className="relative w-full overflow-hidden select-none py-1"
+          className="relative w-full overflow-hidden select-none"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
@@ -202,7 +197,7 @@ export default function HomePage() {
           </div>
 
           {/* Coverflow Stage */}
-          <div className="relative w-full h-[200px] sm:h-[235px] md:h-[260px] flex items-center justify-center overflow-hidden">
+          <div className="relative w-full h-[210px] sm:h-[245px] md:h-[270px] flex items-center justify-center overflow-hidden">
             {HERO_BANNERS.map((banner, index) => {
               const count = HERO_BANNERS.length;
               const diff = (index - currentSlide + count) % count;
@@ -327,23 +322,23 @@ export default function HomePage() {
             >
               <ChevronRight size={18} />
             </button>
-          </div>
 
-          {/* 6 Minimalist Pill Indicators (Persis Screenshot Lapakgaming) */}
-          <div className="flex items-center justify-center gap-1.5 sm:gap-2 mt-3 sm:mt-4">
-            {HERO_BANNERS.map((_, index) => (
-              <button
-                key={index}
-                type="button"
-                onClick={() => setCurrentSlide(index)}
-                aria-label={`Slide ${index + 1}`}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  index === currentSlide 
-                    ? 'w-7 sm:w-9 bg-[#DFC28A] shadow-[0_0_10px_rgba(223,194,138,0.8)]' 
-                    : 'w-3 sm:w-4 bg-zinc-700/60 hover:bg-zinc-500'
-                }`}
-              />
-            ))}
+            {/* Minimalist Pill Indicators (Masuk ke Dalam Hero di Bagian Bawah) */}
+            <div className="absolute bottom-3 sm:bottom-3.5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5 sm:gap-2 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 shadow-lg pointer-events-auto">
+              {HERO_BANNERS.map((_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => setCurrentSlide(index)}
+                  aria-label={`Slide ${index + 1}`}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    index === currentSlide 
+                      ? 'w-7 sm:w-8 bg-[#DFC28A] shadow-[0_0_10px_rgba(223,194,138,0.8)]' 
+                      : 'w-3 sm:w-4 bg-white/40 hover:bg-white/70'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </section>
 
