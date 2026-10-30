@@ -298,8 +298,63 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
           </div>
         </header>
 
-        {/* Main Content Rendered in Right Column */}
-        {children}
+        {/* Main Content Rendered in Right Column (Minimalist Symmetrical Winged-Shield Motif Below Navbar) */}
+        <div className="relative flex-1 flex flex-col isolate">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none select-none absolute top-0 inset-x-0 h-[240px] sm:h-[330px] md:h-[420px] overflow-hidden -z-10"
+            style={{
+              maskImage:
+                'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 58%, rgba(0,0,0,0.25) 86%, rgba(0,0,0,0) 100%)',
+              WebkitMaskImage:
+                'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 58%, rgba(0,0,0,0.25) 86%, rgba(0,0,0,0) 100%)',
+            }}
+          >
+            <div className="max-w-[1440px] mx-auto w-full h-full">
+              <svg
+                viewBox="0 0 1440 440"
+                preserveAspectRatio="xMidYMin slice"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-full h-full"
+              >
+                <defs>
+                  {/* Whisper-clean Pearl White Wing Feathers */}
+                  <linearGradient id="vx-wing-white-outer" x1="720" y1="0" x2="720" y2="420" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.022" />
+                    <stop offset="50%" stopColor="#F8FAFC" stopOpacity="0.014" />
+                    <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+                  </linearGradient>
+                  <linearGradient id="vx-wing-white-inner" x1="720" y1="0" x2="720" y2="420" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#FFFDF9" stopOpacity="0.026" />
+                    <stop offset="50%" stopColor="#FFFDF9" stopOpacity="0.016" />
+                    <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+                  </linearGradient>
+
+                  {/* Minimalist Matte Champagne Gold Wing Shield */}
+                  <linearGradient id="vx-wing-gold-outer" x1="720" y1="0" x2="720" y2="420" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#DFC28A" stopOpacity="0.042" />
+                    <stop offset="50%" stopColor="#DFC28A" stopOpacity="0.025" />
+                    <stop offset="100%" stopColor="#DFC28A" stopOpacity="0" />
+                  </linearGradient>
+                  <linearGradient id="vx-wing-gold-inner" x1="720" y1="0" x2="720" y2="420" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#E5C88E" stopOpacity="0.055" />
+                    <stop offset="50%" stopColor="#DFC28A" stopOpacity="0.032" />
+                    <stop offset="100%" stopColor="#DFC28A" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+
+                {/* 4 Concentric Symmetrical Winged-Shield Layers (Exact Lapakgaming Minimalist Silhouette) */}
+                <polygon points="50,0 1390,0 1344,172 1157,158 720,766 283,158 96,172" fill="url(#vx-wing-white-outer)" />
+                <polygon points="69,0 1371,0 1274,193 1083,158 720,684 357,158 166,193" fill="url(#vx-wing-gold-outer)" />
+                <polygon points="88,0 1352,0 1197,213 1007,158 720,603 433,158 243,213" fill="url(#vx-wing-white-inner)" />
+                <polygon points="107,0 1333,0 1121,230 931,158 720,522 509,158 319,230" fill="url(#vx-wing-gold-inner)" />
+              </svg>
+            </div>
+          </div>
+
+          {children}
+        </div>
       </div>
 
       {/* MOBILE BOTTOM NAVIGATION BAR (Khusus Smartphone) */}

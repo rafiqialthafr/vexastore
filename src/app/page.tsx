@@ -289,11 +289,6 @@ export default function HomePage() {
             dragStartXRef.current = null;
           }}
         >
-          {/* Subtle Ambient Gold Wing Halo in Background */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden select-none -z-10">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(223,194,138,0.22),rgba(223,194,138,0.06)_50%,transparent_75%)] blur-3xl" />
-          </div>
-
           {/* Coverflow Stage */}
           <div
             className="relative w-full h-[210px] sm:h-[245px] md:h-[270px] flex items-center justify-center overflow-hidden rounded-2xl touch-pan-y cursor-grab active:cursor-grabbing"
