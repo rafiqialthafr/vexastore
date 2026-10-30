@@ -32,7 +32,7 @@ interface HeroBanner {
 const HERO_BANNERS: HeroBanner[] = [
   {
     id: 1,
-    image: '/banners/banner_mlbb.jpg',
+    image: '/banners/banner_mlbb.jpg?v=2',
     gameTitle: 'Mobile Legends: Bang Bang',
     publisher: 'MOONTON',
     headlinePrefix: 'Event Resmi Moonton',
@@ -46,7 +46,7 @@ const HERO_BANNERS: HeroBanner[] = [
   },
   {
     id: 2,
-    image: '/banners/banner_valorant_gold.jpg',
+    image: '/banners/banner_valorant_gold.jpg?v=2',
     gameTitle: 'Valorant Riot Games',
     publisher: 'RIOT GAMES',
     headlinePrefix: 'Tactical Vault 2026',
@@ -60,7 +60,7 @@ const HERO_BANNERS: HeroBanner[] = [
   },
   {
     id: 3,
-    image: '/banners/banner_freefire.jpg',
+    image: '/banners/banner_freefire.jpg?v=2',
     gameTitle: 'Free Fire Max Garena',
     publisher: 'GARENA',
     headlinePrefix: 'Booyah Pass Season',
