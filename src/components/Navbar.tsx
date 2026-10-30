@@ -249,7 +249,7 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
                           <img 
                             src={game.image} 
                             alt={game.name} 
-                            className="w-11 h-13 object-cover rounded-xl border border-zinc-800 shadow-sm group-hover:border-[#DFC28A]/50 transition" 
+                            className="w-12 h-12 aspect-square object-contain bg-zinc-950 shrink-0 rounded-xl border border-zinc-800 shadow-sm group-hover:border-[#DFC28A]/50 transition" 
                           />
                           <div>
                             <h4 className="text-xs sm:text-sm font-bold text-white group-hover:text-[#DFC28A] transition">
@@ -287,9 +287,9 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
               ) : (
                 <button
                   onClick={() => setShowLoginModal(true)}
-                  className="px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold text-zinc-950 bg-gradient-to-r from-[#DFC28A] via-[#EBD5A7] to-[#DFC28A] hover:brightness-110 transition shadow-[0_0_20px_rgba(223,194,138,0.25)] hover:shadow-[0_0_25px_rgba(223,194,138,0.45)] active:scale-95 flex items-center gap-2"
+                  className="px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-semibold text-[#DFC28A] bg-[#11131a] hover:bg-[#181b24] border border-[#DFC28A]/35 hover:border-[#DFC28A]/65 transition active:scale-95 flex items-center gap-2"
                 >
-                  <User size={15} className="fill-zinc-950" />
+                  <User size={15} />
                   <span>Masuk</span>
                 </button>
               )}

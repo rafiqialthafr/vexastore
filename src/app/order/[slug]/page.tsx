@@ -52,7 +52,7 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
           {/* Kolom Kiri: Info Game dengan Glassmorphism Mewah */}
           <div className="lg:col-span-4 bg-white/[0.025] backdrop-blur-2xl border border-white/[0.08] rounded-3xl p-6 sm:p-7 sticky top-28 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
             <div className="flex gap-4 items-center">
-              <img src={game.image} alt={game.name} className="w-20 h-24 object-cover rounded-2xl border border-white/[0.1] shadow-md shrink-0" />
+              <img src={game.image} alt={game.name} className="w-20 h-20 sm:w-24 sm:h-24 aspect-square object-contain bg-zinc-950 rounded-2xl border border-white/[0.1] shadow-md shrink-0" />
               <div>
                 <p className="text-[11px] font-mono font-bold text-[#DFC28A] uppercase tracking-wider">{game.publisher}</p>
                 <h1 className="text-xl font-black text-white mt-1 leading-snug">{game.name}</h1>

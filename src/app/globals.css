@@ -39,18 +39,21 @@
 .text-metallic {
   background: linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 50%, #94A3B8 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-silver-metallic {
   background: linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 40%, #CBD5E1 75%, #94A3B8 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-gold-metallic {
   background: linear-gradient(135deg, #FFF8E7 0%, #DFC28A 45%, #C5A880 75%, #9E855A 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -59,6 +62,7 @@
 .text-champagne-metallic {
   background: linear-gradient(135deg, #FFF8E7 0%, #DFC28A 45%, #F1F5F9 75%, #CBD5E1 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 

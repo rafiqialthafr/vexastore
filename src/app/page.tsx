@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
@@ -112,7 +112,7 @@ const HERO_BANNERS: HeroBanner[] = [
     highlightPrice: 'Rp 255.000',
     highlightOriginal: 'Rp 275.000',
     ctaText: 'Beli Sekarang!',
-    ctaLink: '/order/steam-wallet-code-idr',
+    ctaLink: '/order/steam-wallet',
   },
 ];
 
@@ -132,22 +132,114 @@ export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Auto-slide effect every 5 seconds unless hovered
+  const heroRef = useRef<HTMLElement>(null);
+  const wheelAccumRef = useRef(0);
+  const lastWheelEventTimeRef = useRef(0);
+  const lastTriggerTimeRef = useRef(0);
+  const gestureLockedRef = useRef(false);
+  const lastDirectionRef = useRef(0);
+  const prevAbsDxRef = useRef(0);
+  const dragStartXRef = useRef<number | null>(null);
+  const didDragSlideRef = useRef(false);
+
+  const handleNextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % HERO_BANNERS.length);
+  }, []);
+
+  const handlePrevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + HERO_BANNERS.length) % HERO_BANNERS.length);
+  }, []);
+
+  // Auto-slide effect every 5 seconds unless hovered (resets timer on manual slide change)
   useEffect(() => {
     if (isPaused) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % HERO_BANNERS.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, [isPaused]);
+  }, [isPaused, currentSlide]);
 
-  const handleNextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % HERO_BANNERS.length);
-  };
+  // Touchpad two-finger horizontal scroll (and Shift + Wheel) support
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
 
-  const handlePrevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + HERO_BANNERS.length) % HERO_BANNERS.length);
-  };
+    const onWheel = (e: WheelEvent) => {
+      const isHorizontalSwipe = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+      const dx = isHorizontalSwipe ? e.deltaX : e.shiftKey ? e.deltaY : 0;
+      if (dx === 0) return;
+
+      // Prevent browser Back/Forward history swipe while scrolling hero horizontally
+      e.preventDefault();
+
+      const now = performance.now();
+      const timeSinceLastEvent = now - lastWheelEventTimeRef.current;
+      const absDx = Math.abs(dx);
+      const dir = Math.sign(dx);
+
+      // Unlock if gesture paused, reversed direction, or user started a fresh flick spike
+      if (
+        timeSinceLastEvent > 140 ||
+        dir !== lastDirectionRef.current ||
+        (now - lastTriggerTimeRef.current > 220 && absDx > prevAbsDxRef.current + 8)
+      ) {
+        if (timeSinceLastEvent > 140 || dir !== lastDirectionRef.current) {
+          wheelAccumRef.current = 0;
+        }
+        gestureLockedRef.current = false;
+      }
+
+      lastWheelEventTimeRef.current = now;
+      prevAbsDxRef.current = absDx;
+      lastDirectionRef.current = dir;
+
+      if (gestureLockedRef.current) return;
+
+      wheelAccumRef.current += dx;
+
+      if (Math.abs(wheelAccumRef.current) >= 30) {
+        if (wheelAccumRef.current > 0) {
+          handleNextSlide();
+        } else {
+          handlePrevSlide();
+        }
+        wheelAccumRef.current = 0;
+        gestureLockedRef.current = true;
+        lastTriggerTimeRef.current = now;
+      }
+    };
+
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, [handleNextSlide, handlePrevSlide]);
+
+  // Keyboard ArrowLeft / ArrowRight navigation
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.altKey || e.ctrlKey || e.metaKey) return;
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.tagName === 'SELECT' ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        handleNextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        handlePrevSlide();
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [handleNextSlide, handlePrevSlide]);
 
   const filteredGames = useMemo(() => {
     if (selectedCategory === 'all' || selectedCategory === 'direct') {
@@ -176,20 +268,26 @@ export default function HomePage() {
 
   return (
     <Navbar>
-      <main className="max-w-6xl mx-auto w-full px-6 sm:px-8 pt-8 sm:pt-10 pb-16 flex flex-col gap-10 sm:gap-12 flex-1">
+      <main className="max-w-6xl mx-auto w-full px-6 sm:px-8 pt-8 sm:pt-10 pb-16 flex flex-col gap-8 sm:gap-10 flex-1">
         
         {/* =========================================================================
             HERO COVERFLOW CAROUSEL (Lapakgaming Modern Style)
-            - Jarak lega dengan header (pt-8 sm:pt-10) dan konten di bawahnya (gap-10 sm:gap-12)
-            - Indikator slider masuk ke dalam hero di bagian bawah
+            - Jarak lega dengan header (pt-8 sm:pt-10) dan konten di bawahnya (gap-8 sm:gap-10)
+            - Indikator slider berada tepat di bawah gambar banner agar tidak menghalangi artwork
             - Wrapper max-w-6xl mx-auto px-6 dengan overflow-hidden
             - Slide kiri & kanan: scale-90, opacity-50, brightness-75
             - Slide tengah (aktif): scale-100, opacity-100, border amber-400 tipis
         ========================================================================= */}
         <section 
-          className="relative w-full overflow-hidden select-none"
+          ref={heroRef}
+          tabIndex={0}
+          aria-label="Hero Promo Carousel"
+          className="relative w-full overflow-hidden select-none overscroll-x-contain outline-none"
           onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
+          onMouseLeave={() => {
+            setIsPaused(false);
+            dragStartXRef.current = null;
+          }}
         >
           {/* Subtle Ambient Gold Wing Halo in Background */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden select-none -z-10">
@@ -197,7 +295,37 @@ export default function HomePage() {
           </div>
 
           {/* Coverflow Stage */}
-          <div className="relative w-full h-[210px] sm:h-[245px] md:h-[270px] flex items-center justify-center overflow-hidden">
+          <div
+            className="relative w-full h-[210px] sm:h-[245px] md:h-[270px] flex items-center justify-center overflow-hidden rounded-2xl touch-pan-y cursor-grab active:cursor-grabbing"
+            onTouchStart={(e) => {
+              dragStartXRef.current = e.touches[0].clientX;
+              didDragSlideRef.current = false;
+            }}
+            onTouchEnd={(e) => {
+              if (dragStartXRef.current === null) return;
+              const diffX = dragStartXRef.current - e.changedTouches[0].clientX;
+              if (Math.abs(diffX) > 40) {
+                didDragSlideRef.current = true;
+                if (diffX > 0) handleNextSlide();
+                else handlePrevSlide();
+              }
+              dragStartXRef.current = null;
+            }}
+            onMouseDown={(e) => {
+              dragStartXRef.current = e.clientX;
+              didDragSlideRef.current = false;
+            }}
+            onMouseUp={(e) => {
+              if (dragStartXRef.current === null) return;
+              const diffX = dragStartXRef.current - e.clientX;
+              if (Math.abs(diffX) > 45) {
+                didDragSlideRef.current = true;
+                if (diffX > 0) handleNextSlide();
+                else handlePrevSlide();
+              }
+              dragStartXRef.current = null;
+            }}
+          >
             {HERO_BANNERS.map((banner, index) => {
               const count = HERO_BANNERS.length;
               const diff = (index - currentSlide + count) % count;
@@ -212,31 +340,33 @@ export default function HomePage() {
                 <div
                   key={banner.id}
                   onClick={() => {
+                    if (didDragSlideRef.current) return;
                     if (isPrev) handlePrevSlide();
                     if (isNext) handleNextSlide();
                   }}
-                  className={`absolute top-0 bottom-0 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] w-[82%] sm:w-[72%] md:w-[680px] lg:w-[740px] ${
+                  className={`absolute top-0 bottom-0 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] w-[80%] sm:w-[70%] md:w-[620px] lg:w-[660px] ${
                     isCenter
-                      ? 'left-1/2 -translate-x-1/2 z-20 scale-100 opacity-100 cursor-default shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_25px_rgba(251,191,36,0.18)]'
+                      ? 'left-1/2 -translate-x-1/2 z-20 scale-100 opacity-100 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_25px_rgba(251,191,36,0.18)]'
                       : isPrev
-                      ? 'left-1/2 -translate-x-[calc(50%+68%)] sm:-translate-x-[calc(50%+430px)] md:-translate-x-[calc(50%+490px)] lg:-translate-x-[calc(50%+530px)] z-10 scale-90 opacity-50 brightness-75 hover:opacity-75 cursor-pointer blur-[0.2px]'
-                      : 'left-1/2 translate-x-[calc(-50%+68%)] sm:translate-x-[calc(-50%+430px)] md:translate-x-[calc(-50%+490px)] lg:translate-x-[calc(-50%+530px)] z-10 scale-90 opacity-50 brightness-75 hover:opacity-75 cursor-pointer blur-[0.2px]'
+                      ? 'left-1/2 -translate-x-[calc(50%+28%)] sm:-translate-x-[calc(50%+190px)] md:-translate-x-[calc(50%+220px)] lg:-translate-x-[calc(50%+240px)] z-10 scale-90 opacity-50 brightness-75 hover:opacity-75 cursor-pointer'
+                      : 'left-1/2 translate-x-[calc(-50%+28%)] sm:translate-x-[calc(-50%+190px)] md:translate-x-[calc(-50%+220px)] lg:translate-x-[calc(-50%+240px)] z-10 scale-90 opacity-50 brightness-75 hover:opacity-75 cursor-pointer'
                   }`}
                 >
-                  <div className={`relative w-full h-full rounded-2xl overflow-hidden transition-all duration-300 ${
+                  <div className={`relative w-full h-full rounded-2xl overflow-hidden transition-all duration-300 isolate ${
                     isCenter 
                       ? 'border border-amber-400 ring-1 ring-amber-400/20 bg-[#0c0d12]' 
-                      : 'border border-zinc-800 bg-[#090a0f]'
+                      : 'border border-zinc-700/80 bg-[#090a0f]'
                   }`}>
                     {/* Background Banner Artwork */}
                     <img
                       src={banner.image}
                       alt={banner.headline}
-                      className="w-full h-full object-cover object-center"
+                      draggable={false}
+                      className="w-full h-full object-cover object-center rounded-2xl"
                     />
 
                     {/* Gradient Overlay for Text Legibility on Left */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/92 via-black/55 to-transparent pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/92 via-black/55 to-transparent pointer-events-none rounded-2xl" />
 
                     {/* POJOK ATAS KIRI: Logo Crest Saja (Icon Crest Saja, Tulisannya Gausah) */}
                     <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-30 bg-black/60 border border-white/15 backdrop-blur-md px-2 py-1 rounded-xl shadow-md flex items-center justify-center">
@@ -322,23 +452,23 @@ export default function HomePage() {
             >
               <ChevronRight size={18} />
             </button>
+          </div>
 
-            {/* Minimalist Pill Indicators (Masuk ke Dalam Hero di Bagian Bawah) */}
-            <div className="absolute bottom-3 sm:bottom-3.5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5 sm:gap-2 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 shadow-lg pointer-events-auto">
-              {HERO_BANNERS.map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => setCurrentSlide(index)}
-                  aria-label={`Slide ${index + 1}`}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    index === currentSlide 
-                      ? 'w-7 sm:w-8 bg-[#DFC28A] shadow-[0_0_10px_rgba(223,194,138,0.8)]' 
-                      : 'w-3 sm:w-4 bg-white/40 hover:bg-white/70'
-                  }`}
-                />
-              ))}
-            </div>
+          {/* Minimalist Pill Indicators (Clean Matte Style Di Bawah Gambar Banner) */}
+          <div className="mt-3.5 sm:mt-4 flex items-center justify-center gap-1.5 sm:gap-2">
+            {HERO_BANNERS.map((_, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => setCurrentSlide(index)}
+                aria-label={`Slide ${index + 1}`}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  index === currentSlide 
+                    ? 'w-6 sm:w-7 bg-[#DFC28A]/85' 
+                    : 'w-2 sm:w-2.5 bg-zinc-800 hover:bg-zinc-700'
+                }`}
+              />
+            ))}
           </div>
         </section>
 
@@ -379,12 +509,13 @@ export default function HomePage() {
                 href={`/order/${game.slug}`}
                 className="group relative rounded-2xl bg-zinc-900/40 hover:bg-zinc-900/80 border border-zinc-800/80 hover:border-[#DFC28A]/50 p-2.5 sm:p-3 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_12px_25px_-5px_rgba(223,194,138,0.2)]"
               >
-                {/* Poster Image Container */}
-                <div className="relative aspect-[3/4] w-full rounded-xl overflow-hidden bg-zinc-950 mb-2 shadow-sm">
+                {/* Game Artwork Container (1:1 Square - Zero Cropping) */}
+                <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-zinc-950 mb-2.5 shadow-sm ring-1 ring-white/[0.06]">
                   <img
                     src={game.image}
                     alt={game.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                    className="w-full h-full object-contain group-hover:brightness-110 transition-all duration-300"
                   />
                   {/* Clean Red Discount Badge */}
                   {game.isPopular && (
@@ -395,11 +526,11 @@ export default function HomePage() {
                 </div>
 
                 {/* Game Metadata */}
-                <div className="flex-1 flex flex-col justify-center">
+                <div className="flex-1 flex flex-col justify-start">
                   <p className="text-[10px] sm:text-[11px] font-semibold text-zinc-400 uppercase tracking-wider truncate">
                     {game.publisher}
                   </p>
-                  <h3 className="text-xs sm:text-sm font-bold text-white group-hover:text-[#DFC28A] transition-colors truncate mt-0.5">
+                  <h3 className="text-xs sm:text-sm font-bold text-white group-hover:text-[#DFC28A] transition-colors line-clamp-2 leading-snug mt-0.5">
                     {game.name}
                   </h3>
                 </div>
