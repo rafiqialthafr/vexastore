@@ -39,7 +39,7 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
 
   return (
     <Navbar>
-      <main className="max-w-6xl mx-auto w-full px-6 sm:px-8 py-6 flex flex-col gap-6 flex-1">
+      <main className="max-w-6xl mx-auto w-full px-6 sm:px-8 pt-10 sm:pt-12 md:pt-14 pb-16 flex flex-col gap-6 sm:gap-7 flex-1">
         <Link 
           href="/" 
           className="inline-flex items-center gap-2 text-xs font-mono tracking-wider text-zinc-400 hover:text-white transition group w-fit"

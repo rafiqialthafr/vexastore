@@ -268,7 +268,7 @@ export default function HomePage() {
 
   return (
     <Navbar>
-      <main className="max-w-6xl mx-auto w-full px-6 sm:px-8 pt-8 sm:pt-10 pb-16 flex flex-col gap-8 sm:gap-10 flex-1">
+      <main className="max-w-6xl mx-auto w-full px-6 sm:px-8 pt-12 sm:pt-14 md:pt-16 pb-16 flex flex-col gap-8 sm:gap-10 flex-1">
         
         {/* =========================================================================
             HERO COVERFLOW CAROUSEL (Lapakgaming Modern Style)
