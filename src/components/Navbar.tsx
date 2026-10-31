@@ -13,8 +13,7 @@ import {
   Home, 
   FileText, 
   Tag, 
-  Gift, 
-  BadgeDollarSign, 
+  Newspaper, 
   User, 
   Copy, 
   Sparkles,
@@ -35,8 +34,6 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showTrackModal, setShowTrackModal] = useState(false);
   const [showPromoModal, setShowPromoModal] = useState(false);
-  const [showRewardModal, setShowRewardModal] = useState(false);
-  const [showAffiliateModal, setShowAffiliateModal] = useState(false);
 
   // Login Simulated State
   const [userPhone, setUserPhone] = useState('');
@@ -56,10 +53,6 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
 
   // Voucher Copy State
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
-
-  // Daily Reward Claimed State
-  const [hasClaimedReward, setHasClaimedReward] = useState(false);
-  const [rewardPoints, setRewardPoints] = useState(1250);
 
   // Filtered games based on search query
   const filteredGames = searchQuery.trim() === '' ? [] : ALL_GAMES.filter(g => 
@@ -103,12 +96,6 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
     navigator.clipboard.writeText(code);
     setCopiedCode(code);
     setTimeout(() => setCopiedCode(null), 2000);
-  };
-
-  const handleClaimReward = () => {
-    if (hasClaimedReward) return;
-    setHasClaimedReward(true);
-    setRewardPoints(prev => prev + 100);
   };
 
   return (
@@ -158,30 +145,21 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
             <span className="text-[11px] tracking-tight">Promo</span>
           </button>
 
-          {/* Menu 4: Hadiahku */}
-          <button
-            type="button"
-            onClick={() => setShowRewardModal(true)}
-            className="relative flex flex-col items-center gap-1.5 py-1 px-2 text-xs text-zinc-400 hover:text-white transition group"
+          {/* Menu 4: Artikel */}
+          <Link
+            href="/artikel"
+            className={`relative flex flex-col items-center gap-1.5 py-1 px-2 text-xs transition group ${
+              pathname.startsWith('/artikel') 
+                ? 'text-[#DFC28A] font-semibold' 
+                : 'text-zinc-400 hover:text-white'
+            }`}
           >
-            <div className="relative">
-              <Gift size={22} className="group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform" />
-              {!hasClaimedReward && (
-                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#DFC28A] animate-pulse shadow-[0_0_6px_rgba(223,194,138,0.8)]" />
-              )}
-            </div>
-            <span className="text-[11px] tracking-tight">Hadiahku</span>
-          </button>
-
-          {/* Menu 5: Affiliate */}
-          <button
-            type="button"
-            onClick={() => setShowAffiliateModal(true)}
-            className="relative flex flex-col items-center gap-1.5 py-1 px-2 text-xs text-zinc-400 hover:text-white transition group"
-          >
-            <BadgeDollarSign size={22} className="group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform" />
-            <span className="text-[11px] tracking-tight">Affiliate</span>
-          </button>
+            {pathname.startsWith('/artikel') && (
+              <span className="absolute -left-3 md:-left-4 top-1/2 -translate-y-1/2 w-1 h-6 bg-[#DFC28A] rounded-r-full shadow-[0_0_10px_rgba(223,194,138,0.8)]" />
+            )}
+            <Newspaper size={22} className={pathname.startsWith('/artikel') ? 'text-[#DFC28A]' : 'group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform'} />
+            <span className="text-[11px] tracking-tight">Artikel</span>
+          </Link>
         </nav>
 
         {/* Bottom subtle trust mark */}
@@ -223,7 +201,7 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
                     setIsSearchOpen(true);
                   }}
                   onFocus={() => setIsSearchOpen(true)}
-                  placeholder="Cari Game favoritmu (MLBB, Free Fire, Valorant, Genshin)..."
+                  placeholder="Cari Game favoritmu ..."
                   className="w-full pl-5 pr-12 py-2.5 rounded-full bg-zinc-900/90 border border-zinc-700/60 hover:border-[#DFC28A]/60 focus:border-[#DFC28A] text-white text-xs sm:text-sm placeholder-zinc-400 focus:outline-none transition shadow-inner focus:shadow-[0_0_20px_rgba(223,194,138,0.2)]"
                 />
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-400 flex items-center gap-1.5">
@@ -385,24 +363,15 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
           <span className="text-[10px] mt-0.5">Promo</span>
         </button>
 
-        <button
-          onClick={() => setShowRewardModal(true)}
-          className="flex flex-col items-center py-1 px-3 rounded-xl text-zinc-400 hover:text-white relative"
+        <Link
+          href="/artikel"
+          className={`flex flex-col items-center py-1 px-3 rounded-xl transition ${
+            pathname.startsWith('/artikel') ? 'text-[#DFC28A] font-bold' : 'text-zinc-400'
+          }`}
         >
-          <Gift size={19} />
-          <span className="text-[10px] mt-0.5">Hadiahku</span>
-          {!hasClaimedReward && (
-            <span className="absolute top-0 right-2 w-2 h-2 rounded-full bg-[#DFC28A] animate-pulse" />
-          )}
-        </button>
-
-        <button
-          onClick={() => setShowAffiliateModal(true)}
-          className="flex flex-col items-center py-1 px-3 rounded-xl text-zinc-400 hover:text-white"
-        >
-          <BadgeDollarSign size={19} />
-          <span className="text-[10px] mt-0.5">Affiliate</span>
-        </button>
+          <Newspaper size={19} />
+          <span className="text-[10px] mt-0.5">Artikel</span>
+        </Link>
       </nav>
 
       {/* =========================================================================
@@ -650,118 +619,6 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL 4: HADIAHKU & REWARDS VAULT */}
-      {showRewardModal && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl flex items-center justify-center p-4">
-          <div className="w-full max-w-lg bg-[#0B0F17] border border-white/[0.1] rounded-3xl p-6 sm:p-7 shadow-[0_25px_60px_rgba(0,0,0,0.85)] relative animate-in fade-in zoom-in-95 duration-150">
-            <button 
-              onClick={() => setShowRewardModal(false)}
-              className="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/[0.06] transition"
-            >
-              <X size={18} />
-            </button>
-
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 rounded-2xl bg-[#DFC28A]/10 border border-[#DFC28A]/30 flex items-center justify-center text-[#DFC28A]">
-                <Gift size={20} />
-              </div>
-              <div>
-                <h3 className="text-base font-bold text-white">Hadiahku & Vault Reward</h3>
-                <p className="text-xs text-slate-400">Kumpulkan poin transaksi dan tukar dengan diskon gratis</p>
-              </div>
-            </div>
-
-            {/* Poin Counter */}
-            <div className="p-5 rounded-2xl bg-gradient-to-br from-white/[0.03] to-[#DFC28A]/10 border border-[#DFC28A]/30 mb-5 flex items-center justify-between">
-              <div>
-                <p className="text-xs text-slate-400">Total Saldo Poin Kamu</p>
-                <p className="text-3xl font-black text-[#DFC28A] font-mono mt-0.5">
-                  {rewardPoints.toLocaleString('id-ID')} <span className="text-xs text-slate-400 font-sans">Pts</span>
-                </p>
-              </div>
-              <Sparkles size={28} className="text-[#DFC28A] animate-pulse" />
-            </div>
-
-            {/* Daily Check-in Card */}
-            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-3">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="text-xs font-bold text-white">Daily Check-in Hadiah</h4>
-                  <p className="text-[11px] text-slate-400 mt-0.5">+100 Poin Gratis Setiap Hari</p>
-                </div>
-                <button
-                  onClick={handleClaimReward}
-                  disabled={hasClaimedReward}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
-                    hasClaimedReward
-                      ? 'bg-white/[0.05] text-slate-500 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-[#DFC28A] via-[#EBD5A7] to-[#DFC28A] text-slate-950 hover:brightness-110 shadow-[0_0_15px_rgba(223,194,138,0.25)]'
-                  }`}
-                >
-                  {hasClaimedReward ? '✓ Sudah Diklaim' : 'Klaim 100 Pts'}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL 5: AFFILIATE & CREATORS SQUAD */}
-      {showAffiliateModal && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl flex items-center justify-center p-4">
-          <div className="w-full max-w-lg bg-[#0B0F17] border border-white/[0.1] rounded-3xl p-6 sm:p-7 shadow-[0_25px_60px_rgba(0,0,0,0.85)] relative animate-in fade-in zoom-in-95 duration-150">
-            <button 
-              onClick={() => setShowAffiliateModal(false)}
-              className="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/[0.06] transition"
-            >
-              <X size={18} />
-            </button>
-
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 rounded-2xl bg-[#DFC28A]/10 border border-[#DFC28A]/30 flex items-center justify-center text-[#DFC28A]">
-                <BadgeDollarSign size={20} />
-              </div>
-              <div>
-                <h3 className="text-base font-bold text-white">Creators & Affiliate Squad</h3>
-                <p className="text-xs text-slate-400">Program Kemitraan Komisi Top-Up Terbesar</p>
-              </div>
-            </div>
-
-            {/* Banner Lapakgaming-style Commission Highlight */}
-            <div className="p-5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-[#DFC28A]/20 to-transparent border border-[#DFC28A]/40 mb-5">
-              <span className="text-[10px] font-mono font-black text-[#DFC28A] uppercase tracking-wider">KOMISI HINGGA 10%</span>
-              <h4 className="text-lg font-black text-white mt-1 leading-snug">
-                Main Game Jadi Cuan Jutaan Tiap Bulan!
-              </h4>
-              <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-                Gabung squad affiliate VexaStore dan bagikan link referral tokomu ke teman & komunitas. Tarik penghasilan langsung ke rekening bank atau e-wallet tanpa minimum payout rumit.
-              </p>
-            </div>
-
-            <div className="space-y-3 text-xs">
-              <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center gap-3">
-                <CheckCircle2 size={16} className="text-emerald-400 shrink-0" />
-                <span>Dashboard telemetri klik & komisi realtime 24/7</span>
-              </div>
-              <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center gap-3">
-                <CheckCircle2 size={16} className="text-emerald-400 shrink-0" />
-                <span>Materi promosi banner & media kit resmi siap pakai</span>
-              </div>
-            </div>
-
-            <button
-              onClick={() => {
-                alert('Pendaftaran Affiliate Berhasil Disimpan!\nTim VexaStore akan menghubungi kontak WhatsApp kamu dalam waktu 1x24 jam.');
-                setShowAffiliateModal(false);
-              }}
-              className="w-full mt-6 py-3.5 rounded-xl bg-gradient-to-r from-[#DFC28A] via-[#EBD5A7] to-[#DFC28A] text-slate-950 font-bold text-xs hover:brightness-110 transition shadow-[0_0_20px_rgba(223,194,138,0.25)]"
-            >
-              Daftar Squad Sekarang (Gratis)
-            </button>
           </div>
         </div>
       )}

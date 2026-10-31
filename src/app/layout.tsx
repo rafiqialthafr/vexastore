@@ -10,7 +10,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "VEXASTORE — Elite AAA Gaming Currency & Top-Up Protocol",
+  title: "VEXASTORE - Top Up Game Termurah dan Tercepat",
   description: "Direct API automated game top-up platform. 100% official distribution, instant sub-15s delivery, and dark luxury esports experience.",
 };
 
