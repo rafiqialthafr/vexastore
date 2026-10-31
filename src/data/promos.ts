@@ -191,3 +191,4 @@ export const PROMOS_DATA: PromoItem[] = [
     ]
   }
 ];
+

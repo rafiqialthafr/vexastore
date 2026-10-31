@@ -13,7 +13,7 @@ import {
   Home, 
   FileText, 
   Tag, 
-  Newspaper, 
+  Flame, 
   User, 
   Copy, 
   Sparkles,
@@ -33,7 +33,6 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
   // Modals State
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showTrackModal, setShowTrackModal] = useState(false);
-  const [showPromoModal, setShowPromoModal] = useState(false);
 
   // Login Simulated State
   const [userPhone, setUserPhone] = useState('');
@@ -50,9 +49,6 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
     time: string;
     target: string;
   } | null>(null);
-
-  // Voucher Copy State
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   // Filtered games based on search query
   const filteredGames = searchQuery.trim() === '' ? [] : ALL_GAMES.filter(g => 
@@ -90,12 +86,6 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
     setIsLoggedIn(true);
     setUserName(`Gamer_${userPhone.slice(-4)}`);
     setShowLoginModal(false);
-  };
-
-  const copyVoucher = (code: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(code);
-    setTimeout(() => setCopiedCode(null), 2000);
   };
 
   return (
@@ -136,14 +126,20 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
           </button>
 
           {/* Menu 3: Promo */}
-          <button
-            type="button"
-            onClick={() => setShowPromoModal(true)}
-            className="relative flex flex-col items-center gap-1.5 py-1 px-2 text-xs text-zinc-400 hover:text-white transition group"
+          <Link
+            href="/promo"
+            className={`relative flex flex-col items-center gap-1.5 py-1 px-2 text-xs transition group ${
+              pathname.startsWith('/promo') 
+                ? 'text-[#DFC28A] font-semibold' 
+                : 'text-zinc-400 hover:text-white'
+            }`}
           >
-            <Tag size={22} className="group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform" />
+            {pathname.startsWith('/promo') && (
+              <span className="absolute -left-3 md:-left-4 top-1/2 -translate-y-1/2 w-1 h-6 bg-[#DFC28A] rounded-r-full shadow-[0_0_10px_rgba(223,194,138,0.8)]" />
+            )}
+            <Tag size={22} className={pathname.startsWith('/promo') ? 'text-[#DFC28A]' : 'group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform'} />
             <span className="text-[11px] tracking-tight">Promo</span>
-          </button>
+          </Link>
 
           {/* Menu 4: Artikel */}
           <Link
@@ -157,7 +153,7 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
             {pathname.startsWith('/artikel') && (
               <span className="absolute -left-3 md:-left-4 top-1/2 -translate-y-1/2 w-1 h-6 bg-[#DFC28A] rounded-r-full shadow-[0_0_10px_rgba(223,194,138,0.8)]" />
             )}
-            <Newspaper size={22} className={pathname.startsWith('/artikel') ? 'text-[#DFC28A]' : 'group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform'} />
+            <Flame size={22} className={pathname.startsWith('/artikel') ? 'text-[#DFC28A]' : 'group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform'} />
             <span className="text-[11px] tracking-tight">Artikel</span>
           </Link>
         </nav>
@@ -355,13 +351,15 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
           <span className="text-[10px] mt-0.5">Transaksi</span>
         </button>
 
-        <button
-          onClick={() => setShowPromoModal(true)}
-          className="flex flex-col items-center py-1 px-3 rounded-xl text-zinc-400 hover:text-white"
+        <Link
+          href="/promo"
+          className={`flex flex-col items-center py-1 px-3 rounded-xl transition ${
+            pathname.startsWith('/promo') ? 'text-[#DFC28A] font-bold' : 'text-zinc-400'
+          }`}
         >
           <Tag size={19} />
           <span className="text-[10px] mt-0.5">Promo</span>
-        </button>
+        </Link>
 
         <Link
           href="/artikel"
@@ -369,7 +367,7 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
             pathname.startsWith('/artikel') ? 'text-[#DFC28A] font-bold' : 'text-zinc-400'
           }`}
         >
-          <Newspaper size={19} />
+          <Flame size={19} />
           <span className="text-[10px] mt-0.5">Artikel</span>
         </Link>
       </nav>
@@ -543,85 +541,6 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
         </div>
       )}
 
-      {/* MODAL 3: PROMO & VOUCHER */}
-      {showPromoModal && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl flex items-center justify-center p-4">
-          <div className="w-full max-w-lg bg-[#0B0F17] border border-white/[0.1] rounded-3xl p-6 sm:p-7 shadow-[0_25px_60px_rgba(0,0,0,0.85)] relative animate-in fade-in zoom-in-95 duration-150">
-            <button 
-              onClick={() => setShowPromoModal(false)}
-              className="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/[0.06] transition"
-            >
-              <X size={18} />
-            </button>
-
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 rounded-2xl bg-[#DFC28A]/10 border border-[#DFC28A]/30 flex items-center justify-center text-[#DFC28A]">
-                <Tag size={20} />
-              </div>
-              <div>
-                <h3 className="text-base font-bold text-white">Promo & Kupon Eksklusif</h3>
-                <p className="text-xs text-slate-400">Salin kode voucher dan gunakan saat checkout</p>
-              </div>
-            </div>
-
-            <div className="space-y-3.5 max-h-96 overflow-y-auto pr-1">
-              {/* Voucher 1 */}
-              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.08] hover:border-[#DFC28A]/40 transition flex items-center justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono font-black text-sm text-[#DFC28A]">VEXATOPUP</span>
-                    <span className="text-[10px] bg-[#DFC28A]/15 text-[#DFC28A] px-2 py-0.5 rounded-md font-semibold">Diskon s/d 20k</span>
-                  </div>
-                  <p className="text-xs text-slate-400 mt-1">Potongan harga langsung tanpa batas minimal untuk seluruh judul game.</p>
-                </div>
-                <button
-                  onClick={() => copyVoucher('VEXATOPUP')}
-                  className="px-3.5 py-2 rounded-xl bg-white/[0.05] hover:bg-[#DFC28A] hover:text-slate-950 text-xs font-mono font-bold text-slate-300 transition shrink-0 flex items-center gap-1.5"
-                >
-                  {copiedCode === 'VEXATOPUP' ? <Check size={14} /> : <Copy size={14} />}
-                  <span>{copiedCode === 'VEXATOPUP' ? 'Tersalin' : 'Salin'}</span>
-                </button>
-              </div>
-
-              {/* Voucher 2 */}
-              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.08] hover:border-[#DFC28A]/40 transition flex items-center justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono font-black text-sm text-[#DFC28A]">VEXANEW</span>
-                    <span className="text-[10px] bg-emerald-500/15 text-emerald-400 px-2 py-0.5 rounded-md font-semibold">Cashback 15%</span>
-                  </div>
-                  <p className="text-xs text-slate-400 mt-1">Khusus transaksi pertama pengguna baru akun VexaStore.</p>
-                </div>
-                <button
-                  onClick={() => copyVoucher('VEXANEW')}
-                  className="px-3.5 py-2 rounded-xl bg-white/[0.05] hover:bg-[#DFC28A] hover:text-slate-950 text-xs font-mono font-bold text-slate-300 transition shrink-0 flex items-center gap-1.5"
-                >
-                  {copiedCode === 'VEXANEW' ? <Check size={14} /> : <Copy size={14} />}
-                  <span>{copiedCode === 'VEXANEW' ? 'Tersalin' : 'Salin'}</span>
-                </button>
-              </div>
-
-              {/* Voucher 3 */}
-              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.08] hover:border-[#DFC28A]/40 transition flex items-center justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono font-black text-sm text-[#DFC28A]">FLASHWEEKEND</span>
-                    <span className="text-[10px] bg-amber-500/15 text-amber-400 px-2 py-0.5 rounded-md font-semibold">Special Flash</span>
-                  </div>
-                  <p className="text-xs text-slate-400 mt-1">Ekstra 50 diamonds gratis untuk pembelian paket mingguan game populer.</p>
-                </div>
-                <button
-                  onClick={() => copyVoucher('FLASHWEEKEND')}
-                  className="px-3.5 py-2 rounded-xl bg-white/[0.05] hover:bg-[#DFC28A] hover:text-slate-950 text-xs font-mono font-bold text-slate-300 transition shrink-0 flex items-center gap-1.5"
-                >
-                  {copiedCode === 'FLASHWEEKEND' ? <Check size={14} /> : <Copy size={14} />}
-                  <span>{copiedCode === 'FLASHWEEKEND' ? 'Tersalin' : 'Salin'}</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

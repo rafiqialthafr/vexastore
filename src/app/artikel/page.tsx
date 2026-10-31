@@ -9,7 +9,7 @@ import {
   ArticleItem 
 } from '@/data/articles';
 import { 
-  Newspaper, 
+  Flame, 
   Clock, 
   Calendar, 
   User, 
@@ -332,7 +332,7 @@ export default function ArtikelPage() {
         {/* Empty Search Result */}
         {filteredArticles.length === 0 && (
           <div className="text-center py-16 bg-zinc-900/30 rounded-3xl border border-zinc-800/80">
-            <Newspaper size={36} className="mx-auto text-zinc-600 mb-3" />
+            <Flame size={36} className="mx-auto text-zinc-600 mb-3" />
             <h3 className="text-base font-bold text-white">Tidak ada artikel yang cocok</h3>
             <p className="text-xs text-zinc-400 mt-1 max-w-sm mx-auto">
               Coba kata kunci pencarian lain atau pilih kategori artikel yang berbeda.
