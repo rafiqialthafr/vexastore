@@ -18,7 +18,8 @@ interface HeroBanner {
   id: number;
   image: string;
   gameTitle: string;
-  publisher: string;
+  gameLogo: string;
+  logoHeightClass: string;
   headlinePrefix: string;
   headline: string;
   highlightLabel: string;
@@ -34,7 +35,8 @@ const HERO_BANNERS: HeroBanner[] = [
     id: 1,
     image: '/banners/banner_mlbb.jpg?v=2',
     gameTitle: 'Mobile Legends: Bang Bang',
-    publisher: 'MOONTON',
+    gameLogo: '/logos/logo_mlbb.png',
+    logoHeightClass: 'h-5 sm:h-6 md:h-7',
     headlinePrefix: 'Event Resmi Moonton',
     headline: 'Promo Spesial Aspirants & Starlight!',
     highlightLabel: 'Weekly Diamond Pass (WDP)',
@@ -46,9 +48,10 @@ const HERO_BANNERS: HeroBanner[] = [
   },
   {
     id: 2,
-    image: '/banners/banner_valorant_gold.jpg?v=2',
+    image: '/banners/banner_valorant_gold.jpg?v=3',
     gameTitle: 'Valorant Riot Games',
-    publisher: 'RIOT GAMES',
+    gameLogo: '/logos/logo_valorant.png',
+    logoHeightClass: 'h-4 sm:h-5 md:h-[22px]',
     headlinePrefix: 'Tactical Vault 2026',
     headline: 'Radiant Protocol Exclusive Bonus VP!',
     highlightLabel: '1.125 + 150 Bonus VP',
@@ -62,7 +65,8 @@ const HERO_BANNERS: HeroBanner[] = [
     id: 3,
     image: '/banners/banner_freefire.jpg?v=2',
     gameTitle: 'Free Fire Max Garena',
-    publisher: 'GARENA',
+    gameLogo: '/logos/logo_freefire.png',
+    logoHeightClass: 'h-3.5 sm:h-4 md:h-[18px]',
     headlinePrefix: 'Booyah Pass Season',
     headline: 'Flash Diamond Vault & Booyah Pass!',
     highlightLabel: '720 + 72 Bonus Diamonds',
@@ -76,7 +80,8 @@ const HERO_BANNERS: HeroBanner[] = [
     id: 4,
     image: '/banners/banner_pubg.jpg',
     gameTitle: 'PUBG Mobile',
-    publisher: 'KRAFTON',
+    gameLogo: '/logos/logo_pubg.png',
+    logoHeightClass: 'h-5 sm:h-6 md:h-7',
     headlinePrefix: 'Battle Royale Special',
     headline: 'Royale Pass & Unknown Cash Pack!',
     highlightLabel: '660 UC (Full Royale Pass)',
@@ -90,7 +95,8 @@ const HERO_BANNERS: HeroBanner[] = [
     id: 5,
     image: '/banners/banner_apex.jpg',
     gameTitle: 'Genshin Impact & Honkai',
-    publisher: 'HOYOVERSE',
+    gameLogo: '/logos/logo_genshin.png',
+    logoHeightClass: 'h-5 sm:h-6 md:h-7',
     headlinePrefix: 'Teyvat Blessing',
     headline: 'Blessing of the Welkin Moon & Crystals!',
     highlightLabel: 'Welkin Moon 30 Hari + 300 GC',
@@ -104,7 +110,8 @@ const HERO_BANNERS: HeroBanner[] = [
     id: 6,
     image: '/banners/banner_cs2.jpg',
     gameTitle: 'Steam Wallet Code IDR',
-    publisher: 'VALVE',
+    gameLogo: '/logos/logo_steam.png',
+    logoHeightClass: 'h-4 sm:h-5 md:h-6',
     headlinePrefix: 'Steam Global Discount',
     headline: 'Steam Wallet Code IDR Musim Spesial!',
     highlightLabel: 'Voucher IDR 250.000',
@@ -360,8 +367,9 @@ export default function HomePage() {
                       className="w-full h-full object-cover object-center rounded-2xl"
                     />
 
-                    {/* Gradient Overlay for Text Legibility on Left */}
+                    {/* Gradient Overlay for Text Legibility on Left + Subtle Top-Right Logo Contrast */}
                     <div className="absolute inset-0 bg-gradient-to-r from-black/92 via-black/55 to-transparent pointer-events-none rounded-2xl" />
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(0,0,0,0.45),transparent_42%)] pointer-events-none rounded-2xl" />
 
                     {/* POJOK ATAS KIRI: Logo Crest Saja (Icon Crest Saja, Tulisannya Gausah) */}
                     <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-30 bg-black/60 border border-white/15 backdrop-blur-md px-2 py-1 rounded-xl shadow-md flex items-center justify-center">
@@ -374,13 +382,13 @@ export default function HomePage() {
                       />
                     </div>
 
-                    {/* POJOK ATAS KANAN: Publisher / Partner Badge */}
-                    <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3.5 z-30 flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/70 border border-white/15 backdrop-blur-md">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#DFC28A] animate-pulse" />
-                      <span className="text-[9px] sm:text-[10px] font-black tracking-widest text-slate-200 uppercase font-mono">
-                        {banner.publisher}
-                      </span>
-                    </div>
+                    {/* POJOK ATAS KANAN: Logo Resmi Aplikasi/Game Langsung (Putih Transparan Tanpa Badge) */}
+                    <img
+                      src={banner.gameLogo}
+                      alt={banner.gameTitle}
+                      draggable={false}
+                      className={`absolute top-2.5 right-3 sm:top-3.5 sm:right-4 z-30 ${banner.logoHeightClass} w-auto max-w-[105px] sm:max-w-[130px] object-contain pointer-events-none select-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]`}
+                    />
 
                     {/* Left Overlay Content */}
                     <div className="absolute inset-0 z-20 flex flex-col justify-center pl-3.5 sm:pl-6 md:pl-7 pr-3 max-w-[66%] sm:max-w-[58%]">
