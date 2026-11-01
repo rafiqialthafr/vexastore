@@ -116,14 +116,20 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
           </Link>
 
           {/* Menu 2: Transaksi */}
-          <button
-            type="button"
-            onClick={() => { setShowTrackModal(true); setTrackedOrder(null); }}
-            className="relative flex flex-col items-center gap-1.5 py-1 px-2 text-xs text-zinc-400 hover:text-white transition group"
+          <Link
+            href="/transaksi"
+            className={`relative flex flex-col items-center gap-1.5 py-1 px-2 text-xs transition group ${
+              pathname.startsWith('/transaksi') 
+                ? 'text-[#DFC28A] font-semibold' 
+                : 'text-zinc-400 hover:text-white'
+            }`}
           >
-            <FileText size={22} className="group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform" />
+            {pathname.startsWith('/transaksi') && (
+              <span className="absolute -left-3 md:-left-4 top-1/2 -translate-y-1/2 w-1 h-6 bg-[#DFC28A] rounded-r-full shadow-[0_0_10px_rgba(223,194,138,0.8)]" />
+            )}
+            <FileText size={22} className={pathname.startsWith('/transaksi') ? 'text-[#DFC28A]' : 'group-hover:scale-110 group-hover:text-[#DFC28A] transition-transform'} />
             <span className="text-[11px] tracking-tight">Transaksi</span>
-          </button>
+          </Link>
 
           {/* Menu 3: Promo */}
           <Link
@@ -343,13 +349,15 @@ export default function Navbar({ children }: { children?: React.ReactNode }) {
           <span className="text-[10px] mt-0.5">Home</span>
         </Link>
 
-        <button
-          onClick={() => { setShowTrackModal(true); setTrackedOrder(null); }}
-          className="flex flex-col items-center py-1 px-3 rounded-xl text-zinc-400 hover:text-white"
+        <Link
+          href="/transaksi"
+          className={`flex flex-col items-center py-1 px-3 rounded-xl transition ${
+            pathname.startsWith('/transaksi') ? 'text-[#DFC28A] font-bold' : 'text-zinc-400'
+          }`}
         >
           <FileText size={19} />
           <span className="text-[10px] mt-0.5">Transaksi</span>
-        </button>
+        </Link>
 
         <Link
           href="/promo"
