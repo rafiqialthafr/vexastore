@@ -5,6 +5,7 @@ export interface Denomination {
   price: number;
   bonus?: string;
   isPopular?: boolean;
+  icon_url?: string;
 }
 
 export interface GameItem {
@@ -16,6 +17,7 @@ export interface GameItem {
   isPopular?: boolean;
   currencyName: string;
   currencyBadge: string;
+  currency_icon_url?: string;
   image: string;
   idRequirements: {
     needsUserId: boolean;

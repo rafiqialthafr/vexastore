@@ -2,9 +2,11 @@
 
 import { useState, use } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import { ALL_GAMES, PAYMENT_CHANNELS, Denomination, PaymentChannel } from '@/data/games';
+import { getNominalIcon } from '@/lib/getNominalIcon';
 import { ArrowLeft, CheckCircle2, ShieldCheck, UserCheck } from 'lucide-react';
 
 export default function OrderPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -128,30 +130,56 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
             <div className="bg-white/[0.025] backdrop-blur-2xl border border-white/[0.08] rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
               <div className="flex items-center gap-3.5 mb-5">
                 <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#DFC28A] to-[#C8A762] text-slate-950 font-black flex items-center justify-center text-sm shadow-[0_0_20px_rgba(223,194,138,0.25)]">2</div>
-                <h2 className="text-base font-bold text-white">Pilih Nominal {game.currencyName}</h2>
+                <div>
+                  <h2 className="text-base font-bold text-white">Pilih Nominal {game.currencyName}</h2>
+                  <p className="text-xs text-zinc-400 mt-0.5">Pilih paket denominasi resmi dengan jaminan pengiriman instan</p>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-4">
                 {game.denominations.map((denom) => {
                   const isSelected = selectedNominal?.id === denom.id;
+                  const iconSrc = getNominalIcon(game.slug, denom.name, denom.icon_url || game.currency_icon_url);
                   return (
                     <button
                       key={denom.id}
                       type="button"
                       onClick={() => setSelectedNominal(denom)}
-                      className={`p-4 rounded-2xl text-left border transition relative flex flex-col justify-between ${
+                      className={`relative min-h-[95px] p-4 rounded-2xl text-left border transition-all duration-200 flex flex-col justify-between ${
                         isSelected
                           ? 'bg-[#DFC28A]/10 border-[#DFC28A] shadow-[0_0_20px_rgba(223,194,138,0.25)]'
                           : 'bg-white/[0.02] border-white/[0.06] hover:bg-white/[0.04] hover:border-white/[0.12]'
                       }`}
                     >
-                      <div>
-                        <p className="text-xs sm:text-sm font-bold text-white">{denom.name}</p>
-                        {denom.bonus && <p className="text-[10px] text-orange-400 mt-1 font-mono">{denom.bonus}</p>}
+                      {/* Badge Promo / Diskon */}
+                      {denom.bonus && (
+                        <span className="absolute top-2.5 right-2.5 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#DFC28A]/15 border border-[#DFC28A]/30 text-[#DFC28A] pointer-events-none">
+                          {denom.bonus}
+                        </span>
+                      )}
+
+                      {/* Nama Item (Tidak Terpotong) */}
+                      <div className={`w-full ${denom.bonus ? 'pr-16 sm:pr-20' : ''}`}>
+                        <p className="text-xs sm:text-sm font-bold text-white leading-tight">
+                          {denom.name}
+                        </p>
                       </div>
-                      <p className="text-xs sm:text-sm font-mono font-bold text-[#DFC28A] mt-4">
-                        Rp {denom.price.toLocaleString('id-ID')}
-                      </p>
+
+                      {/* Tampilan Footer Card (Baris Harga) */}
+                      <div className="flex items-center gap-2 mt-3">
+                        {iconSrc && (
+                          <Image
+                            src={iconSrc}
+                            alt="Currency"
+                            width={24}
+                            height={24}
+                            className="w-5 h-5 sm:w-6 sm:h-6 object-contain shrink-0"
+                          />
+                        )}
+                        <p className="text-xs sm:text-sm font-mono font-bold text-[#DFC28A]">
+                          Rp {denom.price.toLocaleString('id-ID')}
+                        </p>
+                      </div>
                     </button>
                   );
                 })}
