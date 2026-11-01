@@ -8,7 +8,7 @@ import Navbar from '@/components/Navbar';
 import { ALL_GAMES, Denomination } from '@/data/games';
 import { PAYMENT_CATEGORIES, PAYMENT_CHANNELS, PaymentChannel } from '@/data/paymentMethods';
 import { getNominalIcon } from '@/lib/getNominalIcon';
-import { ArrowLeft, CheckCircle2, ShieldCheck, ChevronDown } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, ShieldCheck, ChevronDown, ShoppingBag, Plus, Minus } from 'lucide-react';
 
 export default function OrderPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
@@ -24,6 +24,7 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
   const [selectedNominal, setSelectedNominal] = useState<Denomination | null>(game.denominations[0] || null);
   const [selectedPayment, setSelectedPayment] = useState<PaymentChannel | null>(PAYMENT_CHANNELS[0]);
   const [whatsapp, setWhatsapp] = useState('');
+  const [quantity, setQuantity] = useState<number>(1);
 
   // Kategori Pembayaran Collapsible (Matching reference UI)
   const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({
@@ -40,7 +41,42 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
   };
 
   const qrisFeatured = PAYMENT_CHANNELS.find((p) => p.id === 'qris') || PAYMENT_CHANNELS[0];
-  const totalPrice = (selectedNominal?.price || 0) + (selectedPayment?.fee || 0);
+  const subtotal = (selectedNominal?.price || 0) * quantity;
+  const paymentFee = selectedPayment?.fee || 0;
+  const totalPrice = subtotal + paymentFee;
+
+  const handleCheckout = () => {
+    if (!userId.trim()) {
+      alert('Mohon masukkan User ID Game Anda terlebih dahulu.');
+      return;
+    }
+    if (game.idRequirements.needsZoneId && !zoneId.trim()) {
+      alert(`Mohon masukkan ${game.idRequirements.zoneLabel || 'Server / Zone ID'} Anda.`);
+      return;
+    }
+    if (!selectedNominal) {
+      alert('Mohon pilih nominal terlebih dahulu.');
+      return;
+    }
+    if (!selectedPayment) {
+      alert('Mohon pilih metode pembayaran terlebih dahulu.');
+      return;
+    }
+    if (!whatsapp.trim()) {
+      alert('Mohon masukkan nomor WhatsApp untuk bukti transaksi.');
+      return;
+    }
+
+    alert(
+      `Pesanan Berhasil Disiapkan!\n\n` +
+      `Game: ${game.name}\n` +
+      `Item: ${selectedNominal.name} (x${quantity})\n` +
+      `Tujuan ID: ${userId}${zoneId ? ` (${zoneId})` : ''}\n` +
+      `Metode: ${selectedPayment.name}\n` +
+      `WhatsApp: ${whatsapp}\n` +
+      `Total Pembayaran: Rp ${totalPrice.toLocaleString('id-ID')}`
+    );
+  };
 
   return (
     <Navbar>
@@ -54,24 +90,94 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-          {/* Kolom Kiri: Info Game dengan Glassmorphism Mewah */}
-          <div className="lg:col-span-4 bg-white/[0.025] backdrop-blur-2xl border border-white/[0.08] rounded-3xl p-6 sm:p-7 sticky top-28 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
-            <div className="flex gap-4 items-center">
-              <img src={game.image} alt={game.name} className="w-20 h-20 sm:w-24 sm:h-24 aspect-square object-contain bg-zinc-950 rounded-2xl border border-white/[0.1] shadow-md shrink-0" />
-              <div>
-                <p className="text-[11px] font-mono font-bold text-[#DFC28A] uppercase tracking-wider">{game.publisher}</p>
-                <h1 className="text-xl font-black text-white mt-1 leading-snug">{game.name}</h1>
-                <p className="text-xs text-slate-400 mt-0.5">Top-up {game.currencyName} Resmi</p>
+          {/* Kolom Kiri: Info Game & Detail Pembayaran (Sesuai Referensi UI) */}
+          <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-24">
+            {/* 1. Info Game / Aplikasi */}
+            <div className="bg-white/[0.025] backdrop-blur-2xl border border-white/[0.08] rounded-3xl p-6 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
+              <div className="flex gap-4 items-center">
+                <img src={game.image} alt={game.name} className="w-20 h-20 sm:w-24 sm:h-24 aspect-square object-contain bg-zinc-950 rounded-2xl border border-white/[0.1] shadow-md shrink-0" />
+                <div>
+                  <p className="text-[11px] font-mono font-bold text-[#DFC28A] uppercase tracking-wider">{game.publisher}</p>
+                  <h1 className="text-xl font-black text-white mt-1 leading-snug">{game.name}</h1>
+                  <p className="text-xs text-slate-400 mt-0.5">Top-up {game.currencyName} Resmi</p>
+                </div>
+              </div>
+
+              <div className="mt-7 pt-6 border-t border-white/[0.07] space-y-3.5 text-xs text-slate-400">
+                <div className="flex items-center gap-2.5 text-slate-300">
+                  <CheckCircle2 size={16} className="text-[#DFC28A] shrink-0" /> Pengiriman Otomatis &amp; Instan 24/7
+                </div>
+                <div className="flex items-center gap-2.5 text-slate-300">
+                  <ShieldCheck size={16} className="text-emerald-400 shrink-0" /> Layanan Resmi, Legal &amp; Terverifikasi
+                </div>
               </div>
             </div>
 
-            <div className="mt-7 pt-6 border-t border-white/[0.07] space-y-3.5 text-xs text-slate-400">
-              <div className="flex items-center gap-2.5 text-slate-300">
-                <CheckCircle2 size={16} className="text-[#DFC28A] shrink-0" /> Pengiriman Otomatis & Instan 24/7
+            {/* 2. Detail Pembayaran Card (Ditaruh tepat di bawah kolom nama aplikasi) */}
+            <div className="bg-[#24272c] border border-zinc-700/60 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4">
+              {/* Header: Game Icon, Name, and Selected Nominal */}
+              <div className="flex items-center gap-3.5 pb-4 border-b border-zinc-700/60">
+                <img 
+                  src={game.image} 
+                  alt={game.name} 
+                  className="w-12 h-12 rounded-xl object-contain bg-zinc-950 border border-white/10 shrink-0 shadow"
+                />
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-sm font-bold text-white truncate">{game.name}</h3>
+                  <p className="text-xs text-zinc-300 font-medium truncate mt-0.5">
+                    {selectedNominal ? selectedNominal.name : 'Pilih Nominal'}
+                  </p>
+                </div>
               </div>
-              <div className="flex items-center gap-2.5 text-slate-300">
-                <ShieldCheck size={16} className="text-emerald-400 shrink-0" /> Layanan Resmi, Legal & Terverifikasi
+
+              {/* Rows: Metode, Harga, Jumlah, Biaya */}
+              <div className="space-y-3 text-xs">
+                <div className="flex items-start justify-between gap-3">
+                  <span className="text-zinc-400 shrink-0">Metode Pembayaran</span>
+                  <span className="text-zinc-100 font-semibold text-right text-[11px] sm:text-xs">
+                    {selectedPayment ? selectedPayment.name : 'QRIS (All Payment)'}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-zinc-400">Harga</span>
+                  <span className="text-zinc-100 font-bold font-mono">
+                    Rp {subtotal.toLocaleString('id-ID')}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-zinc-400">Jumlah Pembelian</span>
+                  <span className="text-zinc-100 font-semibold font-mono">
+                    {quantity}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-zinc-400">Biaya</span>
+                  <span className="text-zinc-100 font-semibold font-mono">
+                    Rp {paymentFee.toLocaleString('id-ID')}
+                  </span>
+                </div>
               </div>
+
+              {/* Divider & Total */}
+              <div className="pt-3.5 border-t border-zinc-700/70 flex items-center justify-between gap-2">
+                <span className="text-sm sm:text-base font-bold text-white">Total Pembayaran</span>
+                <span className="text-base sm:text-lg font-black font-mono text-[#DFC28A]">
+                  Rp {totalPrice.toLocaleString('id-ID')}
+                </span>
+              </div>
+
+              {/* Tombol Pesan Sekarang! */}
+              <button
+                type="button"
+                onClick={handleCheckout}
+                className="w-full mt-2 py-3.5 rounded-xl bg-[#9a7e58] hover:bg-[#a88a62] active:scale-[0.98] text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-lg cursor-pointer"
+              >
+                <ShoppingBag size={18} />
+                <span>Pesan Sekarang!</span>
+              </button>
             </div>
           </div>
 
@@ -169,6 +275,44 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
                   );
                 })}
               </div>
+
+              {/* Jumlah Pembelian (Kuantitas dengan tombol - dan + sesuai referensi) */}
+              <div className="mt-6 pt-5 border-t border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h3 className="text-sm font-bold text-white">Jumlah Pembelian</h3>
+                  <p className="text-xs text-zinc-400 mt-0.5">Tentukan kuantitas item yang ingin dipesan</p>
+                </div>
+                <div className="flex items-center gap-2 bg-[#1e232d] border border-zinc-700/70 p-1.5 rounded-2xl w-fit">
+                  <button
+                    type="button"
+                    onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
+                    disabled={quantity <= 1}
+                    className="w-9 h-9 rounded-xl bg-[#2a303c] hover:bg-[#343b4a] text-white font-black flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition active:scale-95 cursor-pointer"
+                    aria-label="Kurang kuantitas"
+                  >
+                    <Minus size={16} />
+                  </button>
+                  <input
+                    type="number"
+                    min={1}
+                    max={999}
+                    value={quantity}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value);
+                      if (!isNaN(val) && val >= 1) setQuantity(val);
+                    }}
+                    className="w-12 text-center text-base font-black font-mono text-white bg-transparent outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setQuantity((prev) => prev + 1)}
+                    className="w-9 h-9 rounded-xl bg-[#2a303c] hover:bg-[#343b4a] text-white font-black flex items-center justify-center transition active:scale-95 cursor-pointer"
+                    aria-label="Tambah kuantitas"
+                  >
+                    <Plus size={16} />
+                  </button>
+                </div>
+              </div>
             </div>
 
             {/* Step 3: Pilih Pembayaran */}
@@ -186,17 +330,57 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
                 <button
                   type="button"
                   onClick={() => setSelectedPayment(qrisFeatured)}
-                  className={`w-full relative p-4 sm:p-5 rounded-2xl text-left border transition-all duration-200 overflow-hidden cursor-pointer ${
-                    selectedPayment?.id === 'qris'
+                  className={`w-full relative p-4 sm:p-5 rounded-2xl text-left border transition-all duration-200 cursor-pointer ${
+                    selectedPayment?.id === 'qris' || selectedPayment?.id === qrisFeatured?.id
                       ? 'bg-[#353c48] border-[#DFC28A] shadow-[0_0_24px_rgba(223,194,138,0.25)] ring-1 ring-[#DFC28A]'
                       : 'bg-[#313742] border-[#444c5b] hover:bg-[#38404d] hover:border-zinc-500'
                   }`}
                 >
-                  {/* Diagonal BEST PRICE Ribbon */}
-                  <div className="absolute top-0 right-0 overflow-hidden w-28 h-28 pointer-events-none">
-                    <div className="absolute transform rotate-45 bg-[#968366] text-white text-[9px] font-black uppercase py-0.5 right-[-32px] top-[18px] w-[120px] text-center shadow tracking-wider">
-                      BEST PRICE
-                    </div>
+                  {/* 3D Corner Wrap BEST PRICE Ribbon (Matches Reference UI) */}
+                  <div className="absolute -top-2.5 -right-2.5 w-28 h-28 pointer-events-none select-none z-10">
+                    <svg viewBox="0 0 110 110" className="w-full h-full overflow-visible">
+                      <defs>
+                        <filter id="ribbon-3d-shadow" x="-30%" y="-30%" width="160%" height="160%">
+                          <feDropShadow dx="-2" dy="3" stdDeviation="3.5" floodColor="#000000" floodOpacity="0.45" />
+                        </filter>
+                      </defs>
+
+                      {/* Top fold ear (wrapped behind card top edge) */}
+                      <path d="M 22 10 L 12 0 Q 9 2 9 10 L 22 10 Z" fill="#6f5a42" />
+
+                      {/* Right fold ear (wrapped behind card right edge) */}
+                      <path d="M 100 88 L 110 98 Q 108 101 100 101 L 100 88 Z" fill="#6f5a42" />
+
+                      {/* Main 3D Ribbon Body */}
+                      <path 
+                        d="M 12 0 L 52 0 L 110 58 L 110 98 Z" 
+                        fill="#A58C6F" 
+                        filter="url(#ribbon-3d-shadow)"
+                      />
+
+                      {/* Specular highlight on top ribbon edge */}
+                      <line x1="12" y1="0" x2="110" y2="98" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
+
+                      {/* BEST PRICE Text centered and rotated 45deg */}
+                      <g transform="translate(71, 39) rotate(45)">
+                        <text 
+                          x="0" 
+                          y="0" 
+                          textAnchor="middle" 
+                          dominantBaseline="central" 
+                          fill="#FFFFFF" 
+                          fontSize="10" 
+                          fontWeight="900" 
+                          letterSpacing="1px"
+                          style={{
+                            fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                            textShadow: "0 1px 2px rgba(0,0,0,0.35)"
+                          }}
+                        >
+                          BEST PRICE
+                        </text>
+                      </g>
+                    </svg>
                   </div>
 
                   <div className="flex flex-col justify-between gap-3 sm:gap-4">
@@ -215,7 +399,7 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
 
                       <span className="text-sm sm:text-base md:text-lg font-bold text-zinc-100 font-mono tracking-tight shrink-0">
                         {selectedNominal
-                          ? `Rp ${(selectedNominal.price + qrisFeatured.fee).toLocaleString('id-ID')}`
+                          ? `Rp ${((selectedNominal.price * quantity) + qrisFeatured.fee).toLocaleString('id-ID')}`
                           : 'Min. 1.000,00'}
                       </span>
                     </div>
@@ -272,7 +456,7 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
                         <div className="p-3.5 sm:p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 border-t border-zinc-800/80 bg-[#161a22]">
                           {group.channels.map((channel) => {
                             const isSelected = selectedPayment?.id === channel.id;
-                            const itemPrice = selectedNominal ? selectedNominal.price + channel.fee : 0;
+                            const itemPrice = selectedNominal ? (selectedNominal.price * quantity) + channel.fee : 0;
                             return (
                               <button
                                 key={channel.id}
@@ -285,7 +469,10 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
                                 }`}
                               >
                                 {channel.badge && (
-                                  <span className="absolute top-2.5 right-2.5 text-[9px] font-mono font-black px-2 py-0.5 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 pointer-events-none">
+                                  <span 
+                                    className="absolute top-2 right-2 text-[8px] sm:text-[9px] font-black px-2.5 py-0.5 rounded-md uppercase tracking-wider text-white bg-gradient-to-b from-[#F7E19C] via-[#CA9E3C] to-[#7B5313] border-t border-amber-200/90 border-b border-amber-950/80 shadow-[0_3px_8px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.7),inset_0_-1px_1px_rgba(0,0,0,0.5)] pointer-events-none"
+                                    style={{ textShadow: '0 1px 2px rgba(0,0,0,0.9)' }}
+                                  >
                                     {channel.badge}
                                   </span>
                                 )}
@@ -320,40 +507,25 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
               </div>
             </div>
 
-            {/* Step 4: Kontak & Checkout */}
+            {/* Step 4: Nomor WhatsApp */}
             <div className="bg-white/[0.025] backdrop-blur-2xl border border-white/[0.08] rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
               <div className="flex items-center gap-3.5 mb-5">
                 <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#DFC28A] to-[#C8A762] text-slate-950 font-black flex items-center justify-center text-sm shadow-[0_0_20px_rgba(223,194,138,0.25)]">4</div>
-                <h2 className="text-base font-bold text-white">Nomor WhatsApp & Konfirmasi Beli</h2>
+                <div>
+                  <h2 className="text-base font-bold text-white">Nomor WhatsApp</h2>
+                  <p className="text-xs text-zinc-400 mt-0.5">Bukti dan status pesanan akan dikirimkan otomatis ke nomor ini</p>
+                </div>
               </div>
 
-              <div className="space-y-5">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-2">No. WhatsApp (Untuk Bukti & Status Pembayaran)</label>
-                  <input
-                    type="tel"
-                    value={whatsapp}
-                    onChange={(e) => setWhatsapp(e.target.value)}
-                    placeholder="Contoh: 081234567890"
-                    className="w-full px-4 py-3 rounded-xl bg-white/[0.02] border border-white/[0.08] text-xs sm:text-sm text-white focus:outline-none focus:border-[#DFC28A] transition"
-                  />
-                </div>
-
-                <div className="pt-5 border-t border-white/[0.08] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                  <div>
-                    <p className="text-xs text-slate-400">Total Pembayaran</p>
-                    <p className="text-2xl font-black text-[#DFC28A] font-mono mt-0.5">
-                      Rp {totalPrice.toLocaleString('id-ID')}
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => alert(`Simulasi Transaksi Berhasil!\n\nGame: ${game.name}\nItem: ${selectedNominal?.name}\nTujuan ID: ${userId}\nMetode: ${selectedPayment?.name}\nTotal: Rp ${totalPrice.toLocaleString('id-ID')}`)}
-                    className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#DFC28A] via-[#EBD5A7] to-[#DFC28A] hover:brightness-110 text-slate-950 font-bold text-sm transition shadow-[0_0_25px_rgba(223,194,138,0.3)] active:scale-95"
-                  >
-                    Beli Sekarang
-                  </button>
-                </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-2">No. WhatsApp</label>
+                <input
+                  type="tel"
+                  value={whatsapp}
+                  onChange={(e) => setWhatsapp(e.target.value)}
+                  placeholder="Contoh: 081234567890"
+                  className="w-full px-4 py-3 rounded-xl bg-white/[0.02] border border-white/[0.08] text-xs sm:text-sm text-white focus:outline-none focus:border-[#DFC28A] transition"
+                />
               </div>
             </div>
           </div>

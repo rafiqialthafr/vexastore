@@ -21,6 +21,16 @@ export interface PaymentCategoryGroup {
   channels: PaymentChannel[];
 }
 
+export const QRIS_CHANNEL: PaymentChannel = {
+  id: 'qris',
+  name: 'QRIS (All Payment)',
+  category: 'qris',
+  fee: 1000,
+  badge: 'BEST PRICE',
+  icon: '/payments/qris.png',
+  logoUrl: '/payments/qris-banner.png',
+};
+
 export const PAYMENT_CATEGORIES: PaymentCategoryGroup[] = [
   {
     id: 'qris',
@@ -37,15 +47,6 @@ export const PAYMENT_CATEGORIES: PaymentCategoryGroup[] = [
       { name: 'BRI', url: '/payments/brimo.png' },
     ],
     channels: [
-      {
-        id: 'qris',
-        name: 'QRIS',
-        category: 'qris',
-        fee: 1000,
-        badge: 'BEST PRICE',
-        icon: '/payments/qris.png',
-        logoUrl: '/payments/qris-banner.png',
-      },
       {
         id: 'bni_qr',
         name: 'BNI',
@@ -273,8 +274,9 @@ export const PAYMENT_CATEGORIES: PaymentCategoryGroup[] = [
   },
 ];
 
-export const PAYMENT_CHANNELS: PaymentChannel[] = PAYMENT_CATEGORIES.flatMap(
-  (group) => group.channels
-);
+export const PAYMENT_CHANNELS: PaymentChannel[] = [
+  QRIS_CHANNEL,
+  ...PAYMENT_CATEGORIES.flatMap((group) => group.channels),
+];
 
 export const PAYMENT_METHODS = PAYMENT_CHANNELS;
