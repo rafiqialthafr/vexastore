@@ -25,6 +25,7 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
   const [selectedPayment, setSelectedPayment] = useState<PaymentChannel | null>(PAYMENT_CHANNELS[0]);
   const [whatsapp, setWhatsapp] = useState('');
   const [quantity, setQuantity] = useState<number>(1);
+  const [isMobileDetailOpen, setIsMobileDetailOpen] = useState(false);
 
   // Kategori Pembayaran Collapsible (Matching reference UI)
   const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({
@@ -80,7 +81,7 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
 
   return (
     <Navbar>
-      <main className="max-w-6xl mx-auto w-full px-6 sm:px-8 pt-10 sm:pt-12 md:pt-14 pb-16 flex flex-col gap-6 sm:gap-7 flex-1">
+      <main className="max-w-6xl mx-auto w-full px-6 sm:px-8 pt-10 sm:pt-12 md:pt-14 pb-44 lg:pb-16 flex flex-col gap-6 sm:gap-7 flex-1">
         <Link 
           href="/" 
           className="inline-flex items-center gap-2 text-xs font-mono tracking-wider text-zinc-400 hover:text-white transition group w-fit"
@@ -113,8 +114,8 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
               </div>
             </div>
 
-            {/* 2. Detail Pembayaran Card (Ditaruh tepat di bawah kolom nama aplikasi) */}
-            <div className="bg-[#24272c] border border-zinc-700/60 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4">
+            {/* 2. Detail Pembayaran Card (Khusus Desktop: Ditaruh tepat di bawah kolom nama aplikasi) */}
+            <div className="hidden lg:block bg-[#24272c] border border-zinc-700/60 rounded-3xl p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4">
               {/* Header: Game Icon, Name, and Selected Nominal */}
               <div className="flex items-center gap-3.5 pb-4 border-b border-zinc-700/60">
                 <img 
@@ -181,7 +182,7 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
             </div>
           </div>
 
-          {/* Kolom Kanan: 4 Tahapan Form Pemesanan dengan Spacing Lega */}
+          {/* Kolom Kanan: 5 Tahapan Form Pemesanan dengan Spacing Lega */}
           <div className="lg:col-span-8 space-y-8">
             {/* Step 1: Data Akun */}
             <div className="bg-white/[0.025] backdrop-blur-2xl border border-white/[0.08] rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
@@ -223,10 +224,8 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
                 <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#DFC28A] to-[#C8A762] text-slate-950 font-black flex items-center justify-center text-sm shadow-[0_0_20px_rgba(223,194,138,0.25)]">2</div>
                 <div>
                   <h2 className="text-base font-bold text-white">Pilih Nominal {game.currencyName}</h2>
-                  <p className="text-xs text-zinc-400 mt-0.5">Pilih paket denominasi resmi dengan jaminan pengiriman instan</p>
-                </div>
               </div>
-
+            </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-4">
                 {game.denominations.map((denom) => {
                   const isSelected = selectedNominal?.id === denom.id;
@@ -275,12 +274,21 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
                   );
                 })}
               </div>
+            </div>
 
-              {/* Jumlah Pembelian (Kuantitas dengan tombol - dan + sesuai referensi) */}
-              <div className="mt-6 pt-5 border-t border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            {/* Step 3: Jumlah Pembelian (Card Terpisah) */}
+            <div className="bg-white/[0.025] backdrop-blur-2xl border border-white/[0.08] rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+              <div className="flex items-center gap-3.5 mb-5">
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#DFC28A] to-[#C8A762] text-slate-950 font-black flex items-center justify-center text-sm shadow-[0_0_20px_rgba(223,194,138,0.25)]">3</div>
                 <div>
-                  <h3 className="text-sm font-bold text-white">Jumlah Pembelian</h3>
-                  <p className="text-xs text-zinc-400 mt-0.5">Tentukan kuantitas item yang ingin dipesan</p>
+                  <h2 className="text-base font-bold text-white">Jumlah Pembelian</h2>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+                <div>
+                  <p className="text-xs sm:text-sm font-semibold text-white">Pilih Kuantitas</p>
+                  <p className="text-[11px] text-zinc-400 mt-0.5">Kuantitas kelipatan top-up untuk paket yang dipilih</p>
                 </div>
                 <div className="flex items-center gap-2 bg-[#1e232d] border border-zinc-700/70 p-1.5 rounded-2xl w-fit">
                   <button
@@ -315,13 +323,12 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
               </div>
             </div>
 
-            {/* Step 3: Pilih Pembayaran */}
+            {/* Step 4: Pilih Pembayaran */}
             <div className="bg-white/[0.025] backdrop-blur-2xl border border-white/[0.08] rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] space-y-4">
               <div className="flex items-center gap-3.5 mb-2">
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#DFC28A] to-[#C8A762] text-slate-950 font-black flex items-center justify-center text-sm shadow-[0_0_20px_rgba(223,194,138,0.25)]">3</div>
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#DFC28A] to-[#C8A762] text-slate-950 font-black flex items-center justify-center text-sm shadow-[0_0_20px_rgba(223,194,138,0.25)]">4</div>
                 <div>
                   <h2 className="text-base font-bold text-white">Pilih Metode Pembayaran</h2>
-                  <p className="text-xs text-zinc-400 mt-0.5">Semua channel pembayaran terverifikasi otomatis &amp; instan</p>
                 </div>
               </div>
 
@@ -507,13 +514,12 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
               </div>
             </div>
 
-            {/* Step 4: Nomor WhatsApp */}
+            {/* Step 5: Nomor WhatsApp */}
             <div className="bg-white/[0.025] backdrop-blur-2xl border border-white/[0.08] rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
               <div className="flex items-center gap-3.5 mb-5">
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#DFC28A] to-[#C8A762] text-slate-950 font-black flex items-center justify-center text-sm shadow-[0_0_20px_rgba(223,194,138,0.25)]">4</div>
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#DFC28A] to-[#C8A762] text-slate-950 font-black flex items-center justify-center text-sm shadow-[0_0_20px_rgba(223,194,138,0.25)]">5</div>
                 <div>
                   <h2 className="text-base font-bold text-white">Nomor WhatsApp</h2>
-                  <p className="text-xs text-zinc-400 mt-0.5">Bukti dan status pesanan akan dikirimkan otomatis ke nomor ini</p>
                 </div>
               </div>
 
@@ -531,6 +537,97 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
           </div>
         </div>
       </main>
+
+      {/* =========================================================================
+          MOBILE FLOATING CHECKOUT BAR (Khusus Smartphone, Di Atas Bottom Nav)
+          - Posisi: fixed bottom-[56px] left-0 right-0 z-30 lg:hidden
+          - Sesuai Gambar Referensi:
+            1. Single cohesive card:
+               - Baris atas: [Icon App] [Nama App] / [Nominal] [Chevron ^ / v]
+               - Ketika di-expand:
+                 Harga             Rp 12,152
+                 Jumlah Pembelian  1
+                 Biaya             Rp 0
+                 ----------------------------
+                 Total Pembayaran  Rp 12,152
+            2. Tombol di bawah card: [ 🛍️ Pesan Sekarang! ]
+            3. Ukuran kompak dan proporsional
+      ========================================================================= */}
+      <div className="fixed bottom-[56px] left-0 right-0 z-30 lg:hidden px-3.5 py-2 bg-[#0e1015]/95 backdrop-blur-xl border-t border-zinc-800 shadow-[0_-8px_25px_rgba(0,0,0,0.85)]">
+        {/* Single Unified Card (Header + Expandable Detail) */}
+        <div className="rounded-xl bg-[#181a20] border border-zinc-700/60 p-2.5 shadow-md">
+          {/* Card Header (Bisa diklik untuk buka/tutup accordion) */}
+          <button
+            type="button"
+            onClick={() => setIsMobileDetailOpen(!isMobileDetailOpen)}
+            className="w-full flex items-center justify-between text-left cursor-pointer select-none"
+          >
+            <div className="flex items-center gap-2.5 min-w-0">
+              <img 
+                src={game.image} 
+                alt={game.name} 
+                className="w-8 h-8 rounded-lg object-contain bg-zinc-950 border border-white/10 shrink-0 shadow"
+              />
+              <div className="min-w-0">
+                <h4 className="text-xs font-bold text-white truncate leading-tight">{game.name}</h4>
+                <p className="text-[11px] text-zinc-300 font-medium truncate mt-0.5">
+                  {selectedNominal ? selectedNominal.name : 'Pilih Nominal'}
+                </p>
+              </div>
+            </div>
+
+            <ChevronDown
+              size={17}
+              className={`text-zinc-400 transition-transform duration-200 shrink-0 ml-2 ${
+                isMobileDetailOpen ? 'rotate-180 text-[#DFC28A]' : ''
+              }`}
+            />
+          </button>
+
+          {/* Expanded Detail Rows (Persis Gambar Referensi) */}
+          {isMobileDetailOpen && (
+            <div className="mt-3 pt-2.5 border-t border-zinc-700/40 space-y-2 text-xs animate-in slide-in-from-top-1 duration-150">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-zinc-400 text-[11px] sm:text-xs">Harga</span>
+                <span className="text-zinc-100 font-medium font-mono text-[11px] sm:text-xs">
+                  Rp {subtotal.toLocaleString('id-ID')}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-zinc-400 text-[11px] sm:text-xs">Jumlah Pembelian</span>
+                <span className="text-zinc-100 font-medium font-mono text-[11px] sm:text-xs">
+                  {quantity}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-zinc-400 text-[11px] sm:text-xs">Biaya</span>
+                <span className="text-zinc-100 font-medium font-mono text-[11px] sm:text-xs">
+                  Rp {paymentFee.toLocaleString('id-ID')}
+                </span>
+              </div>
+
+              <div className="pt-2 border-t border-zinc-700/50 flex items-center justify-between gap-2">
+                <span className="font-bold text-white text-xs sm:text-sm">Total Pembayaran</span>
+                <span className="font-bold font-mono text-[#DFC28A] text-xs sm:text-sm">
+                  Rp {totalPrice.toLocaleString('id-ID')}
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Tombol Pesan Sekarang! */}
+        <button
+          type="button"
+          onClick={handleCheckout}
+          className="w-full mt-2 py-2.5 rounded-xl bg-[#9a7e58] hover:bg-[#a88a62] active:scale-[0.98] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition shadow-md cursor-pointer"
+        >
+          <ShoppingBag size={15} />
+          <span>Pesan Sekarang!</span>
+        </button>
+      </div>
     </Navbar>
   );
 }
