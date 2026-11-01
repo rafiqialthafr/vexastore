@@ -5,9 +5,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
-import { ALL_GAMES, PAYMENT_CHANNELS, Denomination, PaymentChannel } from '@/data/games';
+import { ALL_GAMES, Denomination } from '@/data/games';
+import { PAYMENT_CATEGORIES, PAYMENT_CHANNELS, PaymentChannel } from '@/data/paymentMethods';
 import { getNominalIcon } from '@/lib/getNominalIcon';
-import { ArrowLeft, CheckCircle2, ShieldCheck, UserCheck } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, ShieldCheck, ChevronDown } from 'lucide-react';
 
 export default function OrderPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
@@ -23,20 +24,22 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
   const [selectedNominal, setSelectedNominal] = useState<Denomination | null>(game.denominations[0] || null);
   const [selectedPayment, setSelectedPayment] = useState<PaymentChannel | null>(PAYMENT_CHANNELS[0]);
   const [whatsapp, setWhatsapp] = useState('');
-  
-  // Mock Nickname Check
-  const [checkingNickname, setCheckingNickname] = useState(false);
-  const [verifiedNickname, setVerifiedNickname] = useState<string | null>(null);
 
-  const handleCheckNickname = () => {
-    if (!userId) return;
-    setCheckingNickname(true);
-    setTimeout(() => {
-      setCheckingNickname(false);
-      setVerifiedNickname(`Player_${userId.slice(-4)}_VIP`);
-    }, 700);
+  // Kategori Pembayaran Collapsible (Matching reference UI)
+  const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({
+    qris: false,
+    va: false,
+    retail: false,
+  });
+
+  const toggleCategory = (catId: string) => {
+    setOpenCategories((prev) => ({
+      ...prev,
+      [catId]: !prev[catId],
+    }));
   };
 
+  const qrisFeatured = PAYMENT_CHANNELS.find((p) => p.id === 'qris') || PAYMENT_CHANNELS[0];
   const totalPrice = (selectedNominal?.price || 0) + (selectedPayment?.fee || 0);
 
   return (
@@ -87,7 +90,7 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
                   <input
                     type="text"
                     value={userId}
-                    onChange={(e) => { setUserId(e.target.value); setVerifiedNickname(null); }}
+                    onChange={(e) => setUserId(e.target.value)}
                     placeholder={game.idRequirements.placeholder}
                     className="w-full px-4 py-3 rounded-xl bg-white/[0.02] border border-white/[0.08] text-xs sm:text-sm text-white focus:outline-none focus:border-[#DFC28A] transition"
                   />
@@ -106,24 +109,6 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
                   </div>
                 )}
               </div>
-
-              {game.idRequirements.needsUserId && (
-                <div className="mt-4 flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={handleCheckNickname}
-                    disabled={!userId || checkingNickname}
-                    className="px-4 py-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.08] border border-white/[0.08] text-slate-200 text-xs font-semibold disabled:opacity-50 transition"
-                  >
-                    {checkingNickname ? 'Memeriksa...' : 'Cek Nickname'}
-                  </button>
-                  {verifiedNickname && (
-                    <span className="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-medium">
-                      <UserCheck size={15} /> {verifiedNickname}
-                    </span>
-                  )}
-                </div>
-              )}
             </div>
 
             {/* Step 2: Pilih Nominal */}
@@ -187,35 +172,149 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
             </div>
 
             {/* Step 3: Pilih Pembayaran */}
-            <div className="bg-white/[0.025] backdrop-blur-2xl border border-white/[0.08] rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-              <div className="flex items-center gap-3.5 mb-5">
+            <div className="bg-white/[0.025] backdrop-blur-2xl border border-white/[0.08] rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] space-y-4">
+              <div className="flex items-center gap-3.5 mb-2">
                 <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#DFC28A] to-[#C8A762] text-slate-950 font-black flex items-center justify-center text-sm shadow-[0_0_20px_rgba(223,194,138,0.25)]">3</div>
-                <h2 className="text-base font-bold text-white">Pilih Metode Pembayaran</h2>
+                <div>
+                  <h2 className="text-base font-bold text-white">Pilih Metode Pembayaran</h2>
+                  <p className="text-xs text-zinc-400 mt-0.5">Semua channel pembayaran terverifikasi otomatis &amp; instan</p>
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
-                {PAYMENT_CHANNELS.map((channel) => {
-                  const isSelected = selectedPayment?.id === channel.id;
-                  const itemPrice = selectedNominal ? selectedNominal.price + channel.fee : 0;
+              {/* Top Featured QRIS Card matching Reference UI */}
+              {qrisFeatured && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedPayment(qrisFeatured)}
+                  className={`w-full relative p-4 sm:p-5 rounded-2xl text-left border transition-all duration-200 overflow-hidden cursor-pointer ${
+                    selectedPayment?.id === 'qris'
+                      ? 'bg-[#353c48] border-[#DFC28A] shadow-[0_0_24px_rgba(223,194,138,0.25)] ring-1 ring-[#DFC28A]'
+                      : 'bg-[#313742] border-[#444c5b] hover:bg-[#38404d] hover:border-zinc-500'
+                  }`}
+                >
+                  {/* Diagonal BEST PRICE Ribbon */}
+                  <div className="absolute top-0 right-0 overflow-hidden w-28 h-28 pointer-events-none">
+                    <div className="absolute transform rotate-45 bg-[#968366] text-white text-[9px] font-black uppercase py-0.5 right-[-32px] top-[18px] w-[120px] text-center shadow tracking-wider">
+                      BEST PRICE
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col justify-between gap-3 sm:gap-4">
+                    {/* Top Row: Title */}
+                    <span className="text-xs sm:text-sm font-bold text-zinc-200 tracking-wide uppercase pr-16">
+                      QRIS ALL PAYMENT
+                    </span>
+
+                    {/* Bottom Row: Banner on left, Price on right */}
+                    <div className="flex items-end justify-between gap-3">
+                      <img 
+                        src="/payments/qris-banner.png" 
+                        alt="QRIS Satu QR Code untuk semua Payment"
+                        className="h-7 sm:h-8 w-auto max-w-[200px] sm:max-w-[240px] object-contain rounded-sm"
+                      />
+
+                      <span className="text-sm sm:text-base md:text-lg font-bold text-zinc-100 font-mono tracking-tight shrink-0">
+                        {selectedNominal
+                          ? `Rp ${(selectedNominal.price + qrisFeatured.fee).toLocaleString('id-ID')}`
+                          : 'Min. 1.000,00'}
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              )}
+
+              {/* Grouped Accordions matching Reference UI */}
+              <div className="space-y-3 sm:space-y-3.5">
+                {PAYMENT_CATEGORIES.map((group) => {
+                  const isOpen = !!openCategories[group.id];
                   return (
-                    <button
-                      key={channel.id}
-                      type="button"
-                      onClick={() => setSelectedPayment(channel)}
-                      className={`p-4 rounded-2xl text-left border transition flex flex-col justify-between ${
-                        isSelected
-                          ? 'bg-[#DFC28A]/10 border-[#DFC28A] shadow-[0_0_20px_rgba(223,194,138,0.25)]'
-                          : 'bg-white/[0.02] border-white/[0.06] hover:bg-white/[0.04] hover:border-white/[0.12]'
-                      }`}
+                    <div
+                      key={group.id}
+                      className="border border-[#444c5b] rounded-xl sm:rounded-2xl overflow-hidden bg-[#262c37] shadow-sm transition"
                     >
-                      <div>
-                        <span className="text-2xl">{channel.icon}</span>
-                        <p className="text-xs sm:text-sm font-bold text-white mt-2">{channel.name}</p>
+                      {/* Top Header of Category Accordion */}
+                      <button
+                        type="button"
+                        onClick={() => toggleCategory(group.id)}
+                        className="w-full flex items-center justify-between px-4 py-3 sm:py-3.5 bg-[#2c333f] hover:bg-[#343b48] transition text-left cursor-pointer"
+                      >
+                        <span className="text-sm sm:text-base font-bold text-white tracking-wide">
+                          {group.name}
+                        </span>
+                        <ChevronDown
+                          size={19}
+                          className={`text-zinc-400 transition-transform duration-200 ${
+                            isOpen ? 'rotate-180 text-[#DFC28A]' : ''
+                          }`}
+                        />
+                      </button>
+
+                      {/* Preview Bar with Mini Logos Strip (Always visible like in reference UI) */}
+                      <div className="bg-[#444c5b] px-3.5 py-2 sm:px-4 sm:py-2.5 flex items-center justify-end overflow-x-auto no-scrollbar gap-1.5 sm:gap-2 border-t border-[#4f5869]">
+                        <div className="flex items-center justify-end gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar">
+                          {group.previewLogos.map((logo) => (
+                            <img
+                              key={logo.name}
+                              src={logo.url}
+                              alt={logo.name}
+                              title={logo.name}
+                              className="h-3.5 sm:h-4 max-h-[17px] w-auto object-contain shrink-0 rounded-[3px] shadow-sm"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = 'none';
+                              }}
+                            />
+                          ))}
+                        </div>
                       </div>
-                      <p className="text-xs sm:text-sm font-mono font-bold text-slate-300 mt-4">
-                        Rp {itemPrice.toLocaleString('id-ID')}
-                      </p>
-                    </button>
+
+                      {/* Expanded Content: Cards for this Category */}
+                      {isOpen && (
+                        <div className="p-3.5 sm:p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 border-t border-zinc-800/80 bg-[#161a22]">
+                          {group.channels.map((channel) => {
+                            const isSelected = selectedPayment?.id === channel.id;
+                            const itemPrice = selectedNominal ? selectedNominal.price + channel.fee : 0;
+                            return (
+                              <button
+                                key={channel.id}
+                                type="button"
+                                onClick={() => setSelectedPayment(channel)}
+                                className={`relative p-3.5 sm:p-4 rounded-xl text-left border transition-all duration-200 flex flex-col justify-between min-h-[88px] sm:min-h-[94px] overflow-hidden ${
+                                  isSelected
+                                    ? 'bg-[#DFC28A]/10 border-[#DFC28A] shadow-[0_0_20px_rgba(223,194,138,0.22)] ring-1 ring-[#DFC28A]/50'
+                                    : 'bg-[#1e232d]/90 border-zinc-700/60 hover:bg-[#262c39] hover:border-zinc-500'
+                                }`}
+                              >
+                                {channel.badge && (
+                                  <span className="absolute top-2.5 right-2.5 text-[9px] font-mono font-black px-2 py-0.5 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 pointer-events-none">
+                                    {channel.badge}
+                                  </span>
+                                )}
+
+                                <div className="flex items-center min-h-[32px] pt-0.5">
+                                  <img
+                                    src={channel.logoUrl}
+                                    alt={channel.name}
+                                    className="h-6 sm:h-7 max-h-[30px] w-auto max-w-[130px] object-contain rounded shadow-sm"
+                                    onError={(e) => {
+                                      (e.target as HTMLElement).style.display = 'none';
+                                    }}
+                                  />
+                                </div>
+
+                                <div className="mt-3 pt-2 border-t border-white/[0.06] flex items-center justify-between">
+                                  <span className="text-[10px] text-zinc-500 font-mono">
+                                    Fee: Rp {channel.fee.toLocaleString('id-ID')}
+                                  </span>
+                                  <p className="text-xs sm:text-sm font-mono font-bold text-[#DFC28A]">
+                                    Rp {itemPrice.toLocaleString('id-ID')}
+                                  </p>
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
                   );
                 })}
               </div>

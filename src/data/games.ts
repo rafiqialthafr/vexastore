@@ -31,25 +31,8 @@ export interface GameItem {
   denominations: Denomination[];
 }
 
-export interface PaymentChannel {
-  id: string;
-  name: string;
-  category: 'qris' | 'ewallet' | 'va';
-  fee: number; // admin fee
-  icon: string;
-}
-
-export const PAYMENT_CHANNELS: PaymentChannel[] = [
-  { id: 'qris', name: 'QRIS (All Payment)', category: 'qris', fee: 1000, icon: '⚡' },
-  { id: 'gopay', name: 'GoPay', category: 'ewallet', fee: 1500, icon: '🟢' },
-  { id: 'dana', name: 'DANA', category: 'ewallet', fee: 1500, icon: '🔵' },
-  { id: 'shopeepay', name: 'ShopeePay', category: 'ewallet', fee: 1500, icon: '🟠' },
-  { id: 'ovo', name: 'OVO', category: 'ewallet', fee: 1500, icon: '🟣' },
-  { id: 'bca', name: 'BCA Virtual Account', category: 'va', fee: 2500, icon: '🏛️' },
-  { id: 'mandiri', name: 'Mandiri Virtual Account', category: 'va', fee: 2500, icon: '🏛️' },
-  { id: 'bri', name: 'BRI Virtual Account', category: 'va', fee: 2500, icon: '🏛️' },
-  { id: 'bni', name: 'BNI Virtual Account', category: 'va', fee: 2500, icon: '🏛️' },
-];
+export type { PaymentChannel } from './paymentMethods';
+export { PAYMENT_CHANNELS } from './paymentMethods';
 
 export const ALL_GAMES: GameItem[] = [
   // 1. Mobile Legends: Bang Bang
