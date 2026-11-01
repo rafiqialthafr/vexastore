@@ -84,7 +84,7 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
       <main className="max-w-6xl mx-auto w-full px-3.5 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-10 pb-52 lg:pb-16 flex flex-col gap-3.5 sm:gap-6 flex-1">
         <Link 
           href="/" 
-          className="inline-flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-mono tracking-wider text-zinc-400 hover:text-white transition group w-fit"
+          className="hidden sm:inline-flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-mono tracking-wider text-zinc-400 hover:text-white transition group w-fit"
         >
           <ArrowLeft size={14} className="group-hover:-translate-x-1 transition duration-200 text-[#DFC28A]" /> 
           KEMBALI KE KATALOG VAULT
@@ -361,67 +361,27 @@ export default function OrderPage({ params }: { params: Promise<{ slug: string }
                   <button
                     type="button"
                     onClick={() => setSelectedPayment(qrisFeatured)}
-                    className={`w-full relative p-3 sm:p-4 rounded-xl text-left border transition-all duration-200 cursor-pointer overflow-hidden ${
+                    className={`w-full relative p-3.5 sm:p-4 rounded-xl text-left border transition-all duration-200 overflow-hidden cursor-pointer ${
                       selectedPayment?.id === 'qris' || selectedPayment?.id === qrisFeatured?.id
                         ? 'bg-[#353c48] border-[#DFC28A] shadow-[0_0_20px_rgba(223,194,138,0.22)] ring-1 ring-[#DFC28A]'
                         : 'bg-[#313742] border-[#444c5b] hover:bg-[#38404d] hover:border-zinc-500'
                     }`}
                   >
-                    {/* 3D Corner Wrap BEST PRICE Ribbon (Skala proporsional di mobile & tidak menutupi harga) */}
-                    <div className="absolute -top-1.5 -right-1.5 sm:-top-2 sm:-right-2 w-18 h-18 sm:w-24 sm:h-24 pointer-events-none select-none z-10">
-                      <svg viewBox="0 0 110 110" className="w-full h-full overflow-visible">
-                        <defs>
-                          <filter id="ribbon-3d-shadow" x="-30%" y="-30%" width="160%" height="160%">
-                            <feDropShadow dx="-2" dy="3" stdDeviation="3.5" floodColor="#000000" floodOpacity="0.45" />
-                          </filter>
-                        </defs>
-
-                        {/* Top fold ear */}
-                        <path d="M 22 10 L 12 0 Q 9 2 9 10 L 22 10 Z" fill="#6f5a42" />
-
-                        {/* Right fold ear */}
-                        <path d="M 100 88 L 110 98 Q 108 101 100 101 L 100 88 Z" fill="#6f5a42" />
-
-                        {/* Main 3D Ribbon Body */}
-                        <path 
-                          d="M 12 0 L 52 0 L 110 58 L 110 98 Z" 
-                          fill="#A58C6F" 
-                          filter="url(#ribbon-3d-shadow)"
-                        />
-
-                        {/* Specular highlight */}
-                        <line x1="12" y1="0" x2="110" y2="98" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
-
-                        {/* BEST PRICE Text centered */}
-                        <g transform="translate(71, 39) rotate(45)">
-                          <text 
-                            x="0" 
-                            y="0" 
-                            textAnchor="middle" 
-                            dominantBaseline="central" 
-                            fill="#FFFFFF" 
-                            fontSize="10" 
-                            fontWeight="900" 
-                            letterSpacing="1px"
-                            style={{
-                              fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-                              textShadow: "0 1px 2px rgba(0,0,0,0.35)"
-                            }}
-                          >
-                            BEST PRICE
-                          </text>
-                        </g>
-                      </svg>
+                    {/* Diagonal BEST PRICE Ribbon */}
+                    <div className="absolute top-0 right-0 overflow-hidden w-28 h-28 pointer-events-none">
+                      <div className="absolute transform rotate-45 bg-[#968366] text-white text-[9px] font-black uppercase py-0.5 right-[-32px] top-[18px] w-[120px] text-center shadow tracking-wider">
+                        BEST PRICE
+                      </div>
                     </div>
 
                     <div className="flex flex-col justify-between gap-2.5 sm:gap-3">
-                      {/* Top Row: Title dengan right padding agar tidak tertabrak ribbon */}
-                      <span className="text-[11px] sm:text-xs font-bold text-zinc-200 tracking-wide uppercase pr-14 sm:pr-20">
+                      {/* Top Row: Title */}
+                      <span className="text-[11px] sm:text-xs font-bold text-zinc-200 tracking-wide uppercase pr-16">
                         QRIS ALL PAYMENT
                       </span>
 
-                      {/* Bottom Row: Banner on left, Price on right dengan safe right margin */}
-                      <div className="flex items-end justify-between gap-2 pr-12 sm:pr-18">
+                      {/* Bottom Row: Banner on left, Price on right */}
+                      <div className="flex items-end justify-between gap-2 pr-12 sm:pr-14">
                         <img 
                           src="/payments/qris-banner.png" 
                           alt="QRIS Satu QR Code untuk semua Payment"

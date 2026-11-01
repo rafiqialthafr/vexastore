@@ -275,15 +275,13 @@ export default function HomePage() {
 
   return (
     <Navbar>
-      <main className="max-w-6xl mx-auto w-full px-6 sm:px-8 pt-12 sm:pt-14 md:pt-16 pb-16 flex flex-col gap-8 sm:gap-10 flex-1">
+      <main className="max-w-6xl mx-auto w-full px-3.5 sm:px-6 md:px-8 pt-4 sm:pt-10 md:pt-14 pb-16 flex flex-col gap-6 sm:gap-10 flex-1">
         
         {/* =========================================================================
-            HERO COVERFLOW CAROUSEL (Lapakgaming Modern Style)
-            - Jarak lega dengan header (pt-8 sm:pt-10) dan konten di bawahnya (gap-8 sm:gap-10)
-            - Indikator slider berada tepat di bawah gambar banner agar tidak menghalangi artwork
-            - Wrapper max-w-6xl mx-auto px-6 dengan overflow-hidden
-            - Slide kiri & kanan: scale-90, opacity-50, brightness-75
-            - Slide tengah (aktif): scale-100, opacity-100, border amber-400 tipis
+            HERO PROMO CAROUSEL (Lapakgaming Modern Style - Responsive & Tidak Gepeng)
+            - Di mobile: aspect ratio proporsional 2.4:1 (sesuai artwork asli), w-full, tidak gepeng
+            - Di desktop: Coverflow elegan dengan peek slide kiri & kanan
+            - Indikator slider pill di bawah banner persis gambar referensi
         ========================================================================= */}
         <section 
           ref={heroRef}
@@ -296,9 +294,9 @@ export default function HomePage() {
             dragStartXRef.current = null;
           }}
         >
-          {/* Coverflow Stage */}
+          {/* Coverflow Stage (Ukuran & Proporsi Serasi Desktop/Laptop 680x285) */}
           <div
-            className="relative w-full h-[210px] sm:h-[245px] md:h-[270px] flex items-center justify-center overflow-hidden rounded-2xl touch-pan-y cursor-grab active:cursor-grabbing"
+            className="relative w-full aspect-[680/285] sm:aspect-auto sm:h-[230px] md:h-[265px] lg:h-[285px] flex items-center justify-center overflow-hidden rounded-2xl touch-pan-y cursor-grab active:cursor-grabbing"
             onTouchStart={(e) => {
               dragStartXRef.current = e.touches[0].clientX;
               didDragSlideRef.current = false;
@@ -335,9 +333,6 @@ export default function HomePage() {
               const isPrev = diff === count - 1;
               const isNext = diff === 1;
 
-              // Only render center, prev, and next slides for optimal performance and crisp coverflow
-              if (!isCenter && !isPrev && !isNext) return null;
-
               return (
                 <div
                   key={banner.id}
@@ -346,90 +341,92 @@ export default function HomePage() {
                     if (isPrev) handlePrevSlide();
                     if (isNext) handleNextSlide();
                   }}
-                  className={`absolute top-0 bottom-0 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] w-[80%] sm:w-[70%] md:w-[620px] lg:w-[660px] ${
+                  className={`absolute top-0 bottom-0 flex items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] w-full sm:w-[72%] md:w-[620px] lg:w-[680px] ${
                     isCenter
-                      ? 'left-1/2 -translate-x-1/2 z-20 scale-100 opacity-100 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_25px_rgba(251,191,36,0.18)]'
+                      ? 'left-1/2 -translate-x-1/2 z-20 scale-100 opacity-100 shadow-[0_12px_40px_rgba(0,0,0,0.85),0_0_20px_rgba(251,191,36,0.18)] pointer-events-auto'
                       : isPrev
-                      ? 'left-1/2 -translate-x-[calc(50%+28%)] sm:-translate-x-[calc(50%+190px)] md:-translate-x-[calc(50%+220px)] lg:-translate-x-[calc(50%+240px)] z-10 scale-90 opacity-50 brightness-75 hover:opacity-75 cursor-pointer'
-                      : 'left-1/2 translate-x-[calc(-50%+28%)] sm:translate-x-[calc(-50%+190px)] md:translate-x-[calc(-50%+220px)] lg:translate-x-[calc(-50%+240px)] z-10 scale-90 opacity-50 brightness-75 hover:opacity-75 cursor-pointer'
+                      ? 'left-1/2 -translate-x-[calc(50%+24px)] sm:-translate-x-[calc(50%+185px)] md:-translate-x-[calc(50%+220px)] lg:-translate-x-[calc(50%+240px)] z-10 scale-95 sm:scale-90 opacity-0 sm:opacity-50 brightness-75 hover:opacity-75 cursor-pointer pointer-events-none sm:pointer-events-auto'
+                      : isNext
+                      ? 'left-1/2 translate-x-[calc(-50%+24px)] sm:translate-x-[calc(-50%+185px)] md:translate-x-[calc(-50%+220px)] lg:translate-x-[calc(-50%+240px)] z-10 scale-95 sm:scale-90 opacity-0 sm:opacity-50 brightness-75 hover:opacity-75 cursor-pointer pointer-events-none sm:pointer-events-auto'
+                      : 'left-1/2 -translate-x-1/2 z-0 scale-90 opacity-0 pointer-events-none'
                   }`}
                 >
-                  <div className={`relative w-full h-full rounded-2xl overflow-hidden transition-all duration-300 isolate ${
+                  <div className={`relative w-full h-full rounded-2xl overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] isolate ${
                     isCenter 
-                      ? 'border border-amber-400 ring-1 ring-amber-400/20 bg-[#0c0d12]' 
+                      ? 'border border-[#DFC28A]/80 sm:border-amber-400 ring-1 ring-amber-400/20 bg-[#0c0d12]' 
                       : 'border border-zinc-700/80 bg-[#090a0f]'
                   }`}>
-                    {/* Background Banner Artwork */}
+                    {/* Background Banner Artwork (Presisi edge-to-edge sama persis seperti desktop/laptop) */}
                     <img
                       src={banner.image}
                       alt={banner.headline}
                       draggable={false}
-                      className="w-full h-full object-cover object-center rounded-2xl"
+                      className="w-full h-full object-cover object-center rounded-2xl select-none"
                     />
 
                     {/* Gradient Overlay for Text Legibility on Left + Subtle Top-Right Logo Contrast */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/92 via-black/55 to-transparent pointer-events-none rounded-2xl" />
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(0,0,0,0.45),transparent_42%)] pointer-events-none rounded-2xl" />
+                    <div className="absolute inset-0 z-20 bg-gradient-to-r from-black/92 via-black/55 to-transparent pointer-events-none rounded-2xl" />
+                    <div className="absolute inset-0 z-20 bg-[radial-gradient(ellipse_at_top_right,rgba(0,0,0,0.45),transparent_42%)] pointer-events-none rounded-2xl" />
 
-                    {/* POJOK ATAS KIRI: Logo Crest Saja (Icon Crest Saja, Tulisannya Gausah) */}
-                    <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-30 bg-black/60 border border-white/15 backdrop-blur-md px-2 py-1 rounded-xl shadow-md flex items-center justify-center">
+                    {/* POJOK ATAS KIRI: Logo Crest Saja */}
+                    <div className="absolute top-2 left-2 sm:top-3 sm:left-3 z-30 bg-black/60 border border-white/15 backdrop-blur-md px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-lg sm:rounded-xl shadow-md flex items-center justify-center">
                       <Image
                         src="/logo-crest.png"
                         alt="VexaStore"
                         width={20}
                         height={20}
-                        className="w-4 h-4 sm:w-5 sm:h-5 object-contain"
+                        className="w-3.5 h-3.5 sm:w-5 sm:h-5 object-contain"
                       />
                     </div>
 
-                    {/* POJOK ATAS KANAN: Logo Resmi Aplikasi/Game Langsung (Putih Transparan Tanpa Badge) */}
+                    {/* POJOK ATAS KANAN: Logo Resmi Aplikasi/Game */}
                     <img
                       src={banner.gameLogo}
                       alt={banner.gameTitle}
                       draggable={false}
-                      className={`absolute top-2.5 right-3 sm:top-3.5 sm:right-4 z-30 ${banner.logoHeightClass} w-auto max-w-[105px] sm:max-w-[130px] object-contain pointer-events-none select-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]`}
+                      className={`absolute top-2 right-2.5 sm:top-3.5 sm:right-4 z-30 ${banner.logoHeightClass} w-auto max-w-[80px] sm:max-w-[130px] object-contain pointer-events-none select-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]`}
                     />
 
                     {/* Left Overlay Content */}
-                    <div className="absolute inset-0 z-20 flex flex-col justify-center pl-3.5 sm:pl-6 md:pl-7 pr-3 max-w-[66%] sm:max-w-[58%]">
+                    <div className="absolute inset-0 z-30 flex flex-col justify-center pl-3 sm:pl-6 md:pl-7 pr-2.5 max-w-[62%] sm:max-w-[58%] pointer-events-none">
                       {/* Tagline / Event Prefix */}
-                      <span className="text-[9px] sm:text-[10px] font-mono font-bold text-[#DFC28A] tracking-wider uppercase mb-0.5">
+                      <span className="text-[7.5px] sm:text-[10px] font-mono font-bold text-[#DFC28A] tracking-wider uppercase mb-0.5 truncate drop-shadow">
                         // {banner.headlinePrefix}
                       </span>
 
                       {/* Headline Title */}
-                      <h3 className="text-xs sm:text-base md:text-lg font-black text-white leading-tight drop-shadow tracking-tight">
+                      <h3 className="text-[10px] xs:text-[11px] sm:text-base md:text-lg font-black text-white leading-tight drop-shadow tracking-tight line-clamp-2">
                         {banner.headline}
                       </h3>
 
                       {/* Framed Price Card */}
-                      <div className="mt-1.5 sm:mt-2 bg-slate-950/85 border border-[#DFC28A]/45 rounded-xl p-1.5 sm:px-2.5 sm:py-1.5 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.6)] w-fit max-w-full">
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-[9px] sm:text-[11px] font-bold text-slate-200 truncate">
+                      <div className="mt-1 sm:mt-2 bg-slate-950/85 border border-[#DFC28A]/45 rounded-md sm:rounded-xl px-1.5 py-0.5 sm:px-2.5 sm:py-1.5 backdrop-blur-md shadow-md w-fit max-w-full">
+                        <div className="flex items-center gap-1 sm:gap-1.5">
+                          <span className="text-[7.5px] sm:text-[11px] font-bold text-slate-200 truncate">
                             {banner.highlightLabel}
                           </span>
-                          <span className="bg-[#DFC28A]/20 text-[#DFC28A] border border-[#DFC28A]/40 text-[7px] sm:text-[8px] font-black px-1.5 py-0.2 rounded-full uppercase tracking-tight shrink-0">
+                          <span className="bg-[#DFC28A]/20 text-[#DFC28A] border border-[#DFC28A]/40 text-[6.5px] sm:text-[8px] font-black px-1 py-0.2 rounded-full uppercase tracking-tight shrink-0">
                             {banner.highlightBadge}
                           </span>
                         </div>
-                        <div className="flex items-baseline gap-1.5 mt-0.5">
-                          <span className="text-xs sm:text-base md:text-lg font-black text-[#DFC28A] font-mono drop-shadow">
+                        <div className="flex items-baseline gap-1 sm:gap-1.5 mt-0.5">
+                          <span className="text-[10px] xs:text-xs sm:text-base md:text-lg font-black text-[#DFC28A] font-mono drop-shadow">
                             {banner.highlightPrice}
                           </span>
-                          <span className="text-[8px] sm:text-[10px] text-red-400 line-through font-mono">
+                          <span className="text-[7px] sm:text-[10px] text-red-400 line-through font-mono">
                             {banner.highlightOriginal}
                           </span>
                         </div>
                       </div>
 
                       {/* CTA Action Pill Button */}
-                      <div className="mt-2 sm:mt-2.5">
+                      <div className="mt-1 sm:mt-2.5 pointer-events-auto">
                         <Link
                           href={banner.ctaLink}
-                          className="inline-flex items-center gap-1.5 px-3.5 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-[#DFC28A] via-[#EED9B3] to-[#DFC28A] hover:brightness-110 text-slate-950 font-black text-[9px] sm:text-[11px] shadow-md transition-all active:scale-95"
+                          className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-0.5 sm:px-3.5 sm:py-1.5 rounded-full bg-gradient-to-r from-[#DFC28A] via-[#EED9B3] to-[#DFC28A] hover:brightness-110 text-slate-950 font-black text-[7.5px] sm:text-[11px] shadow-md transition-all active:scale-95"
                         >
                           <span>{banner.ctaText}</span>
-                          <span className="bg-[#E11D48] text-white text-[8px] sm:text-[9px] font-black px-1.5 py-0.2 rounded-full uppercase tracking-tight shadow-sm">
+                          <span className="bg-[#E11D48] text-white text-[6.5px] sm:text-[9px] font-black px-1.5 py-0.2 rounded-full uppercase tracking-tight shadow-sm">
                             HARGA FINAL
                           </span>
                         </Link>
@@ -440,35 +437,35 @@ export default function HomePage() {
               );
             })}
 
-            {/* Prev & Next Floating Navigation Arrows */}
+            {/* Prev & Next Floating Navigation Arrows (Desktop/Tablet Only) */}
             <button
               onClick={handlePrevSlide}
               aria-label="Previous Slide"
-              className="absolute left-1 sm:left-3 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/70 hover:bg-[#DFC28A] text-white hover:text-black border border-white/20 transition flex items-center justify-center backdrop-blur-md shadow-lg"
+              className="hidden sm:flex absolute left-1 sm:left-3 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/70 hover:bg-[#DFC28A] text-white hover:text-black border border-white/20 transition items-center justify-center backdrop-blur-md shadow-lg cursor-pointer"
             >
               <ChevronLeft size={18} />
             </button>
             <button
               onClick={handleNextSlide}
               aria-label="Next Slide"
-              className="absolute right-1 sm:right-3 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/70 hover:bg-[#DFC28A] text-white hover:text-black border border-white/20 transition flex items-center justify-center backdrop-blur-md shadow-lg"
+              className="hidden sm:flex absolute right-1 sm:right-3 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/70 hover:bg-[#DFC28A] text-white hover:text-black border border-white/20 transition items-center justify-center backdrop-blur-md shadow-lg cursor-pointer"
             >
               <ChevronRight size={18} />
             </button>
           </div>
 
-          {/* Minimalist Pill Indicators (Clean Matte Style Di Bawah Gambar Banner) */}
-          <div className="mt-3.5 sm:mt-4 flex items-center justify-center gap-1.5 sm:gap-2">
+          {/* Minimalist Pill Indicators (Clean Matte Style Di Bawah Gambar Banner Persis Lapakgaming) */}
+          <div className="mt-2.5 sm:mt-4 flex items-center justify-center gap-1.5 sm:gap-2">
             {HERO_BANNERS.map((_, index) => (
               <button
                 key={index}
                 type="button"
                 onClick={() => setCurrentSlide(index)}
                 aria-label={`Slide ${index + 1}`}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
+                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
                   index === currentSlide 
-                    ? 'w-6 sm:w-7 bg-[#DFC28A]/85' 
-                    : 'w-2 sm:w-2.5 bg-zinc-800 hover:bg-zinc-700'
+                    ? 'w-6 sm:w-7 bg-[#DFC28A]' 
+                    : 'w-2 sm:w-2.5 bg-zinc-700/80 hover:bg-zinc-600'
                 }`}
               />
             ))}
